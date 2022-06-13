@@ -1,2 +1,3 @@
-# nix-solana-development
-A Nix flake oferring Solana development tools
+# nix-blockchain-development
+
+A Nix flake offering blockchain development tools
