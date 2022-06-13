@@ -1,0 +1,15 @@
+# "dotenv" environment variable files
+# Each developer can create a personal .env file with
+# local settings overrides (e.g. WEB3_URL)
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Cached profile files created by direnv
+.direnv/*
+!.direnv/.gitkeep
+
+# Nix
+result
