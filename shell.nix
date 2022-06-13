@@ -7,6 +7,9 @@ with pkgs;
 
       # For formatting Nix files
       alejandra
+
+      # Packages defined in this repo
+      metacraft-labs.solana
     ];
 
     shellHook = ''

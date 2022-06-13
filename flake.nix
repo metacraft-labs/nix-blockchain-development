@@ -11,9 +11,21 @@
     nixpkgs,
     flake-utils,
   }:
-    flake-utils.lib.simpleFlake {
-      inherit self nixpkgs;
-      name = "nix-blockchain-development";
-      shell = ./shell.nix;
-    };
+    {
+      overlays.default = import ./overlay.nix;
+    }
+    // (
+      flake-utils.lib.eachDefaultSystem
+      (system: let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            self.overlays.default
+          ];
+        };
+      in {
+        packages = pkgs.metacraft-labs;
+        devShells.default = import ./shell.nix {inherit pkgs;};
+      })
+    );
 }
