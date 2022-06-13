@@ -1,8 +1,5 @@
 {pkgs}:
-with pkgs; let
-  nodejs = nodejs-16_x;
-  corepack = callPackage ./nix/corepack-shims {inherit nodejs;};
-in
+with pkgs;
   mkShell {
     buildInputs = [
       # For priting the direnv banner
@@ -15,13 +12,11 @@ in
       # and tailed log files
       tmux
       tmuxinator
-
-      # Node.js dev environment for unit tests
-      nodejs
-      corepack
+      metacraft-labs.solana
     ];
 
     shellHook = ''
       figlet "nix-blockchain-development"
+      echo "${metacraft-labs.solana}"
     '';
   }

@@ -13,7 +13,8 @@
   }:
     flake-utils.lib.simpleFlake {
       inherit self nixpkgs;
-      name = "nix-blockchain-development";
+      name = "meta-craft-labs";
       shell = ./shell.nix;
+      overlay = ./overlay.nix;
     };
 }
