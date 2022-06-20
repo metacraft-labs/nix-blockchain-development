@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Nix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: cachix/install-nix-action@v17
+        with:
+          nix_path: nixpkgs=channel:nixos-22.05
+
+      - uses: cachix/cachix-action@v10
+        with:
+          name: metacraft-labs-blockchain-dev
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+      - name: Build Nix dev shell
+        run: nix build --print-build-logs '.#devShells.x86_64-linux.default'
