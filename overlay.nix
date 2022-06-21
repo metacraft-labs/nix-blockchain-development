@@ -8,9 +8,11 @@ _finalNixpkgs: prevNixpkgs: let
   };
 
   cosmos-theta-testnet = prevNixpkgs.callPackage ./packages/cosmos-theta-testnet {};
+
+  snowbridge-relayer = prevNixpkgs.callPackage ./packages/snowbridge-relayer {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
-    inherit cosmos-theta-testnet;
+    inherit cosmos-theta-testnet snowbridge-relayer;
   };
 }
