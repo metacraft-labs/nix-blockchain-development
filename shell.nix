@@ -10,6 +10,6 @@ with pkgs;
     ];
 
     shellHook = ''
-      figlet "nix-blockchain-development"
+      figlet -w$COLUMNS "nix-blockchain-development"
     '';
   }
