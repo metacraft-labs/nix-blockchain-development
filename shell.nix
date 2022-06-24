@@ -10,6 +10,7 @@ with pkgs;
 
       # Packages defined in this repo
       metacraft-labs.solana
+      metacraft-labs.cosmos-theta-testnet
     ];
 
     shellHook = ''
