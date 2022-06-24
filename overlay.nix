@@ -6,8 +6,11 @@ _finalNixpkgs: prevNixpkgs: let
   solana-full-sdk = prevNixpkgs.callPackage ./packages/solana-full-sdk {
     inherit solana-rust-artifacts solana-bpf-tools;
   };
+
+  cosmos-theta-testnet = prevNixpkgs.callPackage ./packages/cosmos-theta-testnet {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
+    inherit cosmos-theta-testnet;
   };
 }
