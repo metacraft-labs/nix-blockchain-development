@@ -8,9 +8,18 @@ _finalNixpkgs: prevNixpkgs: let
   };
 
   cosmos-theta-testnet = prevNixpkgs.callPackage ./packages/cosmos-theta-testnet {};
+
+  snowbridge-relayer = prevNixpkgs.callPackage ./packages/snowbridge-relayer {};
+
+  # not working yet
+  snowbridge-parachain = prevNixpkgs.callPackage ./packages/snowbridge-parachain {};
+
+  abigen = prevNixpkgs.writeShellScriptBin "abigen" ''
+    ${prevNixpkgs.go-ethereum}/bin/abigen $@
+  '';
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
-    inherit cosmos-theta-testnet;
+    inherit cosmos-theta-testnet snowbridge-relayer snowbridge-parachain abigen;
   };
 }
