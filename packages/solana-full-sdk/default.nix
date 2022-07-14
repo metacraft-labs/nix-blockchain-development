@@ -17,6 +17,8 @@ pkgs.stdenvNoCC.mkDerivation rec {
     mkdir -p $out/bin/sdk/bpf
     cp -rf ${solana-bpf-tools}/* $out/bin/sdk/bpf/
     chmod 0755 -R $out;
+
+    echo "" > $out/bin/sdk/bpf/scripts/install.sh
   '';
 
   meta = with pkgs.lib; {
