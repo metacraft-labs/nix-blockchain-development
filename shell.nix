@@ -13,6 +13,7 @@ with pkgs;
         metacraft-labs.cosmos-theta-testnet
         metacraft-labs.circom
         metacraft-labs.circ
+        metacraft-labs.nlvm
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1

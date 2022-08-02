@@ -11,6 +11,8 @@ _finalNixpkgs: prevNixpkgs: let
 
   circom = prevNixpkgs.callPackage ./packages/circom/default.nix {};
   circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
+
+  nlvm = prevNixpkgs.callPackage ./packages/nlvm {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
