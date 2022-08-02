@@ -174,6 +174,8 @@
 
         # Nimbus
         nimbus = callPackage ./nimbus/default.nix {};
+
+        nlvm = callPackage ./nlvm {};
       }
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;

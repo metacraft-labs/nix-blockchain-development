@@ -1,0 +1,102 @@
+diff --git a/Makefile b/Makefile
+index 3dcebcc9..e7d3a646 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,4 +1,4 @@
+-NIMC=Nim/bin/nim
++NIMC=nim
+ 
+ NLVMC=nlvm/nlvm
+ NLVMR=nlvm/nlvmr
+@@ -29,22 +29,11 @@ endif
+ .PHONY: all
+ all: $(NLVMC)
+ 
+-Nim/koch:
+-	cd Nim ;\
+-	[ -d csources_v1 ] || git clone -q --depth 1 -b master https://github.com/nim-lang/csources_v1.git ;\
+-	cd csources_v1 ;\
+-	git pull ;\
+-	make -f makefile -j4
+-	cd Nim ; bin/nim c koch
++$(NLVMC): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
++	cd nlvm && time $(NIMC) $(NIMFLAGS) $(NLVMCFLAGS) c nlvm
+ 
+-$(NIMC): Nim/koch Nim/compiler/*.nim
+-	cd Nim && ./koch boot -d:release
+-
+-$(NLVMC): $(LLVM_DEP) $(NIMC) Nim/compiler/*.nim  nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
+-	cd nlvm && time ../$(NIMC) $(NIMFLAGS) $(NLVMCFLAGS) c nlvm
+-
+-$(NLVMR): $(LLVM_DEP) $(NIMC) Nim/compiler/*.nim  nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
+-	cd nlvm && time ../$(NIMC) $(NIMFLAGS) -d:release $(NLVMCFLAGS) -o:nlvmr c nlvm
++$(NLVMR): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
++	cd nlvm && time $(NIMC) $(NIMFLAGS) -d:release $(NLVMCFLAGS) -o:nlvmr c nlvm
+ 
+ nlvm/nlvm.ll: $(NLVMC) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
+ 	cd nlvm && time ./nlvm $(NLVMFLAGS) -o:nlvm.ll -c c nlvm
+@@ -59,44 +48,41 @@ nlvm/nlvm.self.ll: nlvm/nlvm.self
+ compare: nlvm/nlvm.self.ll nlvm/nlvm.ll
+ 	diff -u nlvm/nlvm.self.ll nlvm/nlvm.ll
+ 
+-Nim/testament/testament: $(NIMC) Nim/testament/*.nim
+-	$(NIMC) -d:release c Nim/testament/testament
+-
+ .PHONY: run-testament
+-run-testament: $(NLVMR) Nim/testament/testament
+-	cd Nim; time testament/testament --megatest:off --targets:c "--nim:../nlvm/nlvmr" --skipFrom:../skipped-tests.txt all
++run-testament: $(NLVMR)
++	time testament --megatest:off --targets:c "--nim:../nlvm/nlvmr" --skipFrom:../skipped-tests.txt all
+ 
+-run-testament-noskip: $(NLVMR) Nim/testament/testament
+-	-cd Nim; time testament/testament --megatest:off --targets:c "--nim:../nlvm/nlvmr" all
++run-testament-noskip: $(NLVMR)
++	time testament --megatest:off --targets:c "--nim:../nlvm/nlvmr" all
+ 
+ .PHONY: test
+ test: run-testament stats
+-	-jq -s '{bad: ([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | length, ok: ([.[][]|select(.result == "reSuccess")]|length)}' Nim/testresults/*json
++	-jq -s '{bad: ([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | length, ok: ([.[][]|select(.result == "reSuccess")]|length)}' testresults/*json
+ 
+ update-skipped: run-testament-noskip stats
+-	-jq -s '{bad: ([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | length, ok: ([.[][]|select(.result == "reSuccess")]|length)}' Nim/testresults/*json
++	-jq -s '{bad: ([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | length, ok: ([.[][]|select(.result == "reSuccess")]|length)}' testresults/*json
+ 	# Output suitable for sticking into skipped-tests.txt
+-	-jq -r -s '([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | .[].name' Nim/testresults/*json | sort | uniq > skipped-tests.txt
++	-jq -r -s '([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | .[].name' testresults/*json | sort | uniq > skipped-tests.txt
+ 
+ .PHONY: badeggs.json
+ badeggs.json:
+-	-jq -s '[.[][]|select(.result != "reSuccess" and .result != "reDisabled")]' Nim/testresults/*.json > badeggs.json
++	-jq -s '[.[][]|select(.result != "reSuccess" and .result != "reDisabled")]' testresults/*.json > badeggs.json
+ 
+ .PHONY: stats
+ stats: badeggs.json
+-	-jq -s '{bad: ([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | length, ok: ([.[][]|select(.result == "reSuccess")]|length)}' Nim/testresults/*json
++	-jq -s '{bad: ([.[][]|select(.result != "reSuccess" and .result != "reDisabled")]) | length, ok: ([.[][]|select(.result == "reSuccess")]|length)}' testresults/*json
+ 	-jq 'group_by(.category)|.[]|((unique_by(.category)|.[].category) + " " + (length| tostring))' badeggs.json
+ 
+ .PHONY: t2
+ t2:
+-	cp -r Nim/testresults tr2
++	cp -r testresults tr2
+ 
+ .PHONY: self
+ self: nlvm/nlvm.self
+ 
+ .PHONY: clean
+ clean:
+-	rm -rf $(NLVMC) $(NLVMR) nlvm/nlvm.ll nlvm/nlvm.self.ll nlvm/nlvm.self Nim/testresults/
++	rm -rf $(NLVMC) $(NLVMR) nlvm/nlvm.ll nlvm/nlvm.self.ll nlvm/nlvm.self testresults/
+ 
+ ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
+ 	sh ./make-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sha \
+@@ -115,7 +101,7 @@ ext/$(LLVM_DIR)/sta/bin/llvm-config:
+ prepare-llvm: $(LLVM_DEP)
+ 
+ .PHONY: prepare-nim
+-prepare-nim: $(NIMC)
++prepare-nim:
+ 
+ .PHONY: docker
+ docker:
