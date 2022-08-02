@@ -8,6 +8,7 @@ _finalNixpkgs: prevNixpkgs: let
   };
 
   cosmos-theta-testnet = prevNixpkgs.callPackage ./packages/cosmos-theta-testnet {};
+  nlvm = prevNixpkgs.callPackage ./packages/nlvm {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
