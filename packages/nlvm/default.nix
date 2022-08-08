@@ -11,7 +11,7 @@ pkgs.clangStdenv.mkDerivation rec {
     url = "https://github.com/arnetheduck/nlvm";
     fetchSubmodules = true;
     deepClone = true;
-    sha256 = "sha256-bzKGLwFHQGOkyyPNmlTK9AgWRqDgho5UpkaNwiMaoIA=";
+    sha256 = "sha256-yTLySHTO+ZtgV1aacXfhQV0ZaLNf5d5PgCuzHyLJc9A";
     rev = "92f43a3450e0b6f4999dc21e59b1bb6a1341ec85";
   };
 
@@ -57,12 +57,13 @@ pkgs.clangStdenv.mkDerivation rec {
 
   CC = "clang";
   CXX = "clang++";
-  C_INCLUDE_PATH = "${pkgs.gcc11}/lib/gcc/x86_64-unknown-linux-gnu/11.3.0/include-fixed:${pkgs.glibc.dev}/include";
+  C_INCLUDE_PATH = "${pkgs.gcc12}/lib/gcc/x86_64-unknown-linux-gnu/12.1.0/include:${pkgs.gcc12}/include/c++/12.1.0:${pkgs.gcc12}/lib/gcc/x86_64-unknown-linux-gnu/12.1.0/include-fixed:${pkgs.glibc.dev}/include";
   CPLUS_INCLUDE_PATH = "${C_INCLUDE_PATH}";
 
-  CFLAGS = "-stdlib=libstdc++";
+  CFLAGS = "-stdlib=libstdc++ -I${pkgs.gcc12}/lib/gcc/x86_64-unknown-linux-gnu/12.1.0/include -I${pkgs.gcc12}/include/c++/12.1.0 -I${pkgs.gcc12}/lib/gcc/x86_64-unknown-linux-gnu/12.1.0/include-fixed -I${pkgs.glibc.dev}/include";
+  CPPFLAGS = "${CFLAGS}";
   # LDFLAGS = "-lm -lc++ -lc -lunwind -L${pkgs.llvmPackages_14.lld.lib}/lib -L${pkgs.zlib}/lib -L${pkgs.llvmPackages_14.libcxx}/lib -L${pkgs.llvmPackages_14.libcxxabi}/lib -L${pkgs.glibc}/lib  -L${pkgs.llvmPackages_14.libunwind}/lib";
-  LDFLAGS = "-lm -lstdc++ -lc -lunwind -L../ext/llvm-14.0.0.src/sha/lib -L${pkgs.llvmPackages_14.lld.lib}/lib -Lext/libunwind-14.0.0.src/sha/lib -L${pkgs.zlib}/lib -L${pkgs.glibc}/lib -L${pkgs.llvmPackages_14.libunwind}/lib  -L${pkgs.gcc11}/lib";
+  LDFLAGS = "-lm -lstdc++ -lc -lunwind -L../ext/llvm-14.0.0.src/sha/lib -L${pkgs.llvmPackages_14.lld.lib}/lib -Lext/libunwind-14.0.0.src/sha/lib -L${pkgs.zlib}/lib -L${pkgs.glibc}/lib -L${pkgs.llvmPackages_14.libunwind}/lib  -L${pkgs.gcc12}/lib";
   LIBCLANG_PATH = "${pkgs.llvmPackages_14.libclang.lib}/lib";
 
   dontUseCmakeConfigure = true;
@@ -128,13 +129,13 @@ pkgs.clangStdenv.mkDerivation rec {
 
   nativeBuildInputs = with pkgs; [
     zlib
-    llvmPackages_14.clang-unwrapped
+    llvmPackages_14.clang
     llvmPackages_14.llvm
     llvmPackages_14.lld
     llvmPackages_14.libcxx
     llvmPackages_14.libcxxabi
     llvmPackages_14.libunwind
-    gcc11
+    gcc12
     openssl
     wget
     pcre
@@ -150,5 +151,5 @@ pkgs.clangStdenv.mkDerivation rec {
     cmake
   ];
 
-  STATIC_LLVM = 1;
+  # STATIC_LLVM = 1;
 }

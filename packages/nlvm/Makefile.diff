@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 3dcebcc9..e7d3a646 100644
+index 3dcebcc9..37b28add 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,4 +1,4 @@
@@ -91,7 +91,17 @@ index 3dcebcc9..e7d3a646 100644
  
  ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
  	sh ./make-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sha \
-@@ -115,7 +101,7 @@ ext/$(LLVM_DIR)/sta/bin/llvm-config:
+@@ -106,7 +92,8 @@ ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
+ 		-DLLVM_INCLUDE_TESTS=Off \
+ 		-DLLVM_INCLUDE_EXAMPLES=Off \
+ 		-DLLVM_INCLUDE_BENCHMARKS=Off \
+-		-DCMAKE_BUILD_TYPE=RelWithDebInfo
++		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
++		-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=On
+ 
+ ext/$(LLVM_DIR)/sta/bin/llvm-config:
+ 	sh ./dl-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sta
+@@ -115,7 +102,7 @@ ext/$(LLVM_DIR)/sta/bin/llvm-config:
  prepare-llvm: $(LLVM_DEP)
  
  .PHONY: prepare-nim
