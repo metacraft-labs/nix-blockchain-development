@@ -9,7 +9,7 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "iden3";
     repo = "circom";
-    rev = "47883d98c45fe25c6d010f16b717cca6d0dea745";
+    rev = "v${version}";
     sha256 = "sha256-Yo1TLg/mq2IdbHCBel0sKAeZb//bKrUzGpaXQjC/32k=";
   };
 
