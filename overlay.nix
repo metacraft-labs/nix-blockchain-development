@@ -10,10 +10,12 @@ _finalNixpkgs: prevNixpkgs: let
   cosmos-theta-testnet = prevNixpkgs.callPackage ./packages/cosmos-theta-testnet {};
 
   circom = prevNixpkgs.callPackage ./packages/circom/default.nix {};
+  circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
     inherit cosmos-theta-testnet;
     inherit circom;
+    inherit circ;
   };
 }
