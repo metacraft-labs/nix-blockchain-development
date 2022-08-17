@@ -12,6 +12,7 @@ with pkgs;
       metacraft-labs.solana
       metacraft-labs.cosmos-theta-testnet
       metacraft-labs.circom
+      metacraft-labs.circ
     ];
 
     shellHook = ''
