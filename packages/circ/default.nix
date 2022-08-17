@@ -24,7 +24,7 @@ with pkgs;
       runHook preInstall
 
       mkdir -p $out/bin
-      mv target/x86_64-unknown-linux-gnu/release/examples/circ $out/bin
+      mv target/*/release/examples/circ $out/bin
 
       runHook postInstall
     '';
@@ -34,6 +34,6 @@ with pkgs;
 
     meta = with lib; {
       homepage = "https://github.com/circify/circ";
-      platforms = platforms.linux;
+      platforms = with platforms; linux ++ darwin;
     };
   }
