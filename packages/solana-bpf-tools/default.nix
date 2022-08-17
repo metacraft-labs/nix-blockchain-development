@@ -27,6 +27,6 @@ with pkgs;
 
     meta = with lib; {
       homepage = "https://github.com/solana-labs/bpf-tools/releases";
-      platforms = platforms.linux;
+      platforms = with platforms; linux ++ darwin;
     };
   }

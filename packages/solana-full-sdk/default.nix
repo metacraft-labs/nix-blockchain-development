@@ -21,6 +21,6 @@ pkgs.stdenvNoCC.mkDerivation rec {
 
   meta = with pkgs.lib; {
     homepage = "https://github.com/solana-labs/solana";
-    platforms = platforms.linux;
+    platforms = with platforms; linux ++ darwin;
   };
 }
