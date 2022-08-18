@@ -9,10 +9,12 @@ with pkgs;
       alejandra
 
       # Packages defined in this repo
-      metacraft-labs.solana
       metacraft-labs.cosmos-theta-testnet
       metacraft-labs.circom
       metacraft-labs.circ
+    ] ++ lib.optionals (!stdenv.isDarwin) [
+      # Solana is still not compatible with macOS on M1
+      metacraft-labs.solana
     ];
 
     shellHook = ''
