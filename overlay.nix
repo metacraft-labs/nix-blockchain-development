@@ -11,11 +11,18 @@ _finalNixpkgs: prevNixpkgs: let
 
   circom = prevNixpkgs.callPackage ./packages/circom/default.nix {};
   circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
+
+  patched-node-package = prevNixpkgs.callPackage ./packages/patched-node/default.nix {};
+
+  patched-node = prevNixpkgs.writeShellScriptBin "patched-node" ''
+    exec ${patched-node-package}/bin/node "$@"
+  '';
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
     inherit cosmos-theta-testnet;
     inherit circom;
     inherit circ;
+    inherit patched-node;
   };
 }
