@@ -7,7 +7,7 @@
 }:
 buildGoModule rec {
   pname = "wasmd";
-  version = "1.0.0";
+  version = "0.14.99";
 
   src = fetchFromGitHub {
     owner = "CosmWasm";
