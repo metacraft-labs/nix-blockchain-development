@@ -11,11 +11,14 @@ _finalNixpkgs: prevNixpkgs: let
 
   circom = prevNixpkgs.callPackage ./packages/circom/default.nix {};
   circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
+
+  wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
     inherit cosmos-theta-testnet;
     inherit circom;
     inherit circ;
+    inherit wasmd;
   };
 }
