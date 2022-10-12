@@ -2,25 +2,29 @@
 with pkgs;
   stdenv.mkDerivation rec {
     name = "solana-bpf-tools-${version}";
-    version = "1.23";
+    version = "1.29";
     src = fetchzip {
       url = "https://github.com/solana-labs/bpf-tools/releases/download/v${version}/solana-bpf-tools-linux.tar.bz2";
-      sha256 = "sha256-4aWBOAOcGviwJ7znGaHbB1ngNzdXqlfDX8gbZtdV1aA=";
+      sha256 = "sha256-WxO7Jw2EJPP1u2U80MEosjrwPfOAFzvl0ovx3nADtMk=";
       stripRoot = false;
     };
 
     nativeBuildInputs = [autoPatchelfHook];
+
     buildInputs = with pkgs; [
       zlib
-      stdenv.cc.cc
-      openssl
+      openssl_1_1
     ];
 
     installPhase = ''
       mkdir -p $out/dependencies/bpf-tools;
       cp -r $src/llvm $out/dependencies/bpf-tools/;
-      cp -r $src/rust $out/dependencies/bpf-tools/;
-      chmod 0755 -R $out;
+
+      mkdir -p $TMP/rust
+      cp -r $src/rust $TMP/rust;
+      rm -rf $TMP/rust/lib/rustlib/src
+      cp -r $TMP/rust $out/dependencies/bpf-tools/;
+
       mkdir -p $out/bin/sdk/bpf/
       cp -r $out/dependencies $out/bin/sdk/bpf/
     '';
