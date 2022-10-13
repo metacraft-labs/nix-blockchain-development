@@ -23,11 +23,13 @@ buildGoModule rec {
 
   postBuild = ''
     mkdir -p "$out/lib"
+    # TODO: The correct binary below should depend on the current OS and CPU
     cp "$GOPATH/pkg/mod/github.com/!cosm!wasm/wasmvm@v1.0.0/api/libwasmvm.x86_64.so" "$out/lib"
   '';
 
   postInstall = ''
     addAutoPatchelfSearchPath "$out/lib"
+    # TODO: autoPatchElf is Linux-specific. We need a cross-platform solution
     autoPatchelf -- "$out/bin"
   '';
 
