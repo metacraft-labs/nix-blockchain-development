@@ -9,6 +9,7 @@ with pkgs;
       stripRoot = false;
     };
 
+    # TODO autoPatchElf is Linux-specific. We need a cross-platform solution.
     nativeBuildInputs = [autoPatchelfHook];
 
     buildInputs = with pkgs; [
