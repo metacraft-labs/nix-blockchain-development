@@ -19,9 +19,6 @@ with pkgs;
         metacraft-labs.solana
         metacraft-labs.wasmd
 
-        metacraft-labs.requests-cache
-        metacraft-labs.cryptography36
-        metacraft-labs.ledgercomm
         metacraft-labs.erdpy
       ];
 

@@ -36,6 +36,9 @@ with pkgs;
 
     propagatedBuildInputs = with python3Packages; [
       hid
+      metacraft-labs.cryptography36
+      metacraft-labs.ledgercomm
+      metacraft-labs.requests-cache
     ];
 
     meta = with lib; {

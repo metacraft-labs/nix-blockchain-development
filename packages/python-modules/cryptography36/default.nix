@@ -1,33 +1,14 @@
-{ lib
-, stdenv
-, callPackage
-, buildPythonPackage
-, fetchPypi
-, rustPlatform
-, setuptools-rust
-, openssl
-, Security
-, packaging
-, six
-, isPyPy
-, cffi
-, pytestCheckHook
-, pytest-subtests
-, pretend
-, libiconv
-, iso8601
-, pytz
-, hypothesis
-}:
+{ pkgs }:
 
 let
-  cryptography-vectors = callPackage ./vectors.nix { };
+  cryptography-vectors = pkgs.callPackage ./vectors.nix { pkgs=pkgs;};
 in
-buildPythonPackage rec {
+with pkgs;
+python3Packages.buildPythonPackage rec {
   pname = "cryptography";
   version = "36.0.2"; # Also update the hash in vectors.nix
 
-  src = fetchPypi {
+  src = python3Packages.fetchPypi {
     inherit pname version;
     sha256 = "sha256-cPj097sqyfNAZVy6yJ1oxSevW7Q4dSKoQT6EHj5mKMk=";
   };
@@ -43,7 +24,7 @@ buildPythonPackage rec {
 
   outputs = [ "out" "dev" ];
 
-  nativeBuildInputs = lib.optionals (!isPyPy) [
+  nativeBuildInputs = with python3Packages; lib.optionals (!python3Packages.isPyPy) [
     cffi
   ] ++ [
     rustPlatform.cargoSetupHook
@@ -53,11 +34,11 @@ buildPythonPackage rec {
   buildInputs = [ openssl ]
     ++ lib.optionals stdenv.isDarwin [ Security libiconv ];
 
-  propagatedBuildInputs = lib.optionals (!isPyPy) [
+  propagatedBuildInputs =  with python3Packages; lib.optionals (!python3Packages.isPyPy) [
     cffi
   ];
 
-  checkInputs = [
+  checkInputs = with python3Packages; [
     cryptography-vectors
     hypothesis
     iso8601
