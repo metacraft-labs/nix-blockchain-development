@@ -16,7 +16,8 @@ with pkgs;
 
 
     propagatedBuildInputs = with python3Packages; [
-      metacraft-labs.attrs22-2
+      metacraft-labs.cattrs22-2
+      attrs
     ];
 
     meta = with lib; {
