@@ -13,6 +13,8 @@ _finalNixpkgs: prevNixpkgs: let
   circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
 
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
+
+  erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -20,5 +22,6 @@ in {
     inherit circom;
     inherit circ;
     inherit wasmd;
+    inherit erdpy;
   };
 }

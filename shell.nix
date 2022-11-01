@@ -18,6 +18,8 @@ with pkgs;
         # Solana is still not compatible with macOS on M1
         metacraft-labs.solana
         metacraft-labs.wasmd
+
+        metacraft-labs.erdpy
       ];
 
     shellHook = ''
