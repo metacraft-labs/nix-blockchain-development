@@ -14,6 +14,9 @@ _finalNixpkgs: prevNixpkgs: let
 
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
 
+  ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
+  requests-cache = prevNixpkgs.callPackage ./packages/python-modules/requests-cache/default.nix {};
+  cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
   erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
 in {
   metacraft-labs = rec {
@@ -22,6 +25,9 @@ in {
     inherit circom;
     inherit circ;
     inherit wasmd;
+    inherit ledgercomm;
+    inherit cryptography36;
+    inherit requests-cache;
     inherit erdpy;
   };
 }
