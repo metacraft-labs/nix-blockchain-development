@@ -12,16 +12,16 @@ buildPythonPackage rec {
     owner = "python-attrs";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-C8uIsewpgJfB1yYckWTwF5K32+2AAOrxFKB9I18RENg=";
+    hash = "sha256-Qnrq/mIA/t0mur6IAen4vTmMIhILWS6v5nuf+Via2hA=";
   };
 
-  patches = [
-    (fetchpatch {
-      url = "https://github.com/python-attrs/cattrs/commit/290d162a589acf10ea63b825b7b283e23ca7698a.diff";
-      excludes = [ "poetry.lock" ];
-      hash = "sha256-n6c3qVg9umGKAxeTALq3QTJgO9DIj3SY0ZHhtsDeW94=";
-    })
-  ];
+  # patches = [
+  #   (fetchpatch {
+  #     url = "https://github.com/python-attrs/cattrs/commit/290d162a589acf10ea63b825b7b283e23ca7698a.diff";
+  #     excludes = [ "poetry.lock" ];
+  #     hash = "sha256-n6c3qVg9umGKAxeTALq3QTJgO9DIj3SY0ZHhtsDeW94=";
+  #   })
+  # ];
 
   nativeBuildInputs = [
     poetry-core

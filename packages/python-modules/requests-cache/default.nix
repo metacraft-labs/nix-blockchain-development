@@ -18,6 +18,16 @@ with pkgs;
     propagatedBuildInputs = with python3Packages; [
       metacraft-labs.cattrs22-2
       attrs
+      urllib3
+      url-normalize
+      requests
+      appdirs
+      toml
+      prettytable
+      semver
+      bottle
+      pynacl
+      pycryptodomex
     ];
 
     meta = with lib; {
