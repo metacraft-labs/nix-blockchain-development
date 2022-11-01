@@ -14,7 +14,7 @@ _finalNixpkgs: prevNixpkgs: let
 
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
 
-  cattrs22-2 = prevNixpkgs.callPackage ./packages/python-modules/cattrs/default.nix {};
+  attrs22-2 = prevNixpkgs.callPackage ./packages/python-modules/attrs/default.nix {};
   ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
   requests-cache = prevNixpkgs.callPackage ./packages/python-modules/requests-cache/default.nix {};
   cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
@@ -30,6 +30,6 @@ in {
     inherit cryptography36;
     inherit requests-cache;
     inherit erdpy;
-    inherit cattrs22-2;
+    inherit attrs22-2;
   };
 }
