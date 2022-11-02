@@ -31,7 +31,10 @@ _finalNixpkgs: prevNixpkgs: let
 
   ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
   requests-cache = prevNixpkgs.callPackage ./packages/python-modules/requests-cache/default.nix {};
+
   erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
+  elrond-go = prevNixpkgs.callPackage ./packages/elrond-go/default.nix {};
+
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -44,5 +47,6 @@ in {
     inherit requests-cache;
     inherit erdpy;
     inherit cattrs22-2;
+    inherit elrond-go;
   };
 }
