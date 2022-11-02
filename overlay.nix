@@ -14,10 +14,23 @@ _finalNixpkgs: prevNixpkgs: let
 
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
 
-  cattrs22-2 = prevNixpkgs.callPackage ./packages/python-modules/cattrs/default.nix {};
+  cattrs22-2 = prevNixpkgs.python3Packages.cattrs.overrideAttrs (finalAttrs: previousAttrs: {
+    version = "22.2.0";
+
+    src = prevNixpkgs.fetchFromGitHub {
+        owner = "python-attrs";
+        repo = "cattrs";
+        rev = "v22.2.0";
+        hash = "sha256-Qnrq/mIA/t0mur6IAen4vTmMIhILWS6v5nuf+Via2hA=";
+    };
+
+    patches = [];
+
+  });
+  cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
+
   ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
   requests-cache = prevNixpkgs.callPackage ./packages/python-modules/requests-cache/default.nix {};
-  cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
   erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
 in {
   metacraft-labs = rec {
