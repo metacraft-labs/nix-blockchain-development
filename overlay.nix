@@ -14,6 +14,7 @@ _finalNixpkgs: prevNixpkgs: let
 
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
 
+  # erdpy depends on cattrs >= 22.2
   cattrs22-2 = prevNixpkgs.python3Packages.cattrs.overrideAttrs (finalAttrs: previousAttrs: {
     version = "22.2.0";
 
@@ -27,6 +28,7 @@ _finalNixpkgs: prevNixpkgs: let
     patches = [];
 
   });
+  # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
   cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
 
   ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
