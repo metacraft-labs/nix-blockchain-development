@@ -1,19 +1,19 @@
-{pkgs}:
+{ pkgs }:
 with pkgs;
-  python3Packages.buildPythonApplication rec {
-    pname = "erdpy";
-    version = "2.0.3";
+python3Packages.buildPythonApplication rec {
+  pname = "erdpy";
+  version = "2.0.3";
 
-    format = "wheel";
-    dist = "py3";
-    python = "py3";
+  format = "wheel";
+  dist = "py3";
+  python = "py3";
 
 
-    src = python3Packages.fetchPypi {
-      inherit pname version format dist python;
-    
-      sha256 = "215edfb6f9f8c8214cc42e67e8d5328859486007ac4e3438cb9aabd21de67414";
-    };
+  src = python3Packages.fetchPypi {
+    inherit pname version format dist python;
+
+    sha256 = "215edfb6f9f8c8214cc42e67e8d5328859486007ac4e3438cb9aabd21de67414";
+  };
 
 
   postPatch = ''
@@ -34,26 +34,26 @@ with pkgs;
     popd
   '';
 
-    propagatedBuildInputs = with python3Packages; [
-      hid
-      metacraft-labs.cryptography36
-      metacraft-labs.ledgercomm
-      metacraft-labs.requests-cache
-    ];
+  propagatedBuildInputs = with python3Packages; [
+    hid
+    metacraft-labs.cryptography36
+    metacraft-labs.ledgercomm
+    metacraft-labs.requests-cache
+  ];
 
-    erdpy_script = writeScriptBin "erdpy" ''
-      #!/usr/bin/env python3
-      # -*- coding: utf-8 -*-
-      import re
-      import sys
-      from erdpy.cli import main
-      if __name__ == '__main__':
-          sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$\', \'\', sys.argv[0])
-          sys.exit(main())
-    '';
+  erdpy_script = writeScriptBin "erdpy" ''
+    #!/usr/bin/env python3
+    # -*- coding: utf-8 -*-
+    import re
+    import sys
+    from erdpy.cli import main
+    if __name__ == '__main__':
+        sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$\', \'\', sys.argv[0])
+        sys.exit(main())
+  '';
 
-    meta = with lib; {
-      homepage = "https://github.com/ElrondNetwork/elrond-sdk-erdpy";
-      platforms = with platforms; linux ++ darwin;
-    };
-  }
+  meta = with lib; {
+    homepage = "https://github.com/ElrondNetwork/elrond-sdk-erdpy";
+    platforms = with platforms; linux ++ darwin;
+  };
+}
