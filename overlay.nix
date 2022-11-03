@@ -31,6 +31,7 @@ _finalNixpkgs: prevNixpkgs: let
 
   ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
   requests-cache = prevNixpkgs.callPackage ./packages/python-modules/requests-cache/default.nix {};
+  mcl = prevNixpkgs.callPackage ./packages/mcl/default.nix {};
 
   erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
   elrond-go = prevNixpkgs.callPackage ./packages/elrond-go/default.nix {};
@@ -48,5 +49,6 @@ in {
     inherit erdpy;
     inherit cattrs22-2;
     inherit elrond-go;
+    inherit mcl;
   };
 }
