@@ -7,10 +7,10 @@ pkgs.stdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/herumi/bls";
     rev = "v${version}";
-    sha256 = lib.fakeSha256;
+    sha256 = "sha256-9wdpLhcj6J92jyS/ZAr/tdjr4qvg58oXUH7iT7upYDk=";
   };
 
-  nativeBuildInputs = [cmake];
+  nativeBuildInputs = [cmake gmp];
 
   meta = with pkgs.lib; {
     homepage = "https://github.com/herumi/bls";

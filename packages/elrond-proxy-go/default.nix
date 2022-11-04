@@ -7,10 +7,10 @@ with pkgs;
     src = fetchgit {
       url = "https://github.com/ElrondNetwork/elrond-proxy-go";
       rev = "v${version}";
-      sha256 = lib.fakeSha256;
+      sha256 = "sha256-Rlx1DQS0JQ9MwFeYAaH5AQw5uJN7eHR1RoewPeehwYw=";
     };
 
-    vendorSha256 = lib.fakeSha256;
+    vendorSha256 = "sha256-Nuq8mhZ5aNOHAZlOhtKSqoKrex6kmfuaTxNFxV/TwEw=";
     modSha256 = lib.fakeSha256;
 
     meta = with lib; {

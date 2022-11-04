@@ -19,14 +19,13 @@ _finalNixpkgs: prevNixpkgs: let
     version = "22.2.0";
 
     src = prevNixpkgs.fetchFromGitHub {
-        owner = "python-attrs";
-        repo = "cattrs";
-        rev = "v22.2.0";
-        hash = "sha256-Qnrq/mIA/t0mur6IAen4vTmMIhILWS6v5nuf+Via2hA=";
+      owner = "python-attrs";
+      repo = "cattrs";
+      rev = "v22.2.0";
+      hash = "sha256-Qnrq/mIA/t0mur6IAen4vTmMIhILWS6v5nuf+Via2hA=";
     };
 
     patches = [];
-
   });
   # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
   cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
@@ -38,7 +37,7 @@ _finalNixpkgs: prevNixpkgs: let
 
   erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
   elrond-go = prevNixpkgs.callPackage ./packages/elrond-go/default.nix {};
-
+  elrond-proxy-go = prevNixpkgs.callPackage ./packages/elrond-proxy-go/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -54,5 +53,6 @@ in {
     inherit elrond-go;
     inherit mcl;
     inherit bls;
+    inherit elrond-proxy-go;
   };
 }
