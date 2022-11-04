@@ -17,6 +17,7 @@ with pkgs;
         # Elrond
         metacraft-labs.erdpy
         metacraft-labs.elrond-go
+        metacraft-labs.elrond-proxy-go
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
