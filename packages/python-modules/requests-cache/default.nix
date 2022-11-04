@@ -10,10 +10,9 @@ with pkgs;
 
     src = python3Packages.fetchPypi {
       inherit pname version format dist python;
-    
+
       sha256 = "3f57badcd8406ecda7f8eaa8145afd0b180c5ae4ff05165a2c4d40f3dc88a6e5";
     };
-
 
     propagatedBuildInputs = with python3Packages; [
       metacraft-labs.cattrs22-2
