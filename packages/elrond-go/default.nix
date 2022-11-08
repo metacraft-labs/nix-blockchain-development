@@ -24,8 +24,6 @@ with pkgs;
     # Patch is needed to update go.mod to use go 1.18, as otherwise it fails to build
     patches = [./go.mod.patch];
 
-    # nativeBuildInputs = [metacraft-labs.mcl metacraft-labs.bls];
-
     libos =
       if system == "x86_64-linux"
       then "linux/amd64"
