@@ -19,6 +19,28 @@ with pkgs;
     vendorSha256 = "sha256-+rHSabNwfiDUBdlNNm494EpGTSy9+R/vrf0VovMEywk=";
     modSha256 = lib.fakeSha256;
 
+    buildInputs = [gcc-unwrapped] ++ lib.optionals stdenv.isLinux [autoPatchelfHook];
+
+    libwasmer =
+      if system == "x86_64-linux"
+      then "libwasmer_linux_amd64.so"
+      else if system == "aarch64-linux"
+      then "libwasmer_linux_arm64.so"
+      else "";
+
+    postBuild = lib.optionals stdenv.isLinux ''
+      mkdir -p "$out/lib"
+      # TODO: The correct binary below should depend on the current OS and CPU
+      cp "/build/${pname}/vendor/github.com/ElrondNetwork/arwen-wasm-vm/v1_2/wasmer/${libwasmer}" "$out/lib"
+    '';
+
+    postInstall = lib.optionals stdenv.isLinux ''
+      addAutoPatchelfSearchPath "$out/lib"
+      addAutoPatchelfSearchPath "${gcc-unwrapped}/lib"
+      # TODO: autoPatchElf is Linux-specific. We need a cross-platform solution
+      autoPatchelf -- "$out/bin"
+    '';
+
     subPackages = ["cmd/node"];
 
     # Patch is needed to update go.mod to use go 1.18, as otherwise it fails to build
