@@ -12,12 +12,12 @@ with pkgs;
         # Packages defined in this repo
         metacraft-labs.cosmos-theta-testnet
         metacraft-labs.circom
+        metacraft-labs.wasmd
         metacraft-labs.circ
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
         metacraft-labs.solana
-        metacraft-labs.wasmd
       ];
 
     shellHook = ''
