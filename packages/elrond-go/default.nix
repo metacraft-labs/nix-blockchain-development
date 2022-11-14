@@ -30,7 +30,6 @@ with pkgs;
 
     postBuild = lib.optionals stdenv.isLinux ''
       mkdir -p "$out/lib"
-      # TODO: The correct binary below should depend on the current OS and CPU
       cp "/build/${pname}/vendor/github.com/ElrondNetwork/arwen-wasm-vm/v1_2/wasmer/${libwasmer}" "$out/lib"
     '';
 
@@ -41,7 +40,7 @@ with pkgs;
       autoPatchelf -- "$out/bin"
     '';
 
-    subPackages = ["cmd/node"];
+    subPackages = ["cmd/node" "cmd/seednode"];
 
     # Patch is needed to update go.mod to use go 1.18, as otherwise it fails to build
     patches = [./go.mod.patch];
