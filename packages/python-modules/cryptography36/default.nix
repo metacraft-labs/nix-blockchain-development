@@ -34,7 +34,7 @@ in
 
       buildInputs =
         [openssl]
-        ++ lib.optionals stdenv.isDarwin [Security libiconv];
+        ++ lib.optionals stdenv.isDarwin [darwin.Security libiconv];
 
       propagatedBuildInputs = with python3Packages;
         lib.optionals (!python3Packages.isPyPy) [
