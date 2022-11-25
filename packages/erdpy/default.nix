@@ -26,9 +26,9 @@ with pkgs;
       popd
       pushd unpacked/erdpy-${version}
 
-      sed -iE 's#./node#${metacraft-labs.elrond-go}}/bin/node#' erdpy/testnet/core.py
-      sed -iE 's#./seednode#${metacraft-labs.elrond-go}}/bin/seednode#' erdpy/testnet/core.py
-      sed -iE 's#./proxy#${metacraft-labs.elrond-proxy-go}}/bin/proxy#' erdpy/testnet/core.py
+      sed -iE 's#./node#${metacraft-labs.elrond-go}/bin/node#' erdpy/testnet/core.py
+      sed -iE 's#./seednode#${metacraft-labs.elrond-go}/bin/seednode#' erdpy/testnet/core.py
+      sed -iE 's#./proxy#${metacraft-labs.elrond-proxy-go}/bin/proxy#' erdpy/testnet/core.py
 
       # Attempting to preveent erdpy from downloading elrond-go and elrond-proxy-go doeesn't work out, due to the way dependeency resolution works in erdpy
       # sed -iE 's/StandaloneModule(key="elrond_go", repo_name="elrond-go", organisation="ElrondNetwork"),//' erdpy/dependencies/install.py
