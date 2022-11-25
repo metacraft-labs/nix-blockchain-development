@@ -80,3 +80,20 @@ nix shell github:metacraft-labs/nix-blockchain-development#solana
       ];
     }
   ```
+
+### Packages
+
+## Circ
+## Circom
+## Cosmos-Theta-Testnet
+## Cargo-Build-BPF
+## Elrond-Go
+⚡ Elrond-GO: The official implementation of the Elrond protocol, written in golang.
+## Elrond-Proxy-Go
+🐙 Elrond Proxy: The official implementation of the web proxy for the Elrond Network. An intermediary that abstracts away the complexity of Elrond sharding, through a friendly HTTP API.
+## Erdpy
+Elrond python Command Line Tools and SDK for interacting with the Elrond Network (in general) and Smart Contracts (in particular).
+## Solana-BPF-Tools
+## Solana-Full-SDK
+## Solana-Rust-Artifacts
+## Wasmd
