@@ -4,27 +4,29 @@
   darwin,
   rustPlatform,
   fetchFromGitHub,
+  fetchgit,
 }:
 rustPlatform.buildRustPackage rec {
   pname = "neard";
   version = "1.29.1";
 
-  src = fetchFromGitHub {
-    owner = "near";
-    repo = "nearcore";
-    rev = "47883d98c45fe25c6d010f16b717cca6d0dea745";
-    sha256 = "sha256-Yo1TLg/mq2IdbHCBel0sKAeZb//bKrUzGpaXQjC/32k=";
+  src = fetchgit {
+    url = "https://github.com/near/nearcore";
+    rev = "${version}";
+    sha256 = "sha256-TmmGLrDpNOfadOIwmG7XRgI89XQjaqIavxCEE2plumc=";
   };
 
   doCheck = false;
 
-  # postPatch = ''
-  #   cp ${./Cargo.lock} Cargo.lock
-  # '';
+  cargoSha256 = lib.fakeSha256;
+  # cargoLock.lockFile = "${src}/Cargo.lock";
+  postPatch = ''
+    cp ${./Cargo.lock} Cargo.lock
+  '';
 
-  # cargoLock = let
-  #   fixupLockFile = path: (builtins.readFile path);
-  # in {
-  #   lockFileContents = fixupLockFile ./Cargo.lock;
-  # };
+  cargoLock = let
+    fixupLockFile = path: (builtins.readFile path);
+  in {
+    lockFileContents = fixupLockFile ./Cargo.lock;
+  };
 }
