@@ -13,16 +13,16 @@ with pkgs;
         metacraft-labs.cosmos-theta-testnet
         metacraft-labs.circom
         metacraft-labs.circ
-
-        # Elrond
-        metacraft-labs.erdpy
-        metacraft-labs.elrond-go
-        metacraft-labs.elrond-proxy-go
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
         metacraft-labs.solana
         metacraft-labs.wasmd
+
+        # Elrond
+        metacraft-labs.erdpy
+        metacraft-labs.elrond-go
+        metacraft-labs.elrond-proxy-go
       ];
 
     shellHook = ''
