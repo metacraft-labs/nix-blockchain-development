@@ -1,6 +1,6 @@
 {pkgs}:
 with pkgs;
-  buildGoModule rec {
+  buildGo117Module rec {
     pname = "elrond-go";
     version = "1.3.44";
 
