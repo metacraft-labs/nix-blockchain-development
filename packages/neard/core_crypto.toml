@@ -1,0 +1,36 @@
+[package]
+name = "near-crypto"
+version = "0.0.0"
+license = "MIT OR Apache-2.0"
+authors.workspace = true
+publish = true
+# Please update rust-toolchain.toml as well when changing version here:
+rust-version.workspace = true
+edition.workspace = true
+repository = "https://github.com/near/nearcore"
+description = "This is an internal crate for common cryptographic types"
+
+[dependencies]
+blake2.workspace = true
+borsh.workspace = true
+bs58.workspace = true
+c2-chacha.workspace = true
+curve25519-dalek.workspace = true
+derive_more.workspace = true
+ed25519-dalek.workspace = true
+near-account-id = { path = "../account-id" }
+once_cell.workspace = true
+primitive-types.workspace = true
+rand = "0.7"
+secp256k1.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+stdx.workspace = true
+subtle.workspace = true
+thiserror.workspace = true
+deepsize.workspace = true
+
+[dev-dependencies]
+hex-literal = "0.2"
+sha2.workspace = true
+tempfile.workspace = true
