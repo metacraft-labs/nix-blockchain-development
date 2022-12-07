@@ -1,5 +1,5 @@
+cargo-features = ["edition2021"]
 [package]
-edition = "2021"
 name = "trace-malloc-free"
 version = "0.1.0"
 authors = ["Nick Fitzgerald <fitzgen@gmail.com>"]

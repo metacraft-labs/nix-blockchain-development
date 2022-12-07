@@ -13,9 +13,8 @@ rustPlatform.buildRustPackage rec {
 
   src = fetchgit {
     url = "https://github.com/rustwasm/wee_alloc";
-    rev = "${version}";
     # sha256 = lib.fakeSha256;
-    sha256 = "sha256-4MO7R7EVP3L16OLelmnyu41XtK69glnrk+97kfHaH7I=";
+    sha256 = "sha256-qu2W6zgPfFTTMbn2RQuSjYfTffZKrXa4eSGdKVNpICE=";
   };
 
   doCheck = false;

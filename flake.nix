@@ -9,12 +9,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = github:numtide/flake-utils;
+    rust-overlay.url = "github:oxalica/rust-overlay";
   };
 
   outputs = {
     self,
     nixpkgs,
     flake-utils,
+    rust-overlay
   }:
     {
       overlays.default = import ./overlay.nix;
@@ -26,6 +28,7 @@
           inherit system;
           overlays = [
             self.overlays.default
+            rust-overlay.overlays.default
           ];
         };
       in {

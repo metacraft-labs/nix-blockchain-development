@@ -13,6 +13,8 @@ _finalNixpkgs: prevNixpkgs: let
   circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
 
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
+  neard = prevNixpkgs.callPackage ./packages/neard/default.nix {};
+  wee_alloc = prevNixpkgs.callPackage ./packages/wee_alloc/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -20,5 +22,7 @@ in {
     inherit circom;
     inherit circ;
     inherit wasmd;
+    inherit neard;
+    inherit wee_alloc;
   };
 }

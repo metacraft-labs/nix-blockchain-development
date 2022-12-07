@@ -1,8 +1,8 @@
+cargo-features = ["edition2021"]
 [package]
 name = "wee_alloc_example"
 version = "0.1.0"
 authors = ["Nick Fitzgerald <fitzgen@gmail.com>"]
-edition = "2021"
 
 [dependencies.wee_alloc]
 path = "../wee_alloc"
