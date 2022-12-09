@@ -17,6 +17,7 @@ with pkgs;
 
         metacraft-labs.leap
         metacraft-labs.eos-vm
+        metacraft-labs.cdt
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1

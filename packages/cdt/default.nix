@@ -26,6 +26,6 @@ clangStdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/AntelopeIO/cdt";
     rev = "v${version}";
-    sha256 = "sha256-td9LyVSNEzgUh7lZsJadUhJgQhduIpy4QQHvLk12Y9w=";
+    sha256 = "sha256-Q6PNsG9c65h6VrY7tW3JNm1u7MEKVrJtzgjHvTlWDxQ=";
   };
 }
