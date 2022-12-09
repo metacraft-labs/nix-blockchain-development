@@ -6,8 +6,8 @@
   lib,
 }:
 clangStdenv.mkDerivation rec {
-  name = "eos-vm";
-  version = "1.0.0-rc1";
+  name = "cdt";
+  version = "3.0.1";
   buildInputs = with pkgs; [
     llvm
     curl.dev
@@ -24,7 +24,8 @@ clangStdenv.mkDerivation rec {
   nativeBuildInputs = with pkgs; [pkgconfig cmake clang git python3];
 
   src = fetchgit {
-    url = "https://github.com/AntelopeIO/eos-vm";
+    url = "https://github.com/AntelopeIO/cdt";
+    rev = "v${version}";
     sha256 = "sha256-td9LyVSNEzgUh7lZsJadUhJgQhduIpy4QQHvLk12Y9w=";
   };
 }
