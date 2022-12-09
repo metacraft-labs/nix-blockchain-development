@@ -28,6 +28,6 @@ clangStdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/AntelopeIO/eos-vm";
-    sha256 = "sha256-AQ8VsbP/14E/6gr1WNNCJJkpoiAe4liPfE9057fn5lc=";
+    sha256 = "sha256-td9LyVSNEzgUh7lZsJadUhJgQhduIpy4QQHvLk12Y9w=";
   };
 }

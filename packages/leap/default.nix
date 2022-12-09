@@ -25,7 +25,6 @@ clangStdenv.mkDerivation rec {
 
   prePatch = ''
     sed -i 's#/usr/bin/env python3#${pkgs.python3}/bin/python3#' **/*.py
-    cat /build/leap/unittests/gen_protocol_feature_digest_tests.py
   '';
 
   src = fetchgit {
