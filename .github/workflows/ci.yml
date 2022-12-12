@@ -11,6 +11,7 @@ on:
 
 jobs:
   Nix:
+    timeout-minutes: 360
     strategy:
       matrix:
          os: [ ubuntu-latest, macos-12 ]
