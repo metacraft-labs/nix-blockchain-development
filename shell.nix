@@ -15,6 +15,7 @@ with pkgs;
         metacraft-labs.circ
         metacraft-labs.go-opera
 
+        # EOS
         metacraft-labs.leap
         metacraft-labs.eos-vm
         metacraft-labs.cdt
