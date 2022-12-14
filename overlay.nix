@@ -38,6 +38,7 @@ _finalNixpkgs: prevNixpkgs: let
   elrond-proxy-go = prevNixpkgs.callPackage ./packages/elrond-proxy-go/default.nix {};
 
   go-opera = prevNixpkgs.callPackage ./packages/go-opera/default.nix {};
+  hardhat = prevNixpkgs.callPackage ./packages/hardhat/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -53,5 +54,6 @@ in {
     inherit elrond-go;
     inherit elrond-proxy-go;
     inherit go-opera;
+    inherit hardhat;
   };
 }
