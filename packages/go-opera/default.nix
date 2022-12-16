@@ -28,7 +28,7 @@ with pkgs;
 
     meta = with lib; {
       description = "Opera blockchain protocol secured by the Lachesis consensus algorithm ";
-      homepage = "https://github.com/ElrondNetwork/elrond-proxy-go";
+      homepage = "https://github.com/Fantom-foundation/go-opera";
       license = licenses.lgpl3;
     };
   }
