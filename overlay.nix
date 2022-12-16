@@ -53,6 +53,5 @@ in {
     inherit elrond-go;
     inherit elrond-proxy-go;
     inherit go-opera;
-    inherit hardhat;
   };
 }
