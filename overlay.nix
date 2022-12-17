@@ -38,6 +38,10 @@ _finalNixpkgs: prevNixpkgs: let
   elrond-proxy-go = prevNixpkgs.callPackage ./packages/elrond-proxy-go/default.nix {};
 
   go-opera = prevNixpkgs.callPackage ./packages/go-opera/default.nix {};
+
+  leap = prevNixpkgs.callPackage ./packages/leap/default.nix {};
+  eos-vm = prevNixpkgs.callPackage ./packages/eos-vm/default.nix {};
+  cdt = prevNixpkgs.callPackage ./packages/cdt/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -53,5 +57,8 @@ in {
     inherit elrond-go;
     inherit elrond-proxy-go;
     inherit go-opera;
+    inherit leap;
+    inherit eos-vm;
+    inherit cdt;
   };
 }

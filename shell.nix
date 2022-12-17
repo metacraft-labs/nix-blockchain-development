@@ -24,6 +24,11 @@ with pkgs;
         metacraft-labs.erdpy
         metacraft-labs.elrond-go
         metacraft-labs.elrond-proxy-go
+
+        # EOS
+        metacraft-labs.leap
+        metacraft-labs.eos-vm
+        metacraft-labs.cdt
       ];
 
     shellHook = ''
