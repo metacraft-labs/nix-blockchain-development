@@ -14,11 +14,6 @@ with pkgs;
         metacraft-labs.circom
         metacraft-labs.circ
         metacraft-labs.go-opera
-
-        # EOS
-        metacraft-labs.leap
-        metacraft-labs.eos-vm
-        metacraft-labs.cdt
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
@@ -29,6 +24,11 @@ with pkgs;
         metacraft-labs.erdpy
         metacraft-labs.elrond-go
         metacraft-labs.elrond-proxy-go
+
+        # EOS
+        metacraft-labs.leap
+        metacraft-labs.eos-vm
+        metacraft-labs.cdt
       ];
 
     shellHook = ''
