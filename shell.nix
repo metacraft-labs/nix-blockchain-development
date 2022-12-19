@@ -31,6 +31,8 @@ in
 
         # Test nix2container
         example-container.copyToDockerDaemon
+
+        metacraft-labs.polkadot
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark

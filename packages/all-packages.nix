@@ -6,12 +6,24 @@
   }: let
     inherit (pkgs) lib darwin hostPlatform symlinkJoin fetchFromGitHub;
     inherit (pkgs.lib) optionalAttrs callPackageWith;
-    inherit (self'.legacyPackages) rustPlatformStable cardano-node cardano-cli;
+    inherit
+      (self'.legacyPackages)
+      rustPlatformStable
+      craneLib-stable
+      cardano-node
+      cardano-cli
+      ;
     python3Packages = pkgs.python3Packages;
 
     callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
     darwinPkgs = {
-      inherit (darwin.apple_sdk.frameworks) Foundation;
+      inherit
+        (darwin.apple_sdk.frameworks)
+        CoreFoundation
+        Foundation
+        Security
+        SystemConfiguration
+        ;
     };
 
     # RapidSnark
@@ -78,6 +90,17 @@
     elrond-proxy-go = callPackage ./elrond-proxy-go/default.nix {};
 
     cardano = callPackage ./cardano/default.nix {inherit cardano-cli cardano-node;};
+
+    polkadot = callPackage ./polkadot/default.nix {
+      craneLib = craneLib-stable;
+      inherit (darwin) libiconv;
+      inherit
+        (darwinPkgs)
+        CoreFoundation
+        Security
+        SystemConfiguration
+        ;
+    };
   in {
     legacyPackages.metacraft-labs =
       rec {
@@ -120,6 +143,9 @@
         go-opera = callPackage ./go-opera/default.nix {};
 
         circom_runtime = callPackage ./circom_runtime/default.nix {};
+
+        # Polkadot
+        inherit polkadot;
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};
