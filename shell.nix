@@ -29,6 +29,9 @@ with pkgs;
         metacraft-labs.leap
         metacraft-labs.eos-vm
         metacraft-labs.cdt
+
+        # Near
+        metacraft-labs.near-core-contracts
       ];
 
     shellHook = ''

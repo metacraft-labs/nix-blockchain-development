@@ -42,6 +42,8 @@ _finalNixpkgs: prevNixpkgs: let
   leap = prevNixpkgs.callPackage ./packages/leap/default.nix {};
   eos-vm = prevNixpkgs.callPackage ./packages/eos-vm/default.nix {};
   cdt = prevNixpkgs.callPackage ./packages/cdt/default.nix {};
+
+  near-core-contracts = prevNixpkgs.callPackage ./packages/near-core-contracts/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -60,5 +62,6 @@ in {
     inherit leap;
     inherit eos-vm;
     inherit cdt;
+    inherit near-core-contracts;
   };
 }
