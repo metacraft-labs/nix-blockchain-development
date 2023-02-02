@@ -103,6 +103,8 @@
     };
     polkadot = polkadot-generic {};
     polkadot-fast = polkadot-generic {enableFastRuntime = true;};
+
+    zokrates = callPackage ./zokrates/default.nix {};
   in {
     legacyPackages.metacraft-labs =
       rec {
@@ -148,6 +150,8 @@
 
         # Polkadot
         inherit polkadot polkadot-fast;
+
+        inherit zokrates;
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};

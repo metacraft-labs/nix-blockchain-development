@@ -34,6 +34,8 @@ in
 
         metacraft-labs.polkadot
         metacraft-labs.polkadot-fast
+
+        metacraft-labs.zokrates
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
