@@ -54,8 +54,10 @@ in {
     inherit requests-cache;
     inherit erdpy;
     inherit cattrs22-2;
-    inherit elrond-go;
-    inherit elrond-proxy-go;
+
+    # Disabled until elrond-go can build with Go >= 1.19
+    # inherit elrond-go;
+    # inherit elrond-proxy-go;
     inherit go-opera;
     inherit leap;
     inherit eos-vm;
