@@ -1,18 +1,33 @@
-{pkgs}:
-pkgs.clangStdenv.mkDerivation rec {
-  name = "zkllvm-${version}";
-  version = "0.0.32";
+{
+  lib,
+  fetchgit,
+  pkgs,
+  clang13Stdenv,
+}:
+clang13Stdenv.mkDerivation rec {
+  pname = "zkllvm";
+  version = "0.0.34";
 
-  src = fetchgit {
-    url = "https://github.com/nilfoundation/zkllvm";
-    sha256 = lib.fakeSha256;
-    rev = "v${version}";
-  };
+  src =
+    (fetchgit {
+      url = "https://github.com/nilfoundation/zkllvm.git";
+      rev = "v${version}";
+      sha256 = "sha256-cNR7xjsf57n/ItIFKr0U1EOEPwrjuz29kynhk5Ubj9U=";
+      fetchSubmodules = true;
+      deepClone = true;
+    })
+    .overrideAttrs (_: {
+      GIT_CONFIG_COUNT = 1;
+      GIT_CONFIG_KEY_0 = "url.https://github.com/.insteadOf";
+      GIT_CONFIG_VALUE_0 = "git@github.com:";
+    });
 
-  buildInputs = [cmake boost.dev openssl.dev];
+  buildPhase = ''
+    cmake -G "Unix Makefiles" -B build -DCMAKE_BUILD_TYPE=Release -DCIRCUIT_ASSEMBLY_OUTPUT=TRUE .
+    make assigner clang -j$(nproc)
+  '';
 
-  meta = with pkgs.lib; {
-    homepage = "https://github.com/nilfoundation/zkllvm";
-    platforms = with platforms; linux ++ darwin;
-  };
+  nativeBuildInputs = with pkgs; [pkgconfig cmake python3 git];
+
+  buildInputs = with pkgs; [boost openssl llvmPackages_13.llvm];
 }
