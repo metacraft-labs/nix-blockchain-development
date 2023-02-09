@@ -12,7 +12,10 @@ with pkgs;
         # Packages defined in this repo
         metacraft-labs.cosmos-theta-testnet
         metacraft-labs.circom
-        metacraft-labs.circ
+
+        # Disabled until cvc4 builds again
+        # metacraft-labs.circ
+
         metacraft-labs.go-opera
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
