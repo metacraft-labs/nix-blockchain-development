@@ -47,7 +47,10 @@ in {
     solana = solana-full-sdk;
     inherit cosmos-theta-testnet;
     inherit circom;
-    inherit circ;
+
+    # Disabled until cvc4 compiles again
+    # inherit circ;
+
     inherit wasmd;
     inherit ledgercomm;
     inherit cryptography36;
