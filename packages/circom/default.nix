@@ -9,9 +9,11 @@ rustPlatform.buildRustPackage rec {
   pname = "circom";
   version = "2.0.4";
 
-  buildInputs = [] ++ (
-    lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ]
-  );
+  buildInputs =
+    []
+    ++ (
+      lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.Security]
+    );
 
   src = fetchFromGitHub {
     owner = "iden3";
