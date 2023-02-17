@@ -27,6 +27,24 @@ _finalNixpkgs: prevNixpkgs: let
 
     patches = [];
   });
+
+  # https://discourse.nixos.org/t/inconsistent-vendoring-in-buildgomodule-when-overriding-source/9225/6
+  go-ethereum-capella = prevNixpkgs.go-ethereum.override rec {
+    buildGoModule = args:
+      prevNixpkgs.buildGoModule (args
+        // {
+          version = "1.11.1";
+          src = prevNixpkgs.fetchFromGitHub {
+            owner = "ethereum";
+            repo = "go-ethereum";
+            rev = "v1.11.1";
+            sha256 = "sha256-mYLxwJ0oiKfiz+NZ5bnlY0h2uq5wbeQKrwoCCw23Bg0=";
+          };
+          subPackages = builtins.filter (x: x != "cmd/puppeth") args.subPackages;
+          vendorSha256 = "sha256-6yLkeT5DrAPUohAmobssKkvxgXI8kACxiu17WYbw+n0=";
+        });
+  };
+
   # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
   cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
 
@@ -67,6 +85,9 @@ in {
     inherit leap;
     inherit eos-vm;
     inherit cdt;
+
+    # Ethereum
     inherit nimbus;
+    inherit go-ethereum-capella;
   };
 }
