@@ -17,8 +17,6 @@ with pkgs;
         # metacraft-labs.circ
 
         metacraft-labs.go-opera
-
-        metacraft-labs.nimbus
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
@@ -35,6 +33,9 @@ with pkgs;
         metacraft-labs.leap
         metacraft-labs.eos-vm
         metacraft-labs.cdt
+
+        # Ethereum
+        metacraft-labs.nimbus
       ];
 
     shellHook = ''
