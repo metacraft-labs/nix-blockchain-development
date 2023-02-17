@@ -1,8 +1,8 @@
 {
   stdenv,
   fetchFromGitHub,
+  darwin,
   lib,
-  libtool_1_5,
   nim,
   cmake,
   which,
@@ -40,7 +40,9 @@ assert nim.version == "1.6.10";
     nativeBuildInputs = let
       fakeGit = writeScriptBin "git" "echo $commit";
       fakeLsbRelease = writeScriptBin "lsb_release" "echo nix";
-    in [fakeGit fakeLsbRelease nim which cmake libtool_1_5];
+    in
+      [fakeGit fakeLsbRelease nim which cmake]
+      ++ lib.optionals stdenv.isDarwin [darwin.cctools];
 
     enableParallelBuilding = true;
 
