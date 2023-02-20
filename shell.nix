@@ -38,6 +38,8 @@ with pkgs;
 
         # Ethereum
         metacraft-labs.nimbus
+
+        metacraft-labs.oapi-codegen
       ];
 
     shellHook = ''

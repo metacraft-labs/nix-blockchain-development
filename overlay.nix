@@ -45,6 +45,21 @@ _finalNixpkgs: prevNixpkgs: let
         });
   };
 
+  oapi-codegen = prevNixpkgs.oapi-codegen.override rec {
+    buildGoModule = args:
+      prevNixpkgs.buildGoModule (args
+        // {
+          version = "1.11.0";
+          src = prevNixpkgs.fetchFromGitHub {
+            owner = "deepmap";
+            repo = "oapi-codegen";
+            rev = "v1.11.0";
+            hash = "sha256-VbaGFTDfe/bm4EP3chiG4FPEna+uC4HnfGG4C7YUWHc=";
+          };
+          vendorHash = "sha256-o9pEeM8WgGVopnfBccWZHwFR420mQAA4K/HV2RcU2wU=";
+        });
+  };
+
   # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
   cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
 
@@ -89,5 +104,7 @@ in {
     # Ethereum
     inherit nimbus;
     inherit go-ethereum-capella;
+
+    inherit oapi-codegen;
   };
 }
