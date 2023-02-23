@@ -6,13 +6,13 @@
 }:
 clang13Stdenv.mkDerivation rec {
   pname = "zkllvm";
-  version = "0.0.34";
+  version = "0.0.40";
 
   src =
     (fetchgit {
       url = "https://github.com/nilfoundation/zkllvm.git";
       rev = "v${version}";
-      sha256 = "sha256-cNR7xjsf57n/ItIFKr0U1EOEPwrjuz29kynhk5Ubj9U=";
+      sha256 = "sha256-F67euvWuM3eG9GJ4OH8yvSNE3pxJcFmnGrbUcX1BPqc=";
       fetchSubmodules = true;
       deepClone = true;
     })
