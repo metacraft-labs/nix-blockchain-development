@@ -62,6 +62,11 @@ _finalNixpkgs: prevNixpkgs: let
   cdt = prevNixpkgs.callPackage ./packages/cdt/default.nix {};
 
   nimbus = prevNixpkgs.callPackage ./packages/nimbus/default.nix {};
+
+  pistache = prevNixpkgs.callPackage ./packages/pistache/default.nix {};
+  ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {};
+  circom_runtime = prevNixpkgs.callPackage ./packages/circom_runtime/default.nix {};
+  rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -89,5 +94,10 @@ in {
     # Ethereum
     inherit nimbus;
     inherit go-ethereum-capella;
+
+    inherit pistache;
+    inherit ffiasm;
+    inherit circom_runtime;
+    inherit rapidsnark;
   };
 }
