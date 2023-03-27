@@ -19,6 +19,8 @@ with pkgs;
         metacraft-labs.go-opera
 
         metacraft-labs.go-ethereum-capella
+
+        metacraft-labs.rapidsnark
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1

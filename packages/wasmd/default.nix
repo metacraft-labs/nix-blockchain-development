@@ -33,7 +33,7 @@ buildGoModule rec {
     autoPatchelf -- "$out/bin"
   '';
 
-  vendorSha256 = "sha256-vACKDwUP52iSjb0DC+dIuNrOeBMLnKBDYsNpQrq3IqI=";
+  vendorSha256 = "sha256-HTeqXm7APyD6o2l+8hFBQOv17C+8YC52wtYs6+B8WX8=";
   doCheck = false;
   meta = with lib; {
     description = "Basic cosmos-sdk app with web assembly smart contracts";
