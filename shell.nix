@@ -40,6 +40,11 @@ with pkgs;
 
         # Ethereum
         metacraft-labs.nimbus
+
+        # Rapidsnark depends on Pistache, which supports only Linux, see
+        # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
+        # for more information
+        metacraft-labs.rapidsnark-server
       ];
 
     shellHook = ''

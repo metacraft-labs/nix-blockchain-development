@@ -64,9 +64,26 @@ _finalNixpkgs: prevNixpkgs: let
   nimbus = prevNixpkgs.callPackage ./packages/nimbus/default.nix {};
 
   pistache = prevNixpkgs.callPackage ./packages/pistache/default.nix {};
-  ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {};
+  ffiasm-src = prevNixpkgs.callPackage ./packages/ffiasm/src.nix {};
+  zqfield = prevNixpkgs.callPackage ./packages/ffiasm/zqfield.nix {inherit ffiasm-src;};
+  zqfield-default = prevNixpkgs.symlinkJoin {
+    name = "zqfield-default";
+    paths = [
+      (zqfield {
+        primeNumber = "21888242871839275222246405745257275088696311157297823662689037894645226208583";
+        name = "Fq";
+      })
+      (zqfield
+        {
+          primeNumber = "21888242871839275222246405745257275088548364400416034343698204186575808495617";
+          name = "Fr";
+        })
+    ];
+  };
+  ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {inherit ffiasm-src zqfield-default;};
   circom_runtime = prevNixpkgs.callPackage ./packages/circom_runtime/default.nix {};
   rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {};
+  rapidsnark-server = prevNixpkgs.callPackage ./packages/rapidsnark-server/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -96,8 +113,11 @@ in {
     inherit go-ethereum-capella;
 
     inherit pistache;
+    inherit zqfield-default;
+    inherit zqfield;
     inherit ffiasm;
     inherit circom_runtime;
     inherit rapidsnark;
+    inherit rapidsnark-server;
   };
 }
