@@ -23,6 +23,7 @@ with pkgs;
     '';
 
     meta = with lib; {
+      mainProgram = "buildzqfield";
       homepage = "https://github.com/iden3/ffiasm";
       platforms = with platforms; linux ++ darwin;
     };
