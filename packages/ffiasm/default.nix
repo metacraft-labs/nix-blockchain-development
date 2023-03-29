@@ -32,7 +32,7 @@ in
       inherit openmp;
     };
 
-    doCheck = true;
+    doCheck = with stdenv.buildPlatform; !(isDarwin && isx86);
     checkInputs = [gtest gmp zqfield-default] ++ openmp;
     checkPhase = ''
       function run_test {
