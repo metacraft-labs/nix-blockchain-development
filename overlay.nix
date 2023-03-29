@@ -82,7 +82,7 @@ _finalNixpkgs: prevNixpkgs: let
   };
   ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {inherit ffiasm-src zqfield-default;};
   circom_runtime = prevNixpkgs.callPackage ./packages/circom_runtime/default.nix {};
-  rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {};
+  rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {inherit ffiasm zqfield-default;};
   rapidsnark-server = prevNixpkgs.callPackage ./packages/rapidsnark-server/default.nix {};
 in {
   metacraft-labs = rec {

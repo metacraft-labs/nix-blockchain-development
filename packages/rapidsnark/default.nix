@@ -1,10 +1,20 @@
-{pkgs}:
-with pkgs; let
-  inherit (metacraft-labs) circom_runtime ffiasm zqfield-default;
+{
+  lib,
+  stdenv,
+  ffiasm,
+  zqfield-default,
+  nlohmann_json,
+  gmp,
+  libsodium,
+  fetchFromGitHub,
+  pkg-config,
+}: let
+  ffiasm-c = "${ffiasm}/lib/node_modules/ffiasm/c";
 in
   stdenv.mkDerivation rec {
     pname = "rapidsnark";
     version = "2023-03-08";
+
     src = fetchFromGitHub {
       owner = "iden3";
       repo = "rapidsnark";
@@ -12,35 +22,23 @@ in
       hash = "sha256-IqQ/Rc1l5MzFeoIjxRz9Oj6uzElAe6hEbhE97+3Ct4c=";
     };
 
-    nativeBuildInputs = [gtest nodejs nasm];
-
-    buildInputs = [ffiasm nlohmann_json circom_runtime gmp libsodium];
+    nativeBuildInputs = [pkg-config];
+    buildInputs = [nlohmann_json gmp libsodium] ++ ffiasm.passthru.openmp;
 
     buildPhase = ''
-      runHook preBuild
-      mkdir $out
-      mkdir build
-
-      echo buildProver
-        cd build
-          g++ -I. -I../src -I${ffiasm}/lib/node_modules/ffiasm/c -I${zqfield-default}/lib -I${nlohmann_json}/include -I${libsodium.dev}/include ../src/main_prover.cpp ../src/binfile_utils.cpp ../src/zkey_utils.cpp ../src/wtns_utils.cpp ../src/logger.cpp ${ffiasm}/lib/node_modules/ffiasm/c/misc.cpp ${ffiasm}/lib/node_modules/ffiasm/c/naf.cpp ${ffiasm}/lib/node_modules/ffiasm/c/splitparstr.cpp ${ffiasm}/lib/node_modules/ffiasm/c/alt_bn128.cpp ${zqfield-default}/lib/fq.cpp ${zqfield-default}/lib/fq.o ${zqfield-default}/lib/fr.cpp ${zqfield-default}/lib/fr.o -o prover -fmax-errors=5 -std=c++17 -pthread -lgmp -lsodium -O3 -fopenmp
-        cd ..
-
-      runHook postBuild
+      mkdir -p $out/bin
+      c++ \
+        -I{${ffiasm-c},${zqfield-default}/lib} \
+        ./src/{main_prover,binfile_utils,zkey_utils,wtns_utils,logger}.cpp \
+        ${ffiasm-c}/{alt_bn128,misc,naf,splitparstr}.cpp \
+        ${zqfield-default}/lib/{fq,fr}.{cpp,o} \
+        $(pkg-config --cflags --libs libsodium gmp nlohmann_json) \
+        -std=c++17 -pthread -O3 -fopenmp \
+        -o $out/bin/prover
     '';
 
-    installPhase = ''
-      runHook preInstall
-        cd build
-          mkdir -p $out/bin
-          cp prover $out/bin
-        cd ..
-      runHook postInstall'';
-
-    doCheck = false;
-
-    meta = with lib; {
+    meta = {
       homepage = "https://github.com/iden3/rapidsnark";
-      platforms = with platforms; linux ++ darwin;
+      platforms = with lib.platforms; linux ++ darwin;
     };
   }
