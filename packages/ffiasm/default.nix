@@ -10,25 +10,9 @@
 in
   stdenv.mkDerivation rec {
     pname = "ffiasm";
-    version = "0.1.4";
-    unpackPhase = ":";
-    # installPhase = "mkdir -p $out";
-    checkInputs = [gtest gmp zqfield-default];
+    inherit (ffiasm-src) version meta;
 
-    checkPhase = ''
-      echo testSplitParStr
-        g++ -I${gtest.dev}/include -I${ffiasm}/src ${ffiasm}/c/splitparstr.cpp ${ffiasm}/c/splitparstr_test.cpp -L${gtest}/lib -lgtest -pthread -std=c++11 -o splitparsestr_test
-        ./splitparsestr_test
-      echo testAltBn128
-        g++ -I${gtest.dev}/include -I${gmp.dev}/include -I${ffiasm}/c -I${zqfield-default}/lib \
-          ${ffiasm}/c/naf.cpp ${ffiasm}/c/splitparstr.cpp ${ffiasm}/c/alt_bn128.cpp ${ffiasm}/c/alt_bn128_test.cpp ${ffiasm}/c/misc.cpp \
-          ${zqfield-default}/lib/fq.cpp ${zqfield-default}/lib/fq.o ${zqfield-default}/lib/fr.cpp ${zqfield-default}/lib/fr.o \
-          -fmax-errors=5 -pthread -std=c++11 -fopenmp -g \
-          -L${gtest}/lib -lgtest  \
-          -L${gmp}/lib -lgmp \
-          -o altbn128_test
-        ./altbn128_test
-    '';
+    phases = ["checkPhase" "installPhase"];
 
     installPhase = ''
       mkdir -p $out
@@ -36,9 +20,44 @@ in
     '';
 
     doCheck = true;
+    checkInputs = [gtest gmp zqfield-default];
+    checkPhase = ''
+      function run_test {
+        echo -e "┌─── \033[1mstart \033[34m$1\033[0m ────╌╌╌"
+        {
+          c++ \
+            -I${ffiasm}/c \
+            ''${sources[*]} \
+            -L${gtest}/lib -lgtest \
+            ''${extra_cppflags[*]} \
+            -pthread -std=c++11 -Wl,-z,noexecstack \
+            -o ./$1
 
-    meta = with lib; {
-      homepage = "https://github.com/iden3/ffiasm";
-      platforms = with platforms; linux ++ darwin;
-    };
+          ./$1 ''${test_args[@]}
+
+        } 2>&1 | sed 's/^/│ /'
+        echo -e "└────╼ \033[1mend \033[34m$1\033[0m ────╌╌╌"
+      }
+
+      sources=(${ffiasm}/c/splitparstr{,_test}.cpp)
+      extra_cppflags=()
+      test_args=()
+      run_test splitparsestr_test
+
+      zq_files=(${zqfield-default}/lib/{fq,fr}.{cpp,o})
+      default_sources=(${ffiasm}/c/{naf,splitparstr,alt_bn128,misc}.cpp ''${zq_files[*]})
+      default_extra_cppflags=(-L${gmp}/lib -lgmp -fopenmp -I${zqfield-default}/lib)
+
+      sources=(${ffiasm}/c/alt_bn128_test.cpp ''${default_sources[*]})
+      extra_cppflags=(''${default_extra_cppflags[*]})
+      run_test altbn128_test
+
+      sources=(${ffiasm}/benchmark/multiexp_g1.cpp ''${default_sources[*]})
+      extra_cppflags=(-DCOUNT_OPS ''${default_extra_cppflags[*]})
+      test_args=(100)
+      run_test multiexp_g1_benchmark
+
+      sources=(${ffiasm}/benchmark/multiexp_g2.cpp ''${default_sources[*]})
+      run_test multiexp_g2_benchmark
+    '';
   }
