@@ -5,9 +5,17 @@
   zqfield-default,
   stdenv,
   ffiasm-src,
+  llvmPackages,
 }: let
   ffiasm = "${ffiasm-src}/lib/node_modules/ffiasm";
   noexecstack = lib.optionalString stdenv.cc.bintools.isGNU "-Wl,-z,noexecstack";
+  openmp =
+    lib.optional
+    stdenv.cc.isClang
+    (
+      assert stdenv.cc == llvmPackages.clang;
+        llvmPackages.openmp
+    );
 in
   stdenv.mkDerivation rec {
     pname = "ffiasm";
@@ -20,8 +28,12 @@ in
       cp -r ${ffiasm-src}/* $out
     '';
 
+    passthru = {
+      inherit openmp;
+    };
+
     doCheck = true;
-    checkInputs = [gtest gmp zqfield-default];
+    checkInputs = [gtest gmp zqfield-default] ++ openmp;
     checkPhase = ''
       function run_test {
         echo -e "┌─── \033[1mstart \033[34m$1\033[0m ────╌╌╌"
