@@ -7,6 +7,7 @@
   ffiasm-src,
 }: let
   ffiasm = "${ffiasm-src}/lib/node_modules/ffiasm";
+  noexecstack = lib.optionalString stdenv.cc.bintools.isGNU "-Wl,-z,noexecstack";
 in
   stdenv.mkDerivation rec {
     pname = "ffiasm";
@@ -30,7 +31,7 @@ in
             ''${sources[*]} \
             -L${gtest}/lib -lgtest \
             ''${extra_cppflags[*]} \
-            -pthread -std=c++11 -Wl,-z,noexecstack \
+            -pthread -std=c++11 ${noexecstack} \
             -o ./$1
 
           ./$1 ''${test_args[@]}
