@@ -2,6 +2,10 @@
   lib,
   buildNpmPackage,
   fetchFromGitHub,
+  nodePackages,
+  nasm,
+  gmp,
+  gccStdenv,
 }:
 buildNpmPackage rec {
   pname = "ffiasm-src";
@@ -18,6 +22,11 @@ buildNpmPackage rec {
   npmPackFlags = ["--ignore-scripts"];
 
   dontNpmBuild = true;
+
+  doCheck = true;
+  nativeCheckInputs = [nasm nodePackages.mocha gccStdenv.cc];
+  checkInputs = [gmp];
+  checkPhase = "mocha --bail";
 
   meta = {
     mainProgram = "buildzqfield";
