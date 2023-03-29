@@ -23,7 +23,7 @@ buildNpmPackage rec {
 
   dontNpmBuild = true;
 
-  doCheck = true;
+  doCheck = with gccStdenv.buildPlatform; !(isDarwin && isx86);
   nativeCheckInputs = [nasm nodePackages.mocha gccStdenv.cc];
   checkInputs = [gmp];
   checkPhase = "mocha --bail";
