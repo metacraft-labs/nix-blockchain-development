@@ -65,7 +65,9 @@ _finalNixpkgs: prevNixpkgs: let
 
   pistache = prevNixpkgs.callPackage ./packages/pistache/default.nix {};
   ffiasm-src = prevNixpkgs.callPackage ./packages/ffiasm/src.nix {};
-  zqfield = prevNixpkgs.callPackage ./packages/ffiasm/zqfield.nix {inherit ffiasm-src;};
+  zqfield = prevNixpkgs.callPackage ./packages/ffiasm/zqfield.nix {
+    inherit ffiasm-src;
+  };
   zqfield-default = prevNixpkgs.symlinkJoin {
     name = "zqfield-default";
     paths = [
@@ -80,10 +82,16 @@ _finalNixpkgs: prevNixpkgs: let
         })
     ];
   };
-  ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {inherit ffiasm-src zqfield-default;};
+  ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {
+    inherit ffiasm-src zqfield-default;
+  };
   circom_runtime = prevNixpkgs.callPackage ./packages/circom_runtime/default.nix {};
-  rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {inherit ffiasm zqfield-default;};
-  rapidsnark-server = prevNixpkgs.callPackage ./packages/rapidsnark-server/default.nix {};
+  rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {
+    inherit ffiasm zqfield-default;
+  };
+  rapidsnark-server = prevNixpkgs.callPackage ./packages/rapidsnark-server/default.nix {
+    inherit ffiasm zqfield-default rapidsnark pistache;
+  };
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
