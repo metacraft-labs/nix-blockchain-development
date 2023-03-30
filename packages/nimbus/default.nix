@@ -19,21 +19,18 @@
     "x86_64-windows"
   ],
 }:
-# Version 1.6.10 is known to be stable and overriden in top-level.
-assert nim.version == "1.6.10";
+# Version 1.6.12 is known to be stable and overriden in top-level.
+assert nim.version == "1.6.12";
   stdenv.mkDerivation rec {
     pname = "nimbus";
-    version = "capella-eip4844-local-sim";
-    commit = "a7fbcef";
-
-    name = "${pname}-${version}-${commit}";
+    version = "23.3.2";
 
     src = fetchFromGitHub {
       owner = "status-im";
       repo = "nimbus-eth2";
-      rev = "a7fbcef18f8770b7b81fbfdad74239cdcbaaaaef";
+      rev = "v${version}";
+      hash = "sha256-hdegrv+VbhQhk6O91oQDmj3vfm29dX/p1ygcNg25n24=";
       fetchSubmodules = true;
-      sha256 = "sha256-OXt7QSnrP7QF+6ZjfOIgUtiOoyMYFHiiyuqOJgHV5tw=";
     };
 
     # Fix for Nim compiler calling 'git rev-parse' and 'lsb_release'.
