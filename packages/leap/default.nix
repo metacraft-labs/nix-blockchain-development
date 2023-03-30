@@ -4,6 +4,7 @@
   fetchgit,
   pkgs,
   lib,
+  xz,
 }:
 clangStdenv.mkDerivation rec {
   name = "leap";
@@ -15,6 +16,7 @@ clangStdenv.mkDerivation rec {
     openssl.dev
     libusb1.dev
     bzip2.dev
+    (lib.getLib xz)
     (boost.override
       {
         enableShared = false;
