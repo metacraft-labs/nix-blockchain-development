@@ -4,41 +4,53 @@
   fetchFromGitHub,
   buildGoModule,
   autoPatchelfHook,
-}:
-buildGoModule rec {
-  pname = "wasmd";
-  version = "0.14.99";
+}: let
+  system = stdenv.targetPlatform.system;
+  libwasmvm_files = {
+    x86_64-linux = "libwasmvm.x86_64.so";
+    aarch64-linux = "libwasmvm.aarch64.so";
 
-  src = fetchFromGitHub {
-    owner = "CosmWasm";
-    repo = "wasmd";
-    rev = "d63bea442bedf5b3055f3821472c7e6cafc3d813";
-    sha256 = "sha256-hN7XJDoZ8El2tvwJnW67abhwg37e1ckFyreytN2AwZ0=";
+    # WasmVM has a universal library for both x86_64 and aarch64:
+    # https://github.com/CosmWasm/wasmvm/pull/294
+    x86_64-darwin = "libwasmvm.dylib";
+    aarch64-darwin = "libwasmvm.dylib";
   };
-  proxyVendor = true;
+  so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
+in
+  buildGoModule rec {
+    pname = "wasmd";
+    version = "0.40.0-rc.0";
 
-  subPackages = ["cmd/wasmd"];
+    src = fetchFromGitHub {
+      owner = "CosmWasm";
+      repo = "wasmd";
+      rev = "v${version}";
+      hash = "sha256-y+yCzOLR2nRdA6w+u3iI3c8XSHeCIpqdX90msJj+cVA=";
+    };
 
-  buildInputs = [autoPatchelfHook];
+    proxyVendor = true;
+    vendorSha256 = "sha256-4GyLyDSBXcLAA6+jrk25+354eo2Z9CvNtgQiDer7UpQ=";
 
-  postBuild = ''
-    mkdir -p "$out/lib"
-    # TODO: The correct binary below should depend on the current OS and CPU
-    cp "$GOPATH/pkg/mod/github.com/!cosm!wasm/wasmvm@v1.0.0/api/libwasmvm.x86_64.so" "$out/lib"
-  '';
+    subPackages = ["cmd/wasmd"];
 
-  postInstall = ''
-    addAutoPatchelfSearchPath "$out/lib"
-    # TODO: autoPatchElf is Linux-specific. We need a cross-platform solution
-    autoPatchelf -- "$out/bin"
-  '';
+    buildInputs = [autoPatchelfHook];
 
-  vendorSha256 = "sha256-HTeqXm7APyD6o2l+8hFBQOv17C+8YC52wtYs6+B8WX8=";
-  doCheck = false;
-  meta = with lib; {
-    description = "Basic cosmos-sdk app with web assembly smart contracts";
-    homepage = "https://github.com/CosmWasm/wasmd";
-    license = licenses.asl20;
-    maintainers = with maintainers; [];
-  };
-}
+    postBuild = ''
+      mkdir -p "$out/lib"
+      cp "$GOPATH/pkg/mod/github.com/!cosm!wasm/wasmvm@v1.2.1/internal/api/${so_name}" "$out/lib"
+    '';
+
+    postInstall = ''
+      addAutoPatchelfSearchPath "$out/lib"
+      # TODO: autoPatchElf is Linux-specific. We need a cross-platform solution
+      autoPatchelf -- "$out/bin"
+    '';
+
+    doCheck = false;
+    meta = with lib; {
+      description = "Basic cosmos-sdk app with web assembly smart contracts";
+      homepage = "https://github.com/CosmWasm/wasmd";
+      license = licenses.asl20;
+      maintainers = with maintainers; [];
+    };
+  }
