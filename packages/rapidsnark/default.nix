@@ -16,10 +16,10 @@ in
     version = "2023-03-08";
 
     src = fetchFromGitHub {
-      owner = "iden3";
+      owner = "PetarKirov";
       repo = "rapidsnark";
-      rev = "8b254247fd34b523c79ec1b582a4402343bc8094";
-      hash = "sha256-IqQ/Rc1l5MzFeoIjxRz9Oj6uzElAe6hEbhE97+3Ct4c=";
+      rev = "fix/prover/macos-build";
+      hash = "sha256-nLKy1zTeiIIZFFnEGhO3yFysQrJqe1VZOAMaBNxPMqY=";
     };
 
     nativeBuildInputs = [pkg-config];
