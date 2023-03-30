@@ -2,7 +2,7 @@
   lib,
   stdenv,
   ffiasm,
-  zqfield-default,
+  zqfield-bn254,
   nlohmann_json,
   gmp,
   libsodium,
@@ -28,10 +28,10 @@ in
     buildPhase = ''
       mkdir -p $out/bin
       c++ \
-        -I{${ffiasm-c},${zqfield-default}/lib} \
+        -I{${ffiasm-c},${zqfield-bn254}/lib} \
         ./src/{main_prover,binfile_utils,zkey_utils,wtns_utils,logger}.cpp \
         ${ffiasm-c}/{alt_bn128,misc,naf,splitparstr}.cpp \
-        ${zqfield-default}/lib/{fq,fr}.{cpp,o} \
+        ${zqfield-bn254}/lib/{fq,fr}.{cpp,o} \
         $(pkg-config --cflags --libs libsodium gmp nlohmann_json) \
         -std=c++17 -pthread -O3 -fopenmp \
         -o $out/bin/prover

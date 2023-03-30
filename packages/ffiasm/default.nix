@@ -2,7 +2,7 @@
   gtest,
   gmp,
   lib,
-  zqfield-default,
+  zqfield-bn254,
   stdenv,
   ffiasm-src,
   llvmPackages,
@@ -33,7 +33,7 @@ in
     };
 
     doCheck = with stdenv.buildPlatform; !(isDarwin && isx86);
-    checkInputs = [gtest gmp zqfield-default] ++ openmp;
+    checkInputs = [gtest gmp zqfield-bn254] ++ openmp;
     checkPhase = ''
       function run_test {
         echo -e "┌─── \033[1mstart \033[34m$1\033[0m ────╌╌╌"
@@ -57,9 +57,9 @@ in
       test_args=()
       run_test splitparsestr_test
 
-      zq_files=(${zqfield-default}/lib/{fq,fr}.{cpp,o})
+      zq_files=(${zqfield-bn254}/lib/{fq,fr}.{cpp,o})
       default_sources=(${ffiasm}/c/{naf,splitparstr,alt_bn128,misc}.cpp ''${zq_files[*]})
-      default_extra_cppflags=(-L${gmp}/lib -lgmp -fopenmp -I${zqfield-default}/lib)
+      default_extra_cppflags=(-L${gmp}/lib -lgmp -fopenmp -I${zqfield-bn254}/lib)
 
       sources=(${ffiasm}/c/alt_bn128_test.cpp ''${default_sources[*]})
       extra_cppflags=(''${default_extra_cppflags[*]})

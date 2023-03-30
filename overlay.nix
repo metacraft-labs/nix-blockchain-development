@@ -68,8 +68,16 @@ _finalNixpkgs: prevNixpkgs: let
   zqfield = prevNixpkgs.callPackage ./packages/ffiasm/zqfield.nix {
     inherit ffiasm-src;
   };
-  zqfield-default = prevNixpkgs.symlinkJoin {
-    name = "zqfield-default";
+  # Pairing Groups on BN-254, aka alt_bn128
+  # Source:
+  # https://zips.z.cash/protocol/protocol.pdf (section 5.4.9.1)
+  # See also:
+  # https://eips.ethereum.org/EIPS/eip-196
+  # https://eips.ethereum.org/EIPS/eip-197
+  # https://hackmd.io/@aztec-network/ByzgNxBfd
+  # https://hackmd.io/@jpw/bn254
+  zqfield-bn254 = prevNixpkgs.symlinkJoin {
+    name = "zqfield-bn254";
     paths = [
       (zqfield {
         primeNumber = "21888242871839275222246405745257275088696311157297823662689037894645226208583";
@@ -83,14 +91,14 @@ _finalNixpkgs: prevNixpkgs: let
     ];
   };
   ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {
-    inherit ffiasm-src zqfield-default;
+    inherit ffiasm-src zqfield-bn254;
   };
   circom_runtime = prevNixpkgs.callPackage ./packages/circom_runtime/default.nix {};
   rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {
-    inherit ffiasm zqfield-default;
+    inherit ffiasm zqfield-bn254;
   };
   rapidsnark-server = prevNixpkgs.callPackage ./packages/rapidsnark-server/default.nix {
-    inherit ffiasm zqfield-default rapidsnark pistache;
+    inherit ffiasm zqfield-bn254 rapidsnark pistache;
   };
 in {
   metacraft-labs = rec {
@@ -121,7 +129,7 @@ in {
     inherit go-ethereum-capella;
 
     inherit pistache;
-    inherit zqfield-default;
+    inherit zqfield-bn254;
     inherit zqfield;
     inherit ffiasm;
     inherit circom_runtime;
