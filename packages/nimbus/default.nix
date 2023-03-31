@@ -3,6 +3,7 @@
   fetchFromGitHub,
   darwin,
   lib,
+  git,
   nim,
   cmake,
   which,
@@ -29,16 +30,16 @@ assert nim.version == "1.6.12";
       owner = "status-im";
       repo = "nimbus-eth2";
       rev = "v${version}";
-      hash = "sha256-hdegrv+VbhQhk6O91oQDmj3vfm29dX/p1ygcNg25n24=";
+      hash = "sha256-xp+7NE7cMxBV2pcwY4B2WrppCG+2N2Su+bWmCKllMPI=";
       fetchSubmodules = true;
+      leaveDotGit = true;
     };
 
     # Fix for Nim compiler calling 'git rev-parse' and 'lsb_release'.
     nativeBuildInputs = let
-      fakeGit = writeScriptBin "git" "echo $commit";
       fakeLsbRelease = writeScriptBin "lsb_release" "echo nix";
     in
-      [fakeGit fakeLsbRelease nim which cmake]
+      [git fakeLsbRelease nim which cmake]
       ++ lib.optionals stdenv.isDarwin [darwin.cctools];
 
     enableParallelBuilding = true;
