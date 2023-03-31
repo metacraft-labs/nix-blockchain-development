@@ -30,7 +30,7 @@ assert nim.version == "1.6.12";
       owner = "status-im";
       repo = "nimbus-eth2";
       rev = "v${version}";
-      hash = "sha256-xp+7NE7cMxBV2pcwY4B2WrppCG+2N2Su+bWmCKllMPI=";
+      hash = "sha256-TkQW1IcUHMqlr7cOQA5vRcFlwacF2zDb4sJb+K/ejnY=";
       fetchSubmodules = true;
       leaveDotGit = true;
     };
