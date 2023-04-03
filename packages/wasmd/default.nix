@@ -2,8 +2,9 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  buildGoModule,
+  go_1_19,
   autoPatchelfHook,
+  callPackage,
 }: let
   system = stdenv.targetPlatform.system;
   libwasmvm_files = {
@@ -16,6 +17,7 @@
     aarch64-darwin = "libwasmvm.dylib";
   };
   so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
+  buildGoModule = callPackage ./module.nix {go = go_1_19;};
 in
   buildGoModule rec {
     pname = "wasmd";
@@ -29,7 +31,7 @@ in
     };
 
     proxyVendor = true;
-    vendorSha256 = "sha256-4GyLyDSBXcLAA6+jrk25+354eo2Z9CvNtgQiDer7UpQ=";
+    vendorSha256 = "sha256-hRFnF/GmMYy8aOU4lPO6WQOTAmqsyyf+PI0hDEJWf8k=";
 
     subPackages = ["cmd/wasmd"];
 
