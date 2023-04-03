@@ -24,28 +24,29 @@
 assert nim.version == "1.6.12";
   stdenv.mkDerivation rec {
     pname = "nimbus";
-    version = "23.3.2";
+    rev = "499b870a1a8e6688ff03b958709955075064b7e5";
+    version = "23.3.2.dev";
 
     src = fetchFromGitHub {
       owner = "status-im";
       repo = "nimbus-eth2";
-      rev = "v${version}";
-      hash = "sha256-TkQW1IcUHMqlr7cOQA5vRcFlwacF2zDb4sJb+K/ejnY=";
+      inherit rev;
+      hash = "sha256-0w9XGXxCAhBAuMkQ42Wh67Lmetn7Ihbdoq3iBOSx71k=";
       fetchSubmodules = true;
-      leaveDotGit = true;
     };
 
     # Fix for Nim compiler calling 'git rev-parse' and 'lsb_release'.
     nativeBuildInputs = let
+      fakeGit = writeScriptBin "git" "echo $commit";
       fakeLsbRelease = writeScriptBin "lsb_release" "echo nix";
     in
-      [git fakeLsbRelease nim which cmake]
+      [fakeGit fakeLsbRelease nim which cmake]
       ++ lib.optionals stdenv.isDarwin [darwin.cctools];
 
     enableParallelBuilding = true;
 
     # Disable CPU optmizations that make binary not portable.
-    NIMFLAGS = "-d:disableMarchNative";
+    NIMFLAGS = "-d:disableMarchNative -d:git_revision_override=${rev}";
 
     makeFlags = makeTargets ++ ["USE_SYSTEM_NIM=1"];
 
