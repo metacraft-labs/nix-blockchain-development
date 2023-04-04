@@ -1,25 +1,26 @@
 _finalNixpkgs: prevNixpkgs: let
+  inherit (prevNixpkgs) callPackage symlinkJoin fetchFromGitHub;
 
-  solana-rust-artifacts = prevNixpkgs.callPackage ./packages/solana-rust-artifacts {};
+  solana-rust-artifacts = callPackage ./packages/solana-rust-artifacts {};
 
-  solana-bpf-tools = prevNixpkgs.callPackage ./packages/solana-bpf-tools {};
+  solana-bpf-tools = callPackage ./packages/solana-bpf-tools {};
 
-  solana-full-sdk = prevNixpkgs.callPackage ./packages/solana-full-sdk {
+  solana-full-sdk = callPackage ./packages/solana-full-sdk {
     inherit solana-rust-artifacts solana-bpf-tools;
   };
 
-  cosmos-theta-testnet = prevNixpkgs.callPackage ./packages/cosmos-theta-testnet {};
+  cosmos-theta-testnet = callPackage ./packages/cosmos-theta-testnet {};
 
-  circom = prevNixpkgs.callPackage ./packages/circom/default.nix {};
-  circ = prevNixpkgs.callPackage ./packages/circ/default.nix {};
+  circom = callPackage ./packages/circom/default.nix {};
+  circ = callPackage ./packages/circ/default.nix {};
 
-  wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
+  wasmd = callPackage ./packages/wasmd/default.nix {};
 
   # erdpy depends on cattrs >= 22.2
   cattrs22-2 = prevNixpkgs.python3Packages.cattrs.overrideAttrs (finalAttrs: previousAttrs: {
     version = "22.2.0";
 
-    src = prevNixpkgs.fetchFromGitHub {
+    src = fetchFromGitHub {
       owner = "python-attrs";
       repo = "cattrs";
       rev = "v22.2.0";
@@ -35,7 +36,7 @@ _finalNixpkgs: prevNixpkgs: let
       prevNixpkgs.buildGoModule (args
         // {
           version = "1.11.1";
-          src = prevNixpkgs.fetchFromGitHub {
+          src = fetchFromGitHub {
             owner = "ethereum";
             repo = "go-ethereum";
             rev = "v1.11.1";
@@ -47,26 +48,26 @@ _finalNixpkgs: prevNixpkgs: let
   };
 
   # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
-  cryptography36 = prevNixpkgs.callPackage ./packages/python-modules/cryptography36/default.nix {};
+  cryptography36 = callPackage ./packages/python-modules/cryptography36/default.nix {};
 
-  ledgercomm = prevNixpkgs.callPackage ./packages/python-modules/ledgercomm/default.nix {};
-  requests-cache = prevNixpkgs.callPackage ./packages/python-modules/requests-cache/default.nix {};
+  ledgercomm = callPackage ./packages/python-modules/ledgercomm/default.nix {};
+  requests-cache = callPackage ./packages/python-modules/requests-cache/default.nix {};
 
-  erdpy = prevNixpkgs.callPackage ./packages/erdpy/default.nix {};
-  elrond-go = prevNixpkgs.callPackage ./packages/elrond-go/default.nix {};
-  elrond-proxy-go = prevNixpkgs.callPackage ./packages/elrond-proxy-go/default.nix {};
+  erdpy = callPackage ./packages/erdpy/default.nix {};
+  elrond-go = callPackage ./packages/elrond-go/default.nix {};
+  elrond-proxy-go = callPackage ./packages/elrond-proxy-go/default.nix {};
 
-  go-opera = prevNixpkgs.callPackage ./packages/go-opera/default.nix {};
+  go-opera = callPackage ./packages/go-opera/default.nix {};
 
-  leap = prevNixpkgs.callPackage ./packages/leap/default.nix {};
-  eos-vm = prevNixpkgs.callPackage ./packages/eos-vm/default.nix {};
-  cdt = prevNixpkgs.callPackage ./packages/cdt/default.nix {};
+  leap = callPackage ./packages/leap/default.nix {};
+  eos-vm = callPackage ./packages/eos-vm/default.nix {};
+  cdt = callPackage ./packages/cdt/default.nix {};
 
-  nimbus = prevNixpkgs.callPackage ./packages/nimbus/default.nix {};
+  nimbus = callPackage ./packages/nimbus/default.nix {};
 
-  pistache = prevNixpkgs.callPackage ./packages/pistache/default.nix {};
-  ffiasm-src = prevNixpkgs.callPackage ./packages/ffiasm/src.nix {};
-  zqfield = prevNixpkgs.callPackage ./packages/ffiasm/zqfield.nix {
+  pistache = callPackage ./packages/pistache/default.nix {};
+  ffiasm-src = callPackage ./packages/ffiasm/src.nix {};
+  zqfield = callPackage ./packages/ffiasm/zqfield.nix {
     inherit ffiasm-src;
   };
   # Pairing Groups on BN-254, aka alt_bn128
@@ -77,7 +78,7 @@ _finalNixpkgs: prevNixpkgs: let
   # https://eips.ethereum.org/EIPS/eip-197
   # https://hackmd.io/@aztec-network/ByzgNxBfd
   # https://hackmd.io/@jpw/bn254
-  zqfield-bn254 = prevNixpkgs.symlinkJoin {
+  zqfield-bn254 = symlinkJoin {
     name = "zqfield-bn254";
     paths = [
       (zqfield {
@@ -91,14 +92,14 @@ _finalNixpkgs: prevNixpkgs: let
         })
     ];
   };
-  ffiasm = prevNixpkgs.callPackage ./packages/ffiasm/default.nix {
+  ffiasm = callPackage ./packages/ffiasm/default.nix {
     inherit ffiasm-src zqfield-bn254;
   };
-  circom_runtime = prevNixpkgs.callPackage ./packages/circom_runtime/default.nix {};
-  rapidsnark = prevNixpkgs.callPackage ./packages/rapidsnark/default.nix {
+  circom_runtime = callPackage ./packages/circom_runtime/default.nix {};
+  rapidsnark = callPackage ./packages/rapidsnark/default.nix {
     inherit ffiasm zqfield-bn254;
   };
-  rapidsnark-server = prevNixpkgs.callPackage ./packages/rapidsnark-server/default.nix {
+  rapidsnark-server = callPackage ./packages/rapidsnark-server/default.nix {
     inherit ffiasm zqfield-bn254 rapidsnark pistache;
   };
 in {
