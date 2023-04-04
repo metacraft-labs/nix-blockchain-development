@@ -21,17 +21,17 @@
 in
   buildGoModule rec {
     pname = "wasmd";
-    version = "0.40.0-rc.0";
+    version = "0.31.0";
 
     src = fetchFromGitHub {
       owner = "CosmWasm";
       repo = "wasmd";
       rev = "v${version}";
-      hash = "sha256-y+yCzOLR2nRdA6w+u3iI3c8XSHeCIpqdX90msJj+cVA=";
+      hash = "sha256-lxx1rKvgzvWKeGnUG4Ij7K6tfL7u3cIaf6/CYRvkqLg=";
     };
 
     proxyVendor = true;
-    vendorSha256 = "sha256-hRFnF/GmMYy8aOU4lPO6WQOTAmqsyyf+PI0hDEJWf8k=";
+    vendorSha256 = "sha256-Mv4Y7bsmBBnRkOxgosQDXD8jLXlS+rbz7GPCXjj5cto=";
 
     subPackages = ["cmd/wasmd"];
 
