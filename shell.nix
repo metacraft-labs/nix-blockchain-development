@@ -34,6 +34,9 @@ in
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
+
+        # Cardano
+        metacraft-labs.cardano
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.isLinux) [
         # Rapidsnark depends on Pistache, which supports only Linux, see

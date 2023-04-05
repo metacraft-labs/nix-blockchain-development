@@ -21,6 +21,7 @@
 
     legacyPackages = {
       nix2container = inputs'.nix2container.packages.nix2container;
+      inherit (inputs'.cardano-node.packages) cardano-node cardano-cli;
 
       rust-stable = rust-stable;
 

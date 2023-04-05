@@ -6,7 +6,7 @@
   }: let
     inherit (pkgs) lib darwin hostPlatform symlinkJoin fetchFromGitHub;
     inherit (pkgs.lib) optionalAttrs callPackageWith;
-    inherit (self'.legacyPackages) rustPlatformStable;
+    inherit (self'.legacyPackages) rustPlatformStable cardano-node cardano-cli;
     python3Packages = pkgs.python3Packages;
 
     callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
@@ -76,6 +76,8 @@
     erdpy = callPackage ./erdpy/default.nix {inherit cryptography36 elrond-go elrond-proxy-go ledgercomm requests-cache;};
     elrond-go = callPackage ./elrond-go/default.nix {};
     elrond-proxy-go = callPackage ./elrond-proxy-go/default.nix {};
+
+    cardano = callPackage ./cardano/default.nix {inherit cardano-cli cardano-node;};
   in {
     legacyPackages.metacraft-labs =
       rec {
@@ -147,6 +149,8 @@
       }
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
+
+        inherit cardano;
       }
       // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
         pistache = callPackage ./pistache/default.nix {};
