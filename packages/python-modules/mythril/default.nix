@@ -5,6 +5,8 @@
   fetchFromGitHub,
   py-ecc-410,
   eth-utils-110,
+  eth-keyfile-051,
+  eth-typing-230,
 }:
 python3Packages.buildPythonPackage rec {
   pname = "mythril";
@@ -25,7 +27,9 @@ python3Packages.buildPythonPackage rec {
 
   propagatedBuildInputs = with python3Packages; [
     py-ecc-410
+    eth-typing-230
     eth-utils-110
+    eth-keyfile-051
     setuptools
   ];
 

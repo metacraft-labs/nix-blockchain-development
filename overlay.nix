@@ -15,13 +15,13 @@ _finalNixpkgs: prevNixpkgs: let
   wasmd = prevNixpkgs.callPackage ./packages/wasmd/default.nix {};
 
   # erdpy depends on cattrs >= 22.2
-  cattrs22-2 = prevNixpkgs.python3Packages.cattrs.overrideAttrs (finalAttrs: previousAttrs: {
+  cattrs22-2 = prevNixpkgs.python3Packages.cattrs.overridePythonAttrs (previousAttrs: rec {
     version = "22.2.0";
 
     src = prevNixpkgs.fetchFromGitHub {
       owner = "python-attrs";
       repo = "cattrs";
-      rev = "v22.2.0";
+      rev = "v${version}";
       hash = "sha256-Qnrq/mIA/t0mur6IAen4vTmMIhILWS6v5nuf+Via2hA=";
     };
 
@@ -101,28 +101,90 @@ _finalNixpkgs: prevNixpkgs: let
     inherit ffiasm zqfield-bn254 rapidsnark pistache;
   };
 
-  py-ecc-410 = prevNixpkgs.python3Packages.py-ecc.overrideAttrs (finalAttrs: previousAttrs: {
-    version = "4.1.0";
+  eth-typing-230 = prevNixpkgs.python3Packages.eth-typing.overridePythonAttrs (old: rec {
+    version = "2.3.0";
 
     src = prevNixpkgs.fetchFromGitHub {
       owner = "ethereum";
-      repo = "py_ecc";
-      rev = "v4.1.0";
-      hash = "sha256-qs4dvfdrl6o74FAst6XBAvzjJ7ZCA58s447aCTGIt2Y=";
+      repo = "eth-typing";
+      rev = "c3210d5e2b867f781c297b5c01ada6c399bc402b"; # commit hash for v2.3.0, as nix has trouble fetching the tag.
+      sha256 = "sha256-cuA6vSfCfqgffEhSEuVeKJfxsGLw1mGID9liodE9wcU=";
     };
   });
 
-  eth-utils-110 = prevNixpkgs.python3Packages.eth-utils.overrideAttrs (finalAttrs: previousAttrs: {
+  eth-utils-110 = prevNixpkgs.python3Packages.eth-utils.overrideAttrs (old: rec {
     version = "1.10.0";
 
     src = prevNixpkgs.fetchFromGitHub {
       owner = "ethereum";
       repo = "eth-utils";
-      rev = "v1.10.0";
+      rev = "v${version}";
       sha256 = "sha256-sq3H4HmUFUipqVYleZxWLG1gBsQEoNwcZAXiKckacek=";
     };
+
+    propagatedBuildInputs =
+      [prevNixpkgs.python3Packages.eth-hash eth-typing-230]
+      ++ prevNixpkgs.lib.optional (!prevNixpkgs.python3Packages.isPyPy) prevNixpkgs.python3Packages.cytoolz
+      ++ prevNixpkgs.lib.optional prevNixpkgs.python3Packages.isPyPy prevNixpkgs.python3Packages.toolz;
   });
-  mythril = prevNixpkgs.callPackage ./packages/python-modules/mythril/default.nix {inherit py-ecc-410 eth-utils-110;};
+
+  py-ecc-410 = prevNixpkgs.python3Packages.py-ecc.overridePythonAttrs (old: rec {
+    version = "4.1.0";
+
+    src = prevNixpkgs.fetchFromGitHub {
+      owner = "ethereum";
+      repo = "py_ecc";
+      rev = "v${version}";
+      hash = "sha256-qs4dvfdrl6o74FAst6XBAvzjJ7ZCA58s447aCTGIt2Y=";
+    };
+
+    propagatedBuildInputs = with prevNixpkgs.python3Packages; [
+      cached-property
+      eth-typing-230
+      eth-utils-110
+      mypy-extensions
+    ];
+  });
+
+  eth-keys-034 = prevNixpkgs.python3Packages.eth-keys.overridePythonAttrs (old: rec {
+    version = "0.3.4";
+
+    src = prevNixpkgs.fetchFromGitHub {
+      owner = "ethereum";
+      repo = "eth-keys";
+      rev = "v${version}";
+      fetchSubmodules = true;
+      sha256 = "sha256-P/5v4fk6gtbXju+xyDE9enAsmch+gquzvYUIn4Kvs0Y=";
+    };
+
+    propagatedBuildInputs = [
+      eth-utils-110
+      eth-typing-230
+    ];
+
+    disabledTests = old.disabledTests ++ ["test_coincurve_to_native_invalid_signatures"];
+  });
+
+  eth-keyfile-051 = prevNixpkgs.python3Packages.eth-keyfile.overridePythonAttrs (old: rec {
+    version = "0.5.1";
+
+    src = prevNixpkgs.fetchFromGitHub {
+      owner = "ethereum";
+      repo = "eth-keyfile";
+      rev = "v${version}";
+      fetchSubmodules = true;
+      leaveDotGit = true;
+      sha256 = "sha256-IG2zO0XnI96UptDmvrBn+wG64oSSRakUBsc8QTsR/NE=";
+    };
+
+    propagatedBuildInputs = [
+      eth-utils-110
+      eth-keys-034
+      prevNixpkgs.python3Packages.pycryptodome
+      prevNixpkgs.python3Packages.setuptools
+    ];
+  });
+  mythril = prevNixpkgs.callPackage ./packages/python-modules/mythril/default.nix {inherit py-ecc-410 eth-utils-110 eth-keyfile-051 eth-typing-230;};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -159,6 +221,6 @@ in {
     inherit rapidsnark;
     inherit rapidsnark-server;
 
-    inherit eth-utils-110 mythril;
+    inherit eth-keyfile-051 mythril;
   };
 }
