@@ -157,12 +157,20 @@ _finalNixpkgs: prevNixpkgs: let
       sha256 = "sha256-P/5v4fk6gtbXju+xyDE9enAsmch+gquzvYUIn4Kvs0Y=";
     };
 
+    pythonImportsCheck = []; # workaround for issue with pythonImportsCheckPhase
+
     propagatedBuildInputs = [
+      parsimonious-081
       eth-utils-110
       eth-typing-230
     ];
 
-    disabledTests = old.disabledTests ++ ["test_coincurve_to_native_invalid_signatures"];
+    disabledTests =
+      old.disabledTests
+      ++ [
+        "test_coincurve_to_native_invalid_signatures"
+        "test_get_abi_strategy_returns_certain_strategies_for_known_type_strings"
+      ];
   });
 
   eth-keyfile-051 = prevNixpkgs.python3Packages.eth-keyfile.overridePythonAttrs (old: rec {
@@ -173,8 +181,7 @@ _finalNixpkgs: prevNixpkgs: let
       repo = "eth-keyfile";
       rev = "v${version}";
       fetchSubmodules = true;
-      leaveDotGit = true;
-      sha256 = "sha256-IG2zO0XnI96UptDmvrBn+wG64oSSRakUBsc8QTsR/NE=";
+      sha256 = "sha256-w3baJFYBn8N5UGjR4Bec8c1UH9O0vbmPpsMfw9KGHCg=";
     };
 
     propagatedBuildInputs = [
@@ -184,7 +191,125 @@ _finalNixpkgs: prevNixpkgs: let
       prevNixpkgs.python3Packages.setuptools
     ];
   });
-  mythril = prevNixpkgs.callPackage ./packages/python-modules/mythril/default.nix {inherit py-ecc-410 eth-utils-110 eth-keyfile-051 eth-typing-230;};
+
+  eth-abi-211 = prevNixpkgs.python3Packages.eth-abi.overridePythonAttrs (old: rec {
+    version = "2.1.1";
+
+    src = prevNixpkgs.fetchFromGitHub {
+      owner = "ethereum";
+      repo = "eth-abi";
+      rev = "v${version}";
+      fetchSubmodules = true;
+      sha256 = "sha256-b4rlmyCP1bg4O3gaRNWTPo4ALlidK4gUx0WrsJVHu4g=";
+    };
+
+    nativeBuildInputs = [parsimonious-081];
+
+    propagatedBuildInputs = [
+      eth-utils-110
+      eth-typing-230
+    ];
+  });
+
+  parsimonious-081 = prevNixpkgs.python3Packages.eth-abi.overridePythonAttrs (old: rec {
+    pname = "parsimonious";
+    version = "0.8.1";
+
+    src = prevNixpkgs.python3Packages.fetchPypi {
+      inherit pname version;
+      hash = "sha256-Ot0ziJLVgODLOxo55KG0J/+faHhY/dYQlwU3Qjkan2s=";
+    };
+
+    pythonImportsCheck = []; # workaround for issue with pythonImportsCheckPhase
+
+    propagatedBuildInputs = [
+      prevNixpkgs.python3Packages.six
+      prevNixpkgs.python3Packages.regex
+    ];
+  });
+
+  typing-extensions-31002 = prevNixpkgs.python3Packages.typing-extensions.overridePythonAttrs (old: rec {
+    pname = "typing_extensions";
+    version = "3.10.0.2";
+
+    src = prevNixpkgs.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "49f75d16ff11f1cd258e1b988ccff82a3ca5570217d7ad8c5f48205dd99a677e";
+    };
+
+    checkInputs = prevNixpkgs.lib.optional (prevNixpkgs.python3Packages.pythonOlder "3.5") prevNixpkgs.python3Packages.typing;
+    nativeBuildInputs = with prevNixpkgs.python3Packages; [
+      flit-core
+      setuptools
+    ];
+  });
+
+  pyparsing-247 = prevNixpkgs.python3Packages.pyparsing.overridePythonAttrs (old: rec {
+    pname = "pyparsing";
+    version = "2.4.7";
+
+    src = prevNixpkgs.fetchFromGitHub {
+      owner = "pyparsing";
+      repo = pname;
+      rev = "pyparsing_${version}";
+      sha256 = "sha256-0Dyzw3xiCGhLbXPcL2cq2fZuN1N5StSZ/I86gQHy7pI=";
+    };
+
+    pythonImportsCheck = [];
+    passthru.tests = {};
+    doCheck = true;
+    checkInputs = [prevNixpkgs.python3Packages.coverage];
+    checkPhase = ''
+      ${prevNixpkgs.python3Packages.coverage}/bin/coverage run --branch simple_unit_tests.py
+      ${prevNixpkgs.python3Packages.coverage}/bin/coverage run --branch unitTests.py
+    '';
+    nativeBuildInputs = with prevNixpkgs.python3Packages; [
+      setuptools
+    ];
+  });
+
+  markupsafe-201 = prevNixpkgs.python3Packages.markupsafe.overridePythonAttrs (old: rec {
+    pname = "markupsafe";
+    version = "2.0.1";
+
+    src = prevNixpkgs.python3Packages.fetchPypi {
+      pname = "MarkupSafe";
+      inherit version;
+      sha256 = "02k2ynmqvvd0z0gakkf8s4idyb606r7zgga41jrkhqmigy06fk2r";
+    };
+  });
+
+  coverage-650 = prevNixpkgs.python3Packages.coverage.overridePythonAttrs (old: rec {
+    pname = "coverage";
+    version = "6.5.0";
+
+    src = prevNixpkgs.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "sha256-9kLpB1TuPgaw5+UbzjN5WQ52t/drcI4acf8EP4cCXIQ=";
+    };
+  });
+
+  mythril = prevNixpkgs.callPackage ./packages/python-modules/mythril/default.nix {
+    inherit
+      eth-typing-230
+      eth-utils-110
+      py-ecc-410
+      eth-keyfile-051
+      parsimonious-081
+      eth-keys-034
+      eth-abi-211
+      py-solc-x
+      typing-extensions-31002
+      pyparsing-247
+      markupsafe-201
+      coverage-650
+      blake2b-py
+      py-flags
+      ;
+  };
+  py-solc-x = prevNixpkgs.callPackage ./packages/python-modules/py-solc-x/default.nix {};
+  blake2b-py = prevNixpkgs.callPackage ./packages/python-modules/blake2b-py/default.nix {};
+  py-flags = prevNixpkgs.callPackage ./packages/python-modules/py-flags/default.nix {};
 in {
   metacraft-labs = rec {
     solana = solana-full-sdk;
@@ -221,6 +346,8 @@ in {
     inherit rapidsnark;
     inherit rapidsnark-server;
 
-    inherit eth-keyfile-051 mythril;
+    inherit mythril;
+    inherit blake2b-py;
+    inherit py-solc-x;
   };
 }
