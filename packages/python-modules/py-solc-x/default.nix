@@ -24,10 +24,4 @@ python3Packages.buildPythonPackage rec {
   ];
 
   doCheck = false;
-
-  meta = with lib; {
-    homepage = https://github.com/ApeWorX/py-solc-x;
-    description = "List processing tools and functional utilities";
-    license = licenses.bsd3;
-  };
 }

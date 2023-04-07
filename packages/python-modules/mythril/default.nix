@@ -17,6 +17,17 @@
   markupsafe-201,
   coverage-650,
   py-flags,
+  ethereum-input-decoder,
+  rlp-201,
+  eth-account-059,
+  pre-commit-2200,
+  cytoolz-0112,
+  py-evm,
+  z3-solver,
+  persistent_fixed,
+  matplotlib_fixed,
+  pytest_fixed,
+  pytest-cov_fixed,
 }:
 python3Packages.buildPythonPackage rec {
   pname = "mythril";
@@ -35,25 +46,28 @@ python3Packages.buildPythonPackage rec {
   preConfigure = ''
     substituteInPlace requirements.txt --replace py-solc py-solc-x
     substituteInPlace requirements.txt --replace py-solc-x-x ""
+    #removing version specification, as for some reason nix has trouble finding them, even when they match the version specification
+    substituteInPlace requirements.txt --replace "cytoolz<0.12.0" cytoolz
+    substituteInPlace requirements.txt --replace "pyparsing<3,>=2.0.2" pyparsing
+    substituteInPlace requirements.txt --replace "coverage<7.0,>6.0" coverage
+    #the closest nix has is 4.8.5
+    substituteInPlace requirements.txt --replace "z3-solver>=4.8.8.0" z3-solver
   '';
-
-  nativeBuildInputs = [
-  ];
 
   propagatedBuildInputs = with python3Packages; [
     setuptools
-    pytest
-    pytest-cov
     pytest-mock
     requests
-    rlp
     semantic-version
     transaction
-    z3
-    matplotlib
     certifi
     coincurve
+    configparser
+    coloredlogs
+    cython
+
     #custom packages
+    pyparsing-247
     py-ecc-410
     eth-typing-230
     eth-utils-110
@@ -63,12 +77,23 @@ python3Packages.buildPythonPackage rec {
     parsimonious-081
     py-solc-x
     typing-extensions-31002
-    pyparsing-247
     blake2b-py
     markupsafe-201
     coverage-650
     py-flags
+    ethereum-input-decoder
+    rlp-201
+    eth-account-059
+    pre-commit-2200
+    cytoolz-0112
+    py-evm
+    z3-solver
+    persistent_fixed
+    matplotlib_fixed
+    pytest_fixed
+    pytest-cov_fixed
   ];
+  nativeBuildInputs = propagatedBuildInputs;
 
   # postFixup = lib.optionalString withSolc ''
   #   wrapProgram $out/bin/myhtril \
