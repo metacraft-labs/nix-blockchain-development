@@ -35,7 +35,7 @@ in
 
     subPackages = ["cmd/wasmd"];
 
-    buildInputs = [autoPatchelfHook];
+    nativeBuildInputs = lib.optionals stdenv.isLinux [autoPatchelfHook];
 
     postBuild = ''
       mkdir -p "$out/lib"
