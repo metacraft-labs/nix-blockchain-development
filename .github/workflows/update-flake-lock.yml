@@ -1,0 +1,38 @@
+name: Update Nix Flake lockfile
+
+on:
+  # Enable option to manually run the action:
+  workflow_dispatch:
+
+  # Run every Sunday at 00:00:
+  schedule:
+    - cron: 5 * * * * # FIXME: try if it works
+    # - cron: 0 0 * * 0
+
+jobs:
+  main:
+    # Check if the event is not triggered by a fork
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: cachix/install-nix-action@v20
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run `nix flake update`
+        id: update-lockfile
+        run: ./scripts/commit_flake_update.bash
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: 'Update Nix Flake lockfile'
+          commit-message: ${{ env.COMMIT_MSG }}
+          branch: 'create-pull-request/update-flake-lockfile'
+          delete-branch: true
+          branch-suffix: timestamp
+          add-paths: flake.lock
