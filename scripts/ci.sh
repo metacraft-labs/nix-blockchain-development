@@ -37,4 +37,5 @@ get_platform() {
 }
 
 set -x
+nix flake check
 nix build --json --print-build-logs ".#devShells.$(get_platform).default"
