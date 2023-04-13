@@ -1,5 +1,6 @@
 _finalNixpkgs: prevNixpkgs: let
   inherit (prevNixpkgs) callPackage symlinkJoin fetchFromGitHub;
+  inherit (prevNixpkgs.lib) optionalAttrs;
 
   solana-rust-artifacts = callPackage ./packages/solana-rust-artifacts {};
 
@@ -103,41 +104,44 @@ _finalNixpkgs: prevNixpkgs: let
     inherit ffiasm zqfield-bn254 rapidsnark pistache;
   };
 in {
-  metacraft-labs = rec {
-    solana = solana-full-sdk;
-    inherit cosmos-theta-testnet;
-    inherit circom;
+  metacraft-labs =
+    rec {
+      solana = solana-full-sdk;
+      inherit cosmos-theta-testnet;
+      inherit circom;
 
-    # Disabled until cvc4 compiles again
-    # inherit circ;
+      # Disabled until cvc4 compiles again
+      # inherit circ;
 
-    inherit wasmd;
+      inherit wasmd;
 
-    # ElrondGo:
-    inherit ledgercomm;
-    inherit cryptography36;
-    inherit cattrs22-2;
-    inherit requests-cache;
-    # Disabled until elrond-go can build with Go >= 1.19
-    # Issue #65
-    # inherit elrond-go;
-    # inherit elrond-proxy-go;
-    # inherit erdpy;
+      # ElrondGo:
+      inherit ledgercomm;
+      inherit cryptography36;
+      inherit cattrs22-2;
+      inherit requests-cache;
+      # Disabled until elrond-go can build with Go >= 1.19
+      # Issue #65
+      # inherit elrond-go;
+      # inherit elrond-proxy-go;
+      # inherit erdpy;
 
-    inherit go-opera;
-    inherit leap;
-    inherit eos-vm;
-    inherit cdt;
+      inherit go-opera;
+      inherit leap;
+      inherit eos-vm;
+      inherit cdt;
 
-    # Ethereum
-    inherit nimbus;
-    inherit go-ethereum-capella;
+      # Ethereum
+      inherit nimbus;
+      inherit go-ethereum-capella;
 
-    inherit pistache;
-    inherit zqfield-bn254;
-    inherit ffiasm;
-    inherit circom_runtime;
-    inherit rapidsnark;
-    inherit rapidsnark-server;
-  };
+      inherit zqfield-bn254;
+      inherit ffiasm;
+      inherit circom_runtime;
+      inherit rapidsnark;
+    }
+    // optionalAttrs (prevNixpkgs.hostPlatform.isLinux) {
+      inherit pistache;
+      inherit rapidsnark-server;
+    };
 }
