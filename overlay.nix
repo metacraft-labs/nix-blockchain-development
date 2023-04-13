@@ -112,15 +112,18 @@ in {
     # inherit circ;
 
     inherit wasmd;
+
+    # ElrondGo:
     inherit ledgercomm;
     inherit cryptography36;
-    inherit requests-cache;
-    inherit erdpy;
     inherit cattrs22-2;
-
+    inherit requests-cache;
     # Disabled until elrond-go can build with Go >= 1.19
+    # Issue #65
     # inherit elrond-go;
     # inherit elrond-proxy-go;
+    # inherit erdpy;
+
     inherit go-opera;
     inherit leap;
     inherit eos-vm;
