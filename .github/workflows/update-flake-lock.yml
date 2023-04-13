@@ -12,7 +12,6 @@ on:
 jobs:
   main:
     # Check if the event is not triggered by a fork
-    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
 
     steps:
