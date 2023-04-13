@@ -1,4 +1,5 @@
 {
+  lib,
   stdenv,
   pistache,
   ffiasm,
@@ -9,7 +10,12 @@
 in
   stdenv.mkDerivation rec {
     pname = "rapidsnark-server";
-    inherit (rapidsnark) version src nativeBuildInputs doCheck meta;
+    inherit (rapidsnark) version src nativeBuildInputs doCheck;
+    meta =
+      rapidsnark.meta
+      // {
+        platforms = with lib.platforms; linux;
+      };
     buildInputs = rapidsnark.buildInputs ++ [pistache];
 
     buildPhase = ''
