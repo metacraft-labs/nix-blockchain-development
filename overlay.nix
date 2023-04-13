@@ -1,4 +1,5 @@
 _finalNixpkgs: prevNixpkgs: let
+
   solana-rust-artifacts = prevNixpkgs.callPackage ./packages/solana-rust-artifacts {};
 
   solana-bpf-tools = prevNixpkgs.callPackage ./packages/solana-bpf-tools {};
