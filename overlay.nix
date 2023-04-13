@@ -135,7 +135,6 @@ in {
 
     inherit pistache;
     inherit zqfield-bn254;
-    inherit zqfield;
     inherit ffiasm;
     inherit circom_runtime;
     inherit rapidsnark;
