@@ -1,6 +1,6 @@
 {
   lib,
-  stdenv,
+  pkgs,
   python3Packages,
   fetchFromGitHub,
   py-ecc-410,
@@ -54,7 +54,8 @@ python3Packages.buildPythonPackage rec {
     substituteInPlace requirements.txt --replace "z3-solver>=4.8.8.0" z3-solver
   '';
 
-  propagatedBuildInputs = with python3Packages; [
+  propagatedBuildInputs = with pkgs;
+  with python3Packages; [
     setuptools
     pytest-mock
     requests
@@ -65,6 +66,7 @@ python3Packages.buildPythonPackage rec {
     configparser
     coloredlogs
     cython
+    gcc
 
     #custom packages
     pyparsing-247
