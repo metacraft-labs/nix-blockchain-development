@@ -3,8 +3,16 @@
   perSystem = {
     self',
     inputs',
+    pkgs,
     ...
-  }: {
+  }: let
+    rust-overlay = inputs.rust-overlay.overlays.default;
+    pkgs-extended = pkgs.extend rust-overlay;
+    rust-stable = pkgs-extended.rust-bin.stable.latest.default.override {
+      extensions = ["rust-src"];
+      targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
+    };
+  in {
     packages = self'.legacyPackages.metacraft-labs;
 
     overlayAttrs = {
@@ -13,6 +21,13 @@
 
     legacyPackages = {
       nix2container = inputs'.nix2container.packages.nix2container;
+
+      rust-stable = rust-stable;
+
+      rustPlatformStable = pkgs.makeRustPlatform {
+        rustc = rust-stable;
+        cargo = rust-stable;
+      };
     };
   };
 }
