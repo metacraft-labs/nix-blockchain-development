@@ -1,5 +1,15 @@
 {pkgs}:
-with pkgs;
+with pkgs; let
+  example-container =
+    nix2container.buildImage
+    {
+      name = "example";
+      tag = "latest";
+      config = {
+        entrypoint = ["${pkgs.lib.getExe pkgs.figlet}" "MCL"];
+      };
+    };
+in
   mkShell {
     packages =
       [
@@ -19,6 +29,9 @@ with pkgs;
         metacraft-labs.go-opera
 
         metacraft-labs.go-ethereum-capella
+
+        # Test nix2container
+        example-container.copyToDockerDaemon
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
