@@ -19,8 +19,15 @@ with pkgs;
         metacraft-labs.go-opera
 
         metacraft-labs.go-ethereum-capella
-
+      ]
+      ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
+      ]
+      ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.isLinux) [
+        # Rapidsnark depends on Pistache, which supports only Linux, see
+        # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
+        # for more information
+        metacraft-labs.rapidsnark-server
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
@@ -40,11 +47,6 @@ with pkgs;
 
         # Ethereum
         metacraft-labs.nimbus
-
-        # Rapidsnark depends on Pistache, which supports only Linux, see
-        # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
-        # for more information
-        metacraft-labs.rapidsnark-server
       ];
 
     shellHook = ''

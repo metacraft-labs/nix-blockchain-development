@@ -1,4 +1,11 @@
-{pkgs}:
+{
+  pkgs,
+  cryptography36,
+  ledgercomm,
+  requests-cache,
+  elrond-go,
+  elrond-proxy-go,
+}:
 with pkgs;
   python3Packages.buildPythonApplication rec {
     pname = "erdpy";
@@ -26,9 +33,9 @@ with pkgs;
       popd
       pushd unpacked/erdpy-${version}
 
-      sed -iE 's#./node#${metacraft-labs.elrond-go}/bin/node#' erdpy/testnet/core.py
-      sed -iE 's#./seednode#${metacraft-labs.elrond-go}/bin/seednode#' erdpy/testnet/core.py
-      sed -iE 's#./proxy#${metacraft-labs.elrond-proxy-go}/bin/proxy#' erdpy/testnet/core.py
+      sed -iE 's#./node#${elrond-go}/bin/node#' erdpy/testnet/core.py
+      sed -iE 's#./seednode#${elrond-go}/bin/seednode#' erdpy/testnet/core.py
+      sed -iE 's#./proxy#${elrond-proxy-go}/bin/proxy#' erdpy/testnet/core.py
 
       # Attempting to preveent erdpy from downloading elrond-go and elrond-proxy-go doeesn't work out, due to the way dependeency resolution works in erdpy
       # sed -iE 's/StandaloneModule(key="elrond_go", repo_name="elrond-go", organisation="ElrondNetwork"),//' erdpy/dependencies/install.py
@@ -44,8 +51,8 @@ with pkgs;
 
       sed -iE 's#DEPENDENCY_KEYS = ["elrond_go", "elrond_proxy_go", "testwallets"]#$DEPENDENCY_KEYS = ["testwallets"]#' erdpy/testnet/setup.py
 
-      # sed -iE 's#{ELRONDSDK}/elrond_go/{TAG}/elrond-go-{NOvTAG}#${metacraft-labs.elrond-go}#' erdpy/testnet/setup.py
-      # sed -iE 's#{ELRONDSDK}/elrond_proxy_go/{TAG}/elrond-proxy-go-{NOvTAG}#${metacraft-labs.elrond-proxy-go}#' erdpy/testnet/setup.py
+      # sed -iE 's#{ELRONDSDK}/elrond_go/{TAG}/elrond-go-{NOvTAG}#${elrond-go}#' erdpy/testnet/setup.py
+      # sed -iE 's#{ELRONDSDK}/elrond_proxy_go/{TAG}/elrond-proxy-go-{NOvTAG}#${elrond-proxy-go}#' erdpy/testnet/setup.py
 
       popd
       wheel pack ./unpacked/erdpy-${version}
@@ -54,9 +61,9 @@ with pkgs;
 
     propagatedBuildInputs = with python3Packages; [
       hid
-      metacraft-labs.cryptography36
-      metacraft-labs.ledgercomm
-      metacraft-labs.requests-cache
+      cryptography36
+      ledgercomm
+      requests-cache
     ];
 
     erdpy_script = writeScriptBin "erdpy" ''

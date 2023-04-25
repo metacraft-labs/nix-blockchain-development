@@ -1,9 +1,8 @@
-{pkgs}:
+{pkgs}: {version}:
 with pkgs;
   python3Packages.buildPythonPackage rec {
     pname = "cryptography-vectors";
-    # The test vectors must have the same version as the cryptography package
-    inherit (metacraft-labs.cryptography36) version;
+    inherit version;
 
     src = python3Packages.fetchPypi {
       pname = "cryptography_vectors";
