@@ -1,4 +1,7 @@
-{pkgs}:
+{
+  pkgs,
+  cattrs22-2,
+}:
 with pkgs;
   python3Packages.buildPythonPackage rec {
     pname = "requests_cache";
@@ -15,7 +18,7 @@ with pkgs;
     };
 
     propagatedBuildInputs = with python3Packages; [
-      metacraft-labs.cattrs22-2
+      cattrs22-2
       attrs
       urllib3
       url-normalize

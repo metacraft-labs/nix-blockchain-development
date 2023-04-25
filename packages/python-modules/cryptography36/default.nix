@@ -1,10 +1,11 @@
 {pkgs}: let
-  cryptography-vectors = pkgs.callPackage ./vectors.nix {pkgs = pkgs;};
+  version = "36.0.2"; # Also update the hash in vectors.nix
+  cryptography-vectors = pkgs.callPackage ./vectors.nix {inherit pkgs;} {inherit version;};
 in
   with pkgs;
     python3Packages.buildPythonPackage rec {
       pname = "cryptography";
-      version = "36.0.2"; # Also update the hash in vectors.nix
+      inherit version;
 
       src = python3Packages.fetchPypi {
         inherit pname version;
