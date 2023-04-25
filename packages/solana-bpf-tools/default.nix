@@ -10,7 +10,7 @@ with pkgs;
     };
 
     # TODO autoPatchElf is Linux-specific. We need a cross-platform solution.
-    nativeBuildInputs = lib.optionals stdenv.isLinux [autoPatchelfHook];
+    nativeBuildInputs = lib.optionals stdenv.isLinux [autoPatchelfHook gccForLibs.lib];
 
     buildInputs = with pkgs; [
       zlib
