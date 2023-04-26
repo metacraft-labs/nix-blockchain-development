@@ -36,6 +36,8 @@ get_platform() {
   echo "$system"
 }
 
+system="$(get_platform)"
+
 set -x
 nix flake check
-nix build --json --print-build-logs ".#devShells.$(get_platform).default"
+nix build --json --print-build-logs ".#devShells.$system.default"
