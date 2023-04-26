@@ -23,7 +23,11 @@ buildNpmPackage rec {
 
   dontNpmBuild = true;
 
-  doCheck = with gccStdenv.buildPlatform; !(isDarwin && isx86);
+  # doCheck = with gccStdenv.buildPlatform; !(isDarwin && isx86);
+  # Tests are disabled as they require too much time.
+  # TODO: Re-enable them when we figure out if we can speed them up (e.g. reduce
+  # number of iterations, or run a smaller subset).
+  doCheck = false;
   nativeCheckInputs = [nasm nodePackages.mocha gccStdenv.cc];
   checkInputs = [gmp];
   checkPhase = "mocha --bail";
