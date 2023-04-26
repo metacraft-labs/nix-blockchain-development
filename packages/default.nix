@@ -122,9 +122,7 @@
         nimbus = callPackage ./nimbus/default.nix {};
       }
       // lib.optionalAttrs hostPlatform.isx86 rec {
-        inherit zqfield-bn254;
-        inherit ffiasm;
-        inherit rapidsnark;
+        inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
       }
       // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
         pistache = callPackage ./pistache/default.nix {};
