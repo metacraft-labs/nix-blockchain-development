@@ -63,6 +63,9 @@ in
 
         # py-ecc
         metacraft-labs.py-ecc
+
+        # corepack-shims
+        metacraft-labs.corepack-shims
       ];
 
     shellHook = ''
