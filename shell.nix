@@ -49,6 +49,7 @@ in
 
         # Disabled until elrond-go can build with Go >= 1.19
         # Elrond
+        metacraft-labs.cryptography36
         # metacraft-labs.erdpy
         # metacraft-labs.elrond-go
         # metacraft-labs.elrond-proxy-go

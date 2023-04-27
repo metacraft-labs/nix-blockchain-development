@@ -109,6 +109,7 @@
           inherit solana-rust-artifacts solana-bpf-tools;
         };
 
+        inherit cryptography36;
         # inherit erdpy elrond-go elrond-proxy-go;
 
         # EOS / Antelope
