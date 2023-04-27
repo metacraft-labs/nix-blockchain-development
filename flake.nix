@@ -38,12 +38,6 @@
   }:
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
-      flake = {
-        # overlays.default =
-        #   nixpkgs.lib.fixedPoints.composeExtensions
-        #   rust-overlay.overlays.default
-        #   (import ./overlay.nix);
-      };
       imports = [./packages];
       perSystem = {final, ...}: {
         devShells.default = import ./shell.nix {pkgs = final;};
