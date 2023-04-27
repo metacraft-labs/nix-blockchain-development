@@ -5,6 +5,7 @@
   go_1_19,
   autoPatchelfHook,
   callPackage,
+  gccForLibs,
 }: let
   system = stdenv.targetPlatform.system;
   libwasmvm_files = {
@@ -36,6 +37,7 @@ in
     subPackages = ["cmd/wasmd"];
 
     nativeBuildInputs = lib.optionals stdenv.isLinux [autoPatchelfHook];
+    buildInputs = lib.optionals stdenv.isLinux [gccForLibs.libgcc];
 
     postBuild = ''
       mkdir -p "$out/lib"
