@@ -7,6 +7,8 @@
     inherit (pkgs) lib darwin hostPlatform symlinkJoin fetchFromGitHub;
     inherit (pkgs.lib) optionalAttrs callPackageWith;
     inherit (self'.legacyPackages) rustPlatformStable;
+    python3Packages = pkgs.python3Packages;
+
     callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
     darwinPkgs = {
       inherit (darwin.apple_sdk.frameworks) Foundation;
@@ -62,6 +64,10 @@
     });
     cryptography36 = callPackage ./python-modules/cryptography36/default.nix {};
 
+    py-ecc = callPackage ./python-modules/py-ecc/default.nix {
+      inherit (python3Packages) buildPythonPackage cached-property eth-typing eth-utils mypy-extensions pytestCheckHook pythonOlder;
+    };
+
     ledgercomm = callPackage ./python-modules/ledgercomm/default.nix {};
     requests-cache = callPackage ./python-modules/requests-cache/default.nix {inherit cattrs22-2;};
 
@@ -110,6 +116,8 @@
         };
 
         inherit cryptography36;
+
+        inherit py-ecc;
         # inherit erdpy elrond-go elrond-proxy-go;
 
         # EOS / Antelope

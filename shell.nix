@@ -60,6 +60,9 @@ in
 
         # Ethereum
         metacraft-labs.nimbus
+
+        # py-ecc
+        metacraft-labs.py-ecc
       ];
 
     shellHook = ''
