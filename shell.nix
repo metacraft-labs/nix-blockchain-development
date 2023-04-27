@@ -66,6 +66,9 @@ in
 
         # corepack-shims
         metacraft-labs.corepack-shims
+
+        # emscripten
+        metacraft-labs.emscripten
       ];
 
     shellHook = ''
