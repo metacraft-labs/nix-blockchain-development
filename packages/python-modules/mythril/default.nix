@@ -26,7 +26,6 @@
   z3-solver,
   persistent_fixed,
   matplotlib_fixed,
-  pytest_fixed,
   pytest-cov_fixed,
 }:
 python3Packages.buildPythonPackage rec {
@@ -67,6 +66,7 @@ python3Packages.buildPythonPackage rec {
     coloredlogs
     cython
     gcc
+    pytest
 
     #custom packages
     pyparsing-247
@@ -92,7 +92,7 @@ python3Packages.buildPythonPackage rec {
     z3-solver
     persistent_fixed
     matplotlib_fixed
-    pytest_fixed
+
     pytest-cov_fixed
   ];
   nativeBuildInputs = propagatedBuildInputs;

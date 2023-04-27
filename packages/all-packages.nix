@@ -1,18 +1,18 @@
-{...}: {
+{inputs, ...}: {
+  imports = [inputs.flake-parts.flakeModules.easyOverlay ./python-modules];
   perSystem = {
     pkgs,
     self',
     ...
   }: let
-    inherit (pkgs) lib darwin hostPlatform symlinkJoin fetchFromGitHub;
+    inherit (pkgs) lib darwin hostPlatform symlinkJoin fetchFromGitHub python3Packages;
     inherit (pkgs.lib) optionalAttrs callPackageWith;
-    inherit (self'.legacyPackages) rustPlatformStable;
-    python3Packages = pkgs.python3Packages;
-
+    inherit (self'.legacyPackages) rustPlatformStable rustPlatformNightly;
     callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
     darwinPkgs = {
       inherit (darwin.apple_sdk.frameworks) Foundation;
     };
+    python-modules = self'.legacyPackages.python-modules;
 
     # RapidSnark
     ffiasm-src = callPackage ./ffiasm/src.nix {};
@@ -49,36 +49,21 @@
     };
 
     # Elrond / MultiversX
-    # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
-    cattrs22-2 = pkgs.python3Packages.cattrs.overrideAttrs (finalAttrs: previousAttrs: {
-      version = "22.2.0";
 
-      src = fetchFromGitHub {
-        owner = "python-attrs";
-        repo = "cattrs";
-        rev = "v22.2.0";
-        hash = "sha256-Qnrq/mIA/t0mur6IAen4vTmMIhILWS6v5nuf+Via2hA=";
-      };
-
-      patches = [];
-    });
-    cryptography36 = callPackage ./python-modules/cryptography36/default.nix {};
-
-    py-ecc = callPackage ./python-modules/py-ecc/default.nix {
-      inherit (python3Packages) buildPythonPackage cached-property eth-typing eth-utils mypy-extensions pytestCheckHook pythonOlder;
+    erdpy = callPackage ./erdpy/default.nix {
+      inherit elrond-go elrond-proxy-go;
+      inherit (python-modules) cryptography36 ledgercomm requests-cache;
     };
-
-    ledgercomm = callPackage ./python-modules/ledgercomm/default.nix {};
-    requests-cache = callPackage ./python-modules/requests-cache/default.nix {inherit cattrs22-2;};
-
-    corepack-shims = callPackage ./corepack-shims/default.nix {};
-
-    erdpy = callPackage ./erdpy/default.nix {inherit cryptography36 elrond-go elrond-proxy-go ledgercomm requests-cache;};
     elrond-go = callPackage ./elrond-go/default.nix {};
     elrond-proxy-go = callPackage ./elrond-proxy-go/default.nix {};
+
+    corepack-shims = callPackage ./corepack-shims/default.nix {};
   in {
     legacyPackages.metacraft-labs =
       rec {
+        inherit python-modules;
+        inherit (python-modules) mythril;
+
         cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {};
 
         circom = callPackage ./circom/default.nix {};
@@ -131,9 +116,6 @@
           inherit solana-rust-artifacts solana-bpf-tools;
         };
 
-        inherit cryptography36;
-
-        inherit py-ecc;
         inherit corepack-shims;
         # inherit erdpy elrond-go elrond-proxy-go;
 

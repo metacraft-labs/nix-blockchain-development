@@ -7,7 +7,6 @@
   git,
   cargo,
   rustPlatform,
-  rust-bin,
 }:
 python3Packages.buildPythonPackage rec {
   pname = "blake2b-py";
@@ -50,7 +49,6 @@ python3Packages.buildPythonPackage rec {
     gnumake
     git
     python3Packages.python
-    rust-bin.nightly.latest.default
     rustPlatform.cargoSetupHook
     rustPlatform.maturinBuildHook
     python3Packages.setuptools-rust
