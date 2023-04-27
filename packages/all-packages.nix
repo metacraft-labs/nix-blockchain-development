@@ -1,7 +1,13 @@
 {...}: {
-  perSystem = {pkgs, ...}: let
-    inherit (pkgs) callPackage lib darwin hostPlatform symlinkJoin fetchFromGitHub;
-    inherit (pkgs.lib) optionalAttrs;
+  perSystem = {
+    pkgs,
+    self',
+    ...
+  }: let
+    inherit (pkgs) lib darwin hostPlatform symlinkJoin fetchFromGitHub;
+    inherit (pkgs.lib) optionalAttrs callPackageWith;
+    inherit (self'.legacyPackages) rustPlatformStable;
+    callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
     darwinPkgs = {
       inherit (darwin.apple_sdk.frameworks) Foundation;
     };
