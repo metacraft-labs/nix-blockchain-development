@@ -23,8 +23,7 @@ in
         metacraft-labs.cosmos-theta-testnet
         metacraft-labs.circom
 
-        # Disabled until cvc4 builds again
-        # metacraft-labs.circ
+        metacraft-labs.circ
 
         metacraft-labs.go-opera
 
