@@ -38,6 +38,9 @@ in
 
         # Test nix2container
         example-container.copyToDockerDaemon
+
+        # For cachix caching
+        python3Packages.py-ecc
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
