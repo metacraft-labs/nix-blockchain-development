@@ -61,7 +61,6 @@
   in {
     legacyPackages.metacraft-labs =
       rec {
-        inherit python-modules;
         inherit (python-modules) mythril;
 
         cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {};

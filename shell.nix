@@ -1,4 +1,7 @@
-{pkgs}:
+{
+  pkgs,
+  self',
+}:
 with pkgs; let
   example-container =
     nix2container.buildImage
@@ -9,6 +12,7 @@ with pkgs; let
         entrypoint = ["${pkgs.lib.getExe pkgs.figlet}" "MCL"];
       };
     };
+  python-modules = self'.legacyPackages.python-modules;
 in
   mkShell {
     packages =
@@ -51,7 +55,7 @@ in
 
         # Disabled until elrond-go can build with Go >= 1.19
         # Elrond
-        metacraft-labs.python-modules.cryptography36
+        python-modules.cryptography36
         # metacraft-labs.erdpy
         # metacraft-labs.elrond-go
         # metacraft-labs.elrond-proxy-go
@@ -65,7 +69,7 @@ in
         metacraft-labs.nimbus
 
         # py-ecc
-        metacraft-labs.python-modules.py-ecc
+        python-modules.py-ecc
 
         # corepack-shims
         metacraft-labs.corepack-shims
