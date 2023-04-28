@@ -91,7 +91,7 @@
 
     cardano = callPackage ./cardano/default.nix {inherit cardano-cli cardano-node;};
 
-    polkadot = callPackage ./polkadot/default.nix {
+    polkadot-generic = callPackage ./polkadot/default.nix {
       craneLib = craneLib-stable;
       inherit (darwin) libiconv;
       inherit
@@ -101,6 +101,8 @@
         SystemConfiguration
         ;
     };
+    polkadot = polkadot-generic {};
+    polkadot-fast = polkadot-generic {enableFastRuntime = true;};
   in {
     legacyPackages.metacraft-labs =
       rec {
@@ -145,7 +147,7 @@
         circom_runtime = callPackage ./circom_runtime/default.nix {};
 
         # Polkadot
-        inherit polkadot;
+        inherit polkadot polkadot-fast;
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};

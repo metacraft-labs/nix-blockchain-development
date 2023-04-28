@@ -14,7 +14,7 @@
   CoreFoundation,
   Security,
   SystemConfiguration,
-}: let
+}: {enableFastRuntime ? false}: let
   tags = {
     "v0.9.40" = {
       commitSha1 = "a2b62fb872ba22622aaf8e13f9dcd9a4adcc454f";
@@ -41,6 +41,8 @@ in
       Security
       SystemConfiguration
     ];
+
+    buildFeatures = ["jemalloc-allocator"] ++ lib.optional enableFastRuntime "fast-runtime";
 
     nativeBuildInputs = [rustPlatform.bindgenHook rocksdb];
 
