@@ -461,6 +461,10 @@
     trie = callPackage ./trie/default.nix {inherit typing-extensions-31002 eth-utils-110 rlp-201 hexbytes-023;};
     eth-bloom-104 = callPackage ./eth-bloom-104/default.nix {};
     z3-solver = callPackage ./z3-solver/default.nix {inherit jinja2_fixed;};
+
+    py-ecc = callPackage ./py-ecc/default.nix {
+      inherit (python3Packages) buildPythonPackage cached-property eth-typing eth-utils mypy-extensions pytestCheckHook pythonOlder;
+    };
   in {
     legacyPackages.python-modules = {
       inherit cryptography36 ledgercomm requests-cache cattrs22-2;
