@@ -33,6 +33,7 @@ in
         example-container.copyToDockerDaemon
 
         metacraft-labs.polkadot
+        metacraft-labs.polkadot-fast
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
