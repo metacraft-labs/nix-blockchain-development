@@ -23,8 +23,7 @@ python3Packages.buildPythonPackage rec {
   };
 
   postUnpack = ''
-    cp ${./Cargo.lock} /build/Cargo.lock
-    cp ${./Cargo.lock} /build/source/Cargo.lock
+    cp ${./Cargo.lock} ./source/Cargo.lock
   '';
 
   # cargoLock = let
@@ -39,8 +38,7 @@ python3Packages.buildPythonPackage rec {
     name = "${pname}-${version}";
     sha256 = "sha256-BS3zqdCn7E/alj+rw23QKasTKiQuUdtDSuyNvB/wObI=";
     postUnpack = ''
-      cp ${./Cargo.lock} /build/Cargo.lock
-      cp ${./Cargo.lock} /build/source/Cargo.lock
+      cp ${./Cargo.lock} ./source/Cargo.lock
     '';
   };
 
