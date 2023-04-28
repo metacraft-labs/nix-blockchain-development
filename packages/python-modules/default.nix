@@ -469,6 +469,8 @@
     legacyPackages.python-modules = {
       inherit cryptography36 ledgercomm requests-cache cattrs22-2;
 
+      inherit py-ecc;
+
       inherit mythril;
       inherit blake2b-py;
       inherit py-solc-x;
