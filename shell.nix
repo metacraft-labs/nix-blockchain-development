@@ -65,7 +65,7 @@ in
         metacraft-labs.nimbus
 
         # py-ecc
-        metacraft-labs.py-ecc
+        metacraft-labs.python-modules.py-ecc
 
         # corepack-shims
         metacraft-labs.corepack-shims
