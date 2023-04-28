@@ -12,6 +12,10 @@
       extensions = ["rust-src"];
       targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
     };
+    rust-nightly = pkgs-extended.rust-bin.nightly.latest.default.override {
+      extensions = ["rust-src"];
+      targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
+    };
   in {
     packages = self'.legacyPackages.metacraft-labs;
 
@@ -22,11 +26,15 @@
     legacyPackages = {
       nix2container = inputs'.nix2container.packages.nix2container;
 
-      rust-stable = rust-stable;
+      inherit rust-stable rust-nightly;
 
       rustPlatformStable = pkgs.makeRustPlatform {
         rustc = rust-stable;
         cargo = rust-stable;
+      };
+      rustPlatformNightly = pkgs.makeRustPlatform {
+        rustc = rust-nightly;
+        cargo = rust-nightly;
       };
     };
   };

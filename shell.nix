@@ -1,4 +1,7 @@
-{pkgs}:
+{
+  pkgs,
+  self',
+}:
 with pkgs; let
   example-container =
     nix2container.buildImage
@@ -9,6 +12,7 @@ with pkgs; let
         entrypoint = ["${pkgs.lib.getExe pkgs.figlet}" "MCL"];
       };
     };
+  python-modules = self'.legacyPackages.python-modules;
 in
   mkShell {
     packages =
@@ -29,8 +33,14 @@ in
 
         metacraft-labs.go-ethereum-capella
 
+        # Mythril
+        metacraft-labs.mythril
+
         # Test nix2container
         example-container.copyToDockerDaemon
+
+        # For cachix caching
+        python3Packages.py-ecc
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
@@ -48,7 +58,7 @@ in
 
         # Disabled until elrond-go can build with Go >= 1.19
         # Elrond
-        metacraft-labs.cryptography36
+        python-modules.cryptography36
         # metacraft-labs.erdpy
         # metacraft-labs.elrond-go
         # metacraft-labs.elrond-proxy-go
@@ -60,9 +70,6 @@ in
 
         # Ethereum
         metacraft-labs.nimbus
-
-        # py-ecc
-        metacraft-labs.py-ecc
 
         # corepack-shims
         metacraft-labs.corepack-shims

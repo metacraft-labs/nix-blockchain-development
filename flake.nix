@@ -39,8 +39,15 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
       imports = [./packages];
-      perSystem = {final, ...}: {
-        devShells.default = import ./shell.nix {pkgs = final;};
+      perSystem = {
+        final,
+        self',
+        ...
+      }: {
+        devShells.default = import ./shell.nix {
+          pkgs = final;
+          inherit self';
+        };
       };
     };
 }
