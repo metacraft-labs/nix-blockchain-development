@@ -68,9 +68,6 @@ in
         # Ethereum
         metacraft-labs.nimbus
 
-        # py-ecc
-        python-modules.py-ecc
-
         # corepack-shims
         metacraft-labs.corepack-shims
 
