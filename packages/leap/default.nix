@@ -7,7 +7,7 @@
   xz,
 }:
 clangStdenv.mkDerivation rec {
-  name = "leap";
+  pname = "leap";
   version = "4.0.0";
 
   src = fetchFromGitHub {
