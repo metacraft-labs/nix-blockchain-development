@@ -2,8 +2,14 @@
   description = "nix-blockchain-development";
 
   nixConfig = {
-    extra-substituters = "https://nix-blockchain-development.cachix.org";
-    extra-trusted-public-keys = "nix-blockchain-development.cachix.org-1:Ekei3RuW3Se+P/UIo6Q/oAgor/fVhFuuuX5jR8K/cdg=";
+    extra-substituters = [
+      "https://nix-blockchain-development.cachix.org"
+      "https://cache.iog.io"
+    ];
+    extra-trusted-public-keys = [
+      "nix-blockchain-development.cachix.org-1:Ekei3RuW3Se+P/UIo6Q/oAgor/fVhFuuuX5jR8K/cdg="
+      "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+    ];
   };
 
   inputs = {
