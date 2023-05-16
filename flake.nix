@@ -11,6 +11,8 @@
 
     flake-utils.url = github:numtide/flake-utils;
 
+    cardano-node.url = "github:input-output-hk/cardano-node/1.35.5";
+
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
