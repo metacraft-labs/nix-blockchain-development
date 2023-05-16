@@ -15,7 +15,12 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    flake-utils.url = github:numtide/flake-utils;
+    flake-utils.url = "github:numtide/flake-utils";
+
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
 
     cardano-node.url = "github:input-output-hk/cardano-node/8.0.0";
 
@@ -34,6 +39,14 @@
       url = "github:nlewo/nix2container";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+    };
+
+    crane = {
+      url = "github:ipetkov/crane";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
   };
 
