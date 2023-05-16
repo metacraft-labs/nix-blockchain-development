@@ -20,11 +20,15 @@
       commitSha1 = "a2b62fb872ba22622aaf8e13f9dcd9a4adcc454f";
       srcSha256 = "sha256-xpor2sWdYD9WTtmPuxvC9MRRLPPMk8yHlD7RwtSijqQ=";
     };
+    "v0.9.42" = {
+      commitSha1 = "9b1fc27cec47f01a2c229532ee7ab79cc5bb28ef";
+      srcSha256 = "sha256-73YvkpYoRcM9cvEICjqddxT/gJDcEVfP7QrSSyT92JY=";
+    };
   };
 in
   craneLib.buildPackage rec {
     pname = "polkadot";
-    version = "0.9.40";
+    version = "0.9.42";
 
     src = fetchFromGitHub {
       owner = "paritytech";
