@@ -25,11 +25,10 @@
       srcSha256 = "sha256-73YvkpYoRcM9cvEICjqddxT/gJDcEVfP7QrSSyT92JY=";
     };
   };
-in
-  craneLib.buildPackage rec {
-    pname = "polkadot";
-    version = "0.9.42";
 
+  version = "0.9.42";
+
+  commonArgs = {
     src = fetchFromGitHub {
       owner = "paritytech";
       repo = "polkadot";
@@ -37,7 +36,7 @@ in
       sha256 = tags."v${version}".srcSha256;
     };
 
-    cargoSha256 = "sha256-sZ1OwFyww7/xhc92D2qlpYyboTMOgcv8JwmdPskYQTE=";
+    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb];
 
     buildInputs = lib.optionals stdenv.isDarwin [
       libiconv
@@ -46,28 +45,37 @@ in
       SystemConfiguration
     ];
 
-    buildFeatures = ["jemalloc-allocator"] ++ lib.optional enableFastRuntime "fast-runtime";
-
-    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb];
-
     SUBSTRATE_CLI_GIT_COMMIT_HASH = tags."v${version}".commitSha1;
     PROTOC = "${protobuf}/bin/protoc";
     ROCKSDB_LIB_DIR = "${rocksdb}/lib";
+  };
 
-    # NOTE: We don't build the WASM runtimes since this would require a more
-    # complicated rust environment setup and this is only needed for developer
-    # environments. The resulting binary is useful for end-users of live networks
-    # since those just use the WASM blob from the network chainspec.
-    SKIP_WASM_BUILD = 1;
+  cargoArtifacts = craneLib.buildDepsOnly (commonArgs
+    // {
+      pname = "polkadot";
+    });
+in
+  craneLib.buildPackage (commonArgs
+    // rec {
+      pname = "polkadot" + lib.optionalString enableFastRuntime "-fast";
+      inherit cargoArtifacts;
 
-    # We can't run the test suite since we didn't compile the WASM runtimes.
-    doCheck = false;
+      buildFeatures = ["jemalloc-allocator"] ++ lib.optional enableFastRuntime "fast-runtime";
 
-    meta = with lib; {
-      description = "Polkadot Node Implementation";
-      homepage = "https://polkadot.network";
-      license = licenses.gpl3Only;
-      maintainers = with maintainers; [akru andresilva asymmetric FlorianFranzen RaghavSood];
-      platforms = platforms.unix;
-    };
-  }
+      # NOTE: We don't build the WASM runtimes since this would require a more
+      # complicated rust environment setup and this is only needed for developer
+      # environments. The resulting binary is useful for end-users of live networks
+      # since those just use the WASM blob from the network chainspec.
+      SKIP_WASM_BUILD = 1;
+
+      # We can't run the test suite since we didn't compile the WASM runtimes.
+      doCheck = false;
+
+      meta = with lib; {
+        description = "Polkadot Node Implementation";
+        homepage = "https://polkadot.network";
+        license = licenses.gpl3Only;
+        maintainers = with maintainers; [akru andresilva asymmetric FlorianFranzen RaghavSood];
+        platforms = platforms.unix;
+      };
+    })
