@@ -62,14 +62,7 @@ in
 
       buildFeatures = ["jemalloc-allocator"] ++ lib.optional enableFastRuntime "fast-runtime";
 
-      # NOTE: We don't build the WASM runtimes since this would require a more
-      # complicated rust environment setup and this is only needed for developer
-      # environments. The resulting binary is useful for end-users of live networks
-      # since those just use the WASM blob from the network chainspec.
-      SKIP_WASM_BUILD = 1;
-
-      # We can't run the test suite since we didn't compile the WASM runtimes.
-      doCheck = false;
+      doCheck = true;
 
       meta = with lib; {
         description = "Polkadot Node Implementation";
