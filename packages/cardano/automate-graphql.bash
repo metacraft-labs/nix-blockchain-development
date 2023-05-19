@@ -77,5 +77,5 @@ COMPOSE_DOCKER_CLI_BUILD=1 \
 NETWORK=testnet API_PORT=3102 \
 HASURA_PORT=8092 OGMIOS_PORT=1339 \
 POSTGRES_PORT=5434 \
-docker compose -p testnet up -d --build && docker compose -p testnet logs -f > "$CARDANO_GRAPHQL_NETWORK_CONFIG_PATH"/output.txt
+docker compose -f $CARDANO_GRAPHQL_SRC/docker-compose.yml -p testnet up -d --build && docker compose -p testnet logs -f > "$CARDANO_GRAPHQL_NETWORK_CONFIG_PATH"/output.txt
 echo "Graphql is started"
