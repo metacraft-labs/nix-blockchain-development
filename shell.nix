@@ -1,4 +1,7 @@
-{pkgs}:
+{
+  pkgs,
+  self',
+}:
 with pkgs; let
   example-container =
     nix2container.buildImage
@@ -35,7 +38,9 @@ in
         metacraft-labs.polkadot
         metacraft-labs.polkadot-fast
 
-        metacraft-labs.noir
+        # noir
+        self'.legacyPackages.noir.noir-native
+        self'.legacyPackages.noir.noir-wasm
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark

@@ -130,6 +130,31 @@
         "type": "github"
       }
     },
+    "barretenberg": {
+      "inputs": {
+        "flake-utils": [
+          "noir",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "noir",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1683909802,
+        "narHash": "sha256-2CL8NYKLYwwy6n0RyldvH86ULgrSvfzHrgq2Qf0ZUkE=",
+        "owner": "AztecProtocol",
+        "repo": "barretenberg",
+        "rev": "97c9bc72aebab850b4a647d6e6cc50085226eafb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AztecProtocol",
+        "repo": "barretenberg",
+        "type": "github"
+      }
+    },
     "blank": {
       "locked": {
         "lastModified": 1625557891,
@@ -4991,6 +5016,39 @@
         "type": "github"
       }
     },
+    "noir": {
+      "inputs": {
+        "barretenberg": "barretenberg",
+        "crane": [
+          "crane"
+        ],
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": [
+          "rust-overlay"
+        ]
+      },
+      "locked": {
+        "lastModified": 1685480426,
+        "narHash": "sha256-vdfrdnRgzUiF58NbkM7cVAu9/wyFkqjwffXgx8bUmw4=",
+        "owner": "noir-lang",
+        "repo": "noir",
+        "rev": "eae624bc68c41c97199580e41d83f69af5cd0c52",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noir-lang",
+        "repo": "noir",
+        "type": "github"
+      }
+    },
     "nosys": {
       "locked": {
         "lastModified": 1667881534,
@@ -5271,6 +5329,7 @@
         "flake-utils": "flake-utils_23",
         "nix2container": "nix2container_8",
         "nixpkgs": "nixpkgs_29",
+        "noir": "noir",
         "rust-overlay": "rust-overlay"
       }
     },
