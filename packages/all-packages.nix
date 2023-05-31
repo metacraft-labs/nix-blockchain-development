@@ -9,6 +9,7 @@
     inherit
       (self'.legacyPackages)
       rustPlatformStable
+      rustPlatformNightly
       craneLib-stable
       cardano-node
       cardano-cli
@@ -103,6 +104,8 @@
     };
     polkadot = polkadot-generic {};
     polkadot-fast = polkadot-generic {enableFastRuntime = true;};
+
+    zokrates = callPackage ./zokrates/default.nix {rustPlatform = rustPlatformNightly."2022-07-01";};
   in {
     legacyPackages.metacraft-labs =
       rec {
@@ -148,6 +151,8 @@
 
         # Polkadot
         inherit polkadot polkadot-fast;
+
+        inherit zokrates;
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};
