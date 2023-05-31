@@ -48,6 +48,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.rust-overlay.follows = "rust-overlay";
     };
+
+    noir = {
+      url = "github:noir-lang/noir";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.flake-compat.follows = "flake-compat";
+      inputs.rust-overlay.follows = "rust-overlay";
+      inputs.crane.follows = "crane";
+    };
   };
 
   outputs = inputs @ {
@@ -60,8 +69,15 @@
     flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
       imports = [./packages];
-      perSystem = {final, ...}: {
-        devShells.default = import ./shell.nix {pkgs = final;};
+      perSystem = {
+        final,
+        self',
+        ...
+      }: {
+        devShells.default = import ./shell.nix {
+          pkgs = final;
+          inherit self';
+        };
       };
     };
 }

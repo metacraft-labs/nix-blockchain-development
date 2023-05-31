@@ -17,13 +17,13 @@
     packages = self'.legacyPackages.metacraft-labs;
 
     overlayAttrs = {
-      inherit (self'.legacyPackages) metacraft-labs nix2container;
+      inherit (self'.legacyPackages) metacraft-labs nix2container noir;
     };
 
     legacyPackages = {
       nix2container = inputs'.nix2container.packages.nix2container;
       inherit (inputs'.cardano-node.packages) cardano-node cardano-cli;
-
+      noir = inputs'.noir.packages;
       inherit rust-stable craneLib-stable;
 
       rustPlatformStable = pkgs.makeRustPlatform {
