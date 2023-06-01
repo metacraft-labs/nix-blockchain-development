@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 3dcebcc9..37b28add 100644
+index 29d8929..db0a932 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,4 +1,4 @@
@@ -8,7 +8,7 @@ index 3dcebcc9..37b28add 100644
  
  NLVMC=nlvm/nlvm
  NLVMR=nlvm/nlvmr
-@@ -29,22 +29,11 @@ endif
+@@ -29,22 +29,10 @@ endif
  .PHONY: all
  all: $(NLVMC)
  
@@ -19,9 +19,7 @@ index 3dcebcc9..37b28add 100644
 -	git pull ;\
 -	make -f makefile -j4
 -	cd Nim ; bin/nim c koch
-+$(NLVMC): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
-+	cd nlvm && time $(NIMC) $(NIMFLAGS) $(NLVMCFLAGS) c nlvm
- 
+-
 -$(NIMC): Nim/koch Nim/compiler/*.nim
 -	cd Nim && ./koch boot -d:release
 -
@@ -30,12 +28,14 @@ index 3dcebcc9..37b28add 100644
 -
 -$(NLVMR): $(LLVM_DEP) $(NIMC) Nim/compiler/*.nim  nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
 -	cd nlvm && time ../$(NIMC) $(NIMFLAGS) -d:release $(NLVMCFLAGS) -o:nlvmr c nlvm
++$(NLVMC): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
++	cd nlvm && time $(NIMC) $(NIMFLAGS) $(NLVMCFLAGS) c nlvm
 +$(NLVMR): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
 +	cd nlvm && time $(NIMC) $(NIMFLAGS) -d:release $(NLVMCFLAGS) -o:nlvmr c nlvm
  
  nlvm/nlvm.ll: $(NLVMC) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
- 	cd nlvm && time ./nlvm $(NLVMFLAGS) -o:nlvm.ll -c c nlvm
-@@ -59,44 +48,41 @@ nlvm/nlvm.self.ll: nlvm/nlvm.self
+ 	cd nlvm && time ./nlvm $(NLVMFLAGS) -o:nlvm.ll $(NLVMCFLAGS) -c c nlvm
+@@ -62,44 +50,41 @@ nlvm/nlvm.self.ll: nlvm/nlvm.self
  compare: nlvm/nlvm.self.ll nlvm/nlvm.ll
  	diff -u nlvm/nlvm.self.ll nlvm/nlvm.ll
  
@@ -91,17 +91,17 @@ index 3dcebcc9..37b28add 100644
  
  ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
  	sh ./make-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sha \
-@@ -106,7 +92,8 @@ ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
+@@ -108,7 +93,8 @@ ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
+ 		-DLLVM_ENABLE_ASSERTIONS=1 \
  		-DLLVM_INCLUDE_TESTS=Off \
- 		-DLLVM_INCLUDE_EXAMPLES=Off \
  		-DLLVM_INCLUDE_BENCHMARKS=Off \
 -		-DCMAKE_BUILD_TYPE=RelWithDebInfo
 +		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
-+		-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=On
++ 		-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=On
  
  ext/$(LLVM_DIR)/sta/bin/llvm-config:
  	sh ./dl-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sta
-@@ -115,7 +102,7 @@ ext/$(LLVM_DIR)/sta/bin/llvm-config:
+@@ -117,7 +103,7 @@ ext/$(LLVM_DIR)/sta/bin/llvm-config:
  prepare-llvm: $(LLVM_DEP)
  
  .PHONY: prepare-nim
