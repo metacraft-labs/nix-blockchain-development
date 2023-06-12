@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index 29d8929..db0a932 100644
+index 29d8929..57f43f3 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -1,4 +1,4 @@
@@ -8,7 +8,17 @@ index 29d8929..db0a932 100644
  
  NLVMC=nlvm/nlvm
  NLVMR=nlvm/nlvmr
-@@ -29,22 +29,10 @@ endif
+@@ -19,32 +19,17 @@ LLVM_DIR=llvm-$(LLVM_MAJ).$(LLVM_MIN).$(LLVM_PAT).src
+ 
+ ifdef STATIC_LLVM
+ 	NLVMCFLAGS=-d:staticLLVM --dynliboverrideall
+-	LLVM_DEP=ext/$(LLVM_DIR)/sta/bin/llvm-config
+-	export PATH := $(PWD)/ext/$(LLVM_DIR)/sta/bin:$(PATH)
+ else
+-	LLVM_DEP=ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so
+ 	NLVMCFLAGS?=
+ endif
+ 
  .PHONY: all
  all: $(NLVMC)
  
@@ -28,14 +38,14 @@ index 29d8929..db0a932 100644
 -
 -$(NLVMR): $(LLVM_DEP) $(NIMC) Nim/compiler/*.nim  nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
 -	cd nlvm && time ../$(NIMC) $(NIMFLAGS) -d:release $(NLVMCFLAGS) -o:nlvmr c nlvm
-+$(NLVMC): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
++$(NLVMC): nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
 +	cd nlvm && time $(NIMC) $(NIMFLAGS) $(NLVMCFLAGS) c nlvm
-+$(NLVMR): $(LLVM_DEP) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
++$(NLVMR): nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
 +	cd nlvm && time $(NIMC) $(NIMFLAGS) -d:release $(NLVMCFLAGS) -o:nlvmr c nlvm
  
  nlvm/nlvm.ll: $(NLVMC) nlvm/*.nim llvm/*.nim nlvm-lib/*.nim
  	cd nlvm && time ./nlvm $(NLVMFLAGS) -o:nlvm.ll $(NLVMCFLAGS) -c c nlvm
-@@ -62,44 +50,41 @@ nlvm/nlvm.self.ll: nlvm/nlvm.self
+@@ -62,62 +47,47 @@ nlvm/nlvm.self.ll: nlvm/nlvm.self
  compare: nlvm/nlvm.self.ll nlvm/nlvm.ll
  	diff -u nlvm/nlvm.self.ll nlvm/nlvm.ll
  
@@ -87,22 +97,23 @@ index 29d8929..db0a932 100644
  .PHONY: clean
  clean:
 -	rm -rf $(NLVMC) $(NLVMR) nlvm/nlvm.ll nlvm/nlvm.self.ll nlvm/nlvm.self Nim/testresults/
+-
+-ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
+-	sh ./make-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sha \
+-		-DLLVM_BUILD_LLVM_DYLIB=1 \
+-		-DLLVM_LINK_LLVM_DYLIB=1 \
+-		-DLLVM_ENABLE_ASSERTIONS=1 \
+-		-DLLVM_INCLUDE_TESTS=Off \
+-		-DLLVM_INCLUDE_BENCHMARKS=Off \
+-		-DCMAKE_BUILD_TYPE=RelWithDebInfo
+-
+-ext/$(LLVM_DIR)/sta/bin/llvm-config:
+-	sh ./dl-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sta
 +	rm -rf $(NLVMC) $(NLVMR) nlvm/nlvm.ll nlvm/nlvm.self.ll nlvm/nlvm.self testresults/
  
- ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
- 	sh ./make-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sha \
-@@ -108,7 +93,8 @@ ext/$(LLVM_DIR)/sha/lib/libLLVM-$(LLVM_MAJ).so:
- 		-DLLVM_ENABLE_ASSERTIONS=1 \
- 		-DLLVM_INCLUDE_TESTS=Off \
- 		-DLLVM_INCLUDE_BENCHMARKS=Off \
--		-DCMAKE_BUILD_TYPE=RelWithDebInfo
-+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
-+ 		-DLLVM_TEMPORARILY_ALLOW_OLD_TOOLCHAIN=On
- 
- ext/$(LLVM_DIR)/sta/bin/llvm-config:
- 	sh ./dl-llvm.sh $(LLVM_MAJ) $(LLVM_MIN) $(LLVM_PAT) sta
-@@ -117,7 +103,7 @@ ext/$(LLVM_DIR)/sta/bin/llvm-config:
- prepare-llvm: $(LLVM_DEP)
+ .PHONY: prepare-llvm
+-prepare-llvm: $(LLVM_DEP)
++prepare-llvm:
  
  .PHONY: prepare-nim
 -prepare-nim: $(NIMC)

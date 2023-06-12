@@ -23,7 +23,7 @@ with pkgs;
     # GIT_DATE = "1669028682";
     # ldflags = "-s -w -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitCommit=$${GIT_COMMIT} -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitDate=$${GIT_DATE}";
 
-    vendorSha256 = "sha256-fRMMjPFyFpFbN/NRzi1KBwwMZsu6DFrVwRPsBW3J6uU=";
+    vendorHash = "sha256-fRMMjPFyFpFbN/NRzi1KBwwMZsu6DFrVwRPsBW3J6uU=";
     modSha256 = lib.fakeSha256;
 
     meta = with lib; {

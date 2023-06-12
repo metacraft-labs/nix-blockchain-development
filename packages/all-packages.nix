@@ -124,7 +124,7 @@
                   sha256 = "sha256-mYLxwJ0oiKfiz+NZ5bnlY0h2uq5wbeQKrwoCCw23Bg0=";
                 };
                 subPackages = builtins.filter (x: x != "cmd/puppeth") args.subPackages;
-                vendorSha256 = "sha256-6yLkeT5DrAPUohAmobssKkvxgXI8kACxiu17WYbw+n0=";
+                vendorHash = "sha256-6yLkeT5DrAPUohAmobssKkvxgXI8kACxiu17WYbw+n0=";
               });
         };
 

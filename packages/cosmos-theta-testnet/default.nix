@@ -29,7 +29,7 @@ in
     preCheck = ''
       export HOME=$TMPDIR
     '';
-    vendorSha256 = "sha256-fGRLYkxZDowkuHcX26aRclLind0PRKkC64CQBVrnBr8=";
+    vendorHash = "sha256-fGRLYkxZDowkuHcX26aRclLind0PRKkC64CQBVrnBr8=";
     doCheck = false;
     meta = with lib; {
       description = "Simple command-line snippet manager, written in Go";

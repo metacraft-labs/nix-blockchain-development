@@ -3,8 +3,9 @@
   fetchgit,
   fetchurl,
   symlinkJoin,
+  hostPlatform,
 }:
-pkgs.clangStdenv.mkDerivation rec {
+pkgs.stdenvNoCC.mkDerivation rec {
   name = "nlvm-${version}";
   version = "dev-2023-06-01";
 
@@ -33,30 +34,9 @@ pkgs.clangStdenv.mkDerivation rec {
       libclang
       libclang.lib
       libclang.dev
-      libcxx
-      libcxx.dev
-      libcxxabi
-      libcxxabi.dev
       bintools
     ];
   };
-
-  # clang_llvm = fetchurl {
-  #   url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/clang+llvm-${LLVM_VER}-${SUFFIX}.tar.xz";
-  #   sha256 = "sha256-YVgiFdr6+3tXbqMMwTa+ksh3uh8cMd2703LW1lYi/vU=";
-  # };
-  # llvm = fetchurl {
-  #   url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/llvm-${LLVM_VER}.src.tar.xz";
-  #   sha256 = "sha256-TfftULi3AXuQ3CIgL2tZ6QBqKalWgjjGryjfnASce5s=";
-  # };
-  # lld = fetchurl {
-  #   url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/lld-${LLVM_VER}.src.tar.xz";
-  #   sha256 = "sha256-iPwPAoqowNkoeSCxAfKIsDx/q7WEB3MmxaC+SC65EVw=";
-  # };
-  # libunwind = fetchurl {
-  #   url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-${LLVM_VER}/libunwind-${LLVM_VER}.src.tar.xz";
-  #   sha256 = "sha256-QJsxB5quh73GO5b/v9IrsUJRO+0Or9MncTkf8XSAJc4=";
-  # };
 
   csources_v1 = fetchgit {
     url = "https://github.com/nim-lang/csources_v1";
@@ -69,6 +49,7 @@ pkgs.clangStdenv.mkDerivation rec {
   patches = [
     ./Makefile.diff
     ./make-llvm.sh.diff
+    ./dl-llvm.sh.diff
   ];
 
   meta = with pkgs.lib; {
@@ -76,15 +57,17 @@ pkgs.clangStdenv.mkDerivation rec {
     platforms = platforms.linux;
   };
 
+  STATIC_LLVM = 1;
+
   CC = "clang";
   CXX = "clang++";
-  C_INCLUDE_PATH = "${llvmEnv}/include:${llvmEnv}/include/c++/v1";
+  C_INCLUDE_PATH = "${llvmEnv}/include:${pkgs.gcc-unwrapped}/lib/gcc/${hostPlatform.config}/${pkgs.gcc-unwrapped.version}/include:${pkgs.gcc-unwrapped}/include/c++/${pkgs.gcc-unwrapped.version}:${pkgs.gcc-unwrapped}/include/c++/${pkgs.gcc-unwrapped.version}/${hostPlatform.config}:${pkgs.gcc-unwrapped}/lib/gcc/${hostPlatform.config}/${pkgs.gcc-unwrapped.version}/include-fixed:${pkgs.glibc.dev}/include";
   CPLUS_INCLUDE_PATH = "${C_INCLUDE_PATH}";
 
-  CFLAGS = "-I${llvmEnv}/include -I${llvmEnv}/include/c++/v1";
+  CFLAGS = "-I${llvmEnv}/include  -I${pkgs.gcc-unwrapped}/lib/gcc/${hostPlatform.config}/${pkgs.gcc-unwrapped.version}/include -I${pkgs.gcc-unwrapped}/include/c++/${pkgs.gcc-unwrapped.version} -I${pkgs.gcc-unwrapped}/include/c++/${pkgs.gcc-unwrapped.version}/${hostPlatform.config} -I${pkgs.gcc-unwrapped}/lib/gcc/${hostPlatform.config}/${pkgs.gcc-unwrapped.version}/include-fixed -I${pkgs.glibc.dev}/include";
   CPPFLAGS = "${CFLAGS}";
-  LDFLAGS = "-lm -lc -lunwind";
-  LDLIBS = "-L${llvmEnv}/lib -L${pkgs.zstd.out}/lib";
+  LDFLAGS = "-lm -lc -lunwind -lstdc++";
+  LDLIBS = "-L${llvmEnv}/lib -L${pkgs.zstd.out}/lib -L${pkgs.glibc}/lib -L${pkgs.gcc-unwrapped}/lib";
   LIBCLANG_PATH = "${llvmEnv}/lib";
 
   dontUseCmakeConfigure = true;
@@ -98,20 +81,17 @@ pkgs.clangStdenv.mkDerivation rec {
     mkdir -p ext
 
     sed "s#LLVMPATH=../ext#LLVMPATH='${llvmEnv}'#" -i Makefile
-    sed "s#LLVMRoot = \"../ext/llvm-16.0.1.src/\"#LLVMRoot = \"${llvmEnv}/\"#" -i llvm/llvm.nim
-    sed "s#LLDRoot = \"../ext/lld-16.0.1.src/\"#LLDRoot = \"${llvmEnv}/\"#" -i llvm/llvm.nim
+    sed "s#LLVMRoot = fmt\"../ext/llvm-{LLVMVersion}.src/\"#LLVMRoot = \"${llvmEnv}/\"#" -i llvm/llvm.nim
+    sed "s#LLDRoot = fmt\"../ext/lld-{LLVMVersion}.src/\"#LLDRoot = \"${llvmEnv}/\"#" -i llvm/llvm.nim
     sed "s#LLVMOut = LLVMRoot & \"sha/\"#LLVMOut = LLVMRoot#" -i llvm/llvm.nim
     sed "s#LLVMOut = LLVMRoot & \"sta/\"#LLVMOut = LLVMRoot#" -i llvm/llvm.nim
-    sed "s#sta/bin/llvm-config#/bin/llvm-config#" -i llvm/llvm.nim
+    sed "s#sta/bin/llvm-config#bin/llvm-config#" -i llvm/llvm.nim
+    sed "s#LLVMRoot & \"sta/bin/llvm-config#LLVMRoot & \"bin/llvm-config#" -i llvm/llvm.nim
     sed "s#\$ORIGIN/##" -i llvm/llvm.nim
     sed "s#-Wl,'##" -i llvm/llvm.nim
     sed "s#lib/'#lib/#" -i llvm/llvm.nim
     sed "s#-Wl,--as-needed#--as-needed#" -i llvm/llvm.nim
 
-
-
-    sed 's#LLVMRoot & \"sta/bin/llvm-config#\"${llvmEnv}/bin/llvm-config#' -i llvm/llvm.nim
-    sed 's#LLVMOut & \"bin/llvm-config#\"${llvmEnv}/bin/llvm-config#' -i llvm/llvm.nim
     sed "s#-Wl,'##" -i llvm/llvm.nim
     sed "s#-Wl,--as-needed#--as-needed#" -i llvm/llvm.nim
 
@@ -135,12 +115,16 @@ pkgs.clangStdenv.mkDerivation rec {
     clang.options.linker = "${LDLIBS} ${LDFLAGS}"
     clang.cpp.options.linker = "${LDLIBS} ${LDFLAGS}"
 
-    gcc.cpp.exe %= "\$CXX"
-    gcc.cpp.linkerexe %= "\$CXX"
-    gcc.exe %= "\$CC"
-    gcc.linkerexe %= "\$CC"
     WTF
 
+  '';
+
+  makefile = "Makefile nlvm/nlvmr";
+
+  installPhase = ''
+    mkdir -p $out/bin
+    cp nlvm/nlvmr $out/bin/nlvm
+    cp -r nlvm-lib $out/bin
   '';
 
   nativeBuildInputs = with pkgs; [
@@ -151,12 +135,11 @@ pkgs.clangStdenv.mkDerivation rec {
     sqlite
     nim
     python3
+    clang
     llvmPackages_16.bintools
   ];
   buildInputs = with pkgs; [
     ninja
     cmake
   ];
-
-  # STATIC_LLVM = 1;
 }

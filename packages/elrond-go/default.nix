@@ -16,7 +16,7 @@ with pkgs;
       sha256 = "sha256-JokD6mAmLVKfM4i1lZfj1vcNClHHu/7/v3n7PKH2P4U=";
     };
 
-    vendorSha256 = "sha256-+rHSabNwfiDUBdlNNm494EpGTSy9+R/vrf0VovMEywk=";
+    vendorHash = "sha256-+rHSabNwfiDUBdlNNm494EpGTSy9+R/vrf0VovMEywk=";
     modSha256 = lib.fakeSha256;
 
     buildInputs = [gcc-unwrapped] ++ lib.optionals stdenv.isLinux [autoPatchelfHook];
