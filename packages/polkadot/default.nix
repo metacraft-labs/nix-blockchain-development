@@ -24,9 +24,13 @@
       commitSha1 = "9b1fc27cec47f01a2c229532ee7ab79cc5bb28ef";
       srcSha256 = "sha256-73YvkpYoRcM9cvEICjqddxT/gJDcEVfP7QrSSyT92JY=";
     };
+    "v0.9.43" = {
+      commitSha1 = "ba42b9ce51d25bdaf52d2c61e0763a6e3da50d25";
+      srcSha256 = "sha256-KYmMMcQMkkXfWj5ZTr549a/8ftELKo0PUvCrmRMiDaE=";
+    };
   };
 
-  version = "0.9.42";
+  version = "0.9.43";
 
   commonArgs = {
     src = fetchFromGitHub {
