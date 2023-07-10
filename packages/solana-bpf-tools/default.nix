@@ -2,10 +2,10 @@
 with pkgs;
   stdenv.mkDerivation rec {
     name = "solana-bpf-tools-${version}";
-    version = "1.29";
+    version = "1.37";
     src = fetchzip {
-      url = "https://github.com/solana-labs/bpf-tools/releases/download/v${version}/solana-bpf-tools-linux.tar.bz2";
-      sha256 = "sha256-WxO7Jw2EJPP1u2U80MEosjrwPfOAFzvl0ovx3nADtMk=";
+      url = "https://github.com/solana-labs/platform-tools/releases/download/v${version}/platform-tools-linux-x86_64.tar.bz2";
+      sha256 = "sha256-llKrtYIxM8YvIiJZauYdVIV4XISS7Jk4EZ/H4bCbfN4=";
       stripRoot = false;
     };
 
@@ -13,8 +13,12 @@ with pkgs;
     nativeBuildInputs = lib.optionals stdenv.isLinux [autoPatchelfHook gccForLibs.lib];
 
     buildInputs = with pkgs; [
+      python38
+      ncurses
+      lzma
+      libxml2
       zlib
-      openssl_1_1
+      openssl
     ];
 
     installPhase = ''
