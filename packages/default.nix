@@ -15,8 +15,13 @@
       extensions = ["rust-src"];
       targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
     };
+    rust-nightly = pkgs-extended.rust-bin.nightly.latest.default.override {
+      extensions = ["rust-src"];
+      targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
+    };
 
     craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
+    craneLib-nightly = (inputs.crane.mkLib pkgs).overrideToolchain rust-nightly;
   in {
     packages = self'.legacyPackages.metacraft-labs;
 
@@ -31,11 +36,15 @@
 
       noir = inputs'.noir.packages;
 
-      inherit rust-stable craneLib-stable;
+      inherit rust-stable rust-nightly craneLib-stable craneLib-nightly;
 
       rustPlatformStable = pkgs.makeRustPlatform {
         rustc = rust-stable;
         cargo = rust-stable;
+      };
+      rustPlatformNightly = pkgs.makeRustPlatform {
+        rustc = rust-nightly;
+        cargo = rust-nightly;
       };
     };
   };
