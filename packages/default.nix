@@ -6,13 +6,17 @@
     pkgs,
     ...
   }: let
-    rust-overlay = inputs.rust-overlay.overlays.default;
-    pkgs-extended = pkgs.extend rust-overlay;
-    craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
+    pkgs-extended = let
+      rust-overlay = inputs.rust-overlay.overlays.default;
+    in
+      pkgs.extend rust-overlay;
+
     rust-stable = pkgs-extended.rust-bin.stable.latest.default.override {
       extensions = ["rust-src"];
       targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
     };
+
+    craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
   in {
     packages = self'.legacyPackages.metacraft-labs;
 
@@ -21,9 +25,12 @@
     };
 
     legacyPackages = {
-      nix2container = inputs'.nix2container.packages.nix2container;
+      inherit (inputs'.nix2container.packages) nix2container;
+
       inherit (inputs'.cardano-node.packages) cardano-node cardano-cli;
+
       noir = inputs'.noir.packages;
+
       inherit rust-stable craneLib-stable;
 
       rustPlatformStable = pkgs.makeRustPlatform {
