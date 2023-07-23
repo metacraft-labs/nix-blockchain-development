@@ -7,6 +7,8 @@ error() {
     exit 1
 }
 
+nix="$(if tty -s; then echo nom; else echo nix; fi)"
+
 get_platform() {
   case "$(uname -s).$(uname -m)" in
     Linux.x86_64)
@@ -40,4 +42,4 @@ system="$(get_platform)"
 
 set -x
 nix flake check
-nix build --json --print-build-logs ".#devShells.$system.default"
+$nix build --json --print-build-logs ".#devShells.$system.default"
