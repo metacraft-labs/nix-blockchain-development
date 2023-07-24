@@ -4,6 +4,7 @@
     self',
     inputs',
     pkgs,
+    system,
     ...
   }: let
     pkgs-extended = let
@@ -22,6 +23,8 @@
 
     craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
     craneLib-nightly = (inputs.crane.mkLib pkgs).overrideToolchain rust-nightly;
+
+    cardano-node = builtins.getFlake "github:input-output-hk/cardano-node/f0b4ac897dcbefba9fa0d247b204a24543cf55f6";
   in {
     packages = self'.legacyPackages.metacraft-labs;
 
@@ -32,7 +35,7 @@
     legacyPackages = {
       inherit (inputs'.nix2container.packages) nix2container;
 
-      inherit (inputs'.cardano-node.packages) cardano-node cardano-cli;
+      inherit (cardano-node.outputs.packages.${system}) cardano-node cardano-cli;
 
       noir = inputs'.noir.packages;
 
