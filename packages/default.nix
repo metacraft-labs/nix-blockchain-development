@@ -7,16 +7,16 @@
     system,
     ...
   }: let
-    pkgs-extended = let
+    pkgs-with-rust-overlay = let
       rust-overlay = inputs.rust-overlay.overlays.default;
     in
       pkgs.extend rust-overlay;
 
-    rust-stable = pkgs-extended.rust-bin.stable.latest.default.override {
+    rust-stable = pkgs-with-rust-overlay.rust-bin.stable.latest.default.override {
       extensions = ["rust-src"];
       targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
     };
-    rust-nightly = pkgs-extended.rust-bin.nightly.latest.default.override {
+    rust-nightly = pkgs-with-rust-overlay.rust-bin.nightly.latest.default.override {
       extensions = ["rust-src"];
       targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
     };
@@ -39,7 +39,7 @@
 
       noir = inputs'.noir.packages;
 
-      inherit rust-stable rust-nightly craneLib-stable craneLib-nightly;
+      inherit rust-stable rust-nightly craneLib-stable craneLib-nightly pkgs-with-rust-overlay;
 
       rustPlatformStable = pkgs.makeRustPlatform {
         rustc = rust-stable;
