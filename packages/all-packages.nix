@@ -148,6 +148,8 @@
 
         # Polkadot
         inherit polkadot polkadot-fast;
+
+        avalanche-cli = callPackage ./avalanche-cli/default.nix {};
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};
