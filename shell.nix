@@ -41,6 +41,9 @@ in
         # noir
         self'.legacyPackages.noir.noir-native
         self'.legacyPackages.noir.noir-wasm
+
+        # avalanche cli
+        metacraft-labs.avalanche-cli
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
