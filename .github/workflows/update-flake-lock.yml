@@ -24,7 +24,7 @@ jobs:
         id: update-lockfile
         run: ./scripts/commit_flake_update.bash
 
-      - uses: tibdex/github-app-token@v1.8.0
+      - uses: tibdex/github-app-token@v1.8.2
         id: generate-token
         with:
           app_id: ${{ secrets.APP_ID }}
