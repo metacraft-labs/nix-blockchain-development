@@ -107,6 +107,7 @@
     legacyPackages.metacraft-labs =
       rec {
         cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {};
+        blst = callPackage ./blst {};
 
         circom = callPackage ./circom/default.nix {};
         circ = callPackage ./circ/default.nix {};
