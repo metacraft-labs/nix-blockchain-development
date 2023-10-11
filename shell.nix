@@ -44,6 +44,9 @@ in
 
         # avalanche cli
         metacraft-labs.avalanche-cli
+
+        # Node.js related
+        metacraft-labs.corepack-shims
       ]
       ++ lib.optionals (stdenv.hostPlatform.isx86) [
         metacraft-labs.rapidsnark
@@ -79,9 +82,6 @@ in
 
         # py-ecc
         metacraft-labs.py-ecc
-
-        # corepack-shims
-        metacraft-labs.corepack-shims
 
         # emscripten
         metacraft-labs.emscripten
