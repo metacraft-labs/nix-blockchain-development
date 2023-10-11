@@ -150,6 +150,8 @@
         inherit polkadot polkadot-fast;
 
         avalanche-cli = callPackage ./avalanche-cli/default.nix {};
+
+        inherit corepack-shims;
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};
@@ -166,7 +168,6 @@
         inherit cryptography36;
 
         inherit py-ecc;
-        inherit corepack-shims;
         # inherit erdpy elrond-go elrond-proxy-go;
 
         # EOS / Antelope
