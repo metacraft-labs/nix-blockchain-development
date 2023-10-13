@@ -24,6 +24,7 @@ in
 
         # Packages defined in this repo
         metacraft-labs.cosmos-theta-testnet
+        metacraft-labs.bnb-beacon-node
         metacraft-labs.circom
 
         metacraft-labs.circ
