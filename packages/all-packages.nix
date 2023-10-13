@@ -108,6 +108,7 @@
       rec {
         cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {};
         blst = callPackage ./blst {};
+        bnb-beacon-node = callPackage ./bnb-beacon-node {};
 
         circom = callPackage ./circom/default.nix {};
         circ = callPackage ./circ/default.nix {};
