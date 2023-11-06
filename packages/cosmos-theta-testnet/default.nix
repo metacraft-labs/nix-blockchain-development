@@ -32,6 +32,7 @@ in
     vendorSha256 = "sha256-fGRLYkxZDowkuHcX26aRclLind0PRKkC64CQBVrnBr8=";
     doCheck = false;
     meta = with lib; {
+      mainProgram = "gaiad";
       description = "Simple command-line snippet manager, written in Go";
       homepage = "https://github.com/cosmos/gaia";
       license = licenses.mit;
