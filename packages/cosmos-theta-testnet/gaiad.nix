@@ -14,15 +14,19 @@ buildGoModule rec {
     sha256 = "sha256-x0CvVxGKeDPY/oKHSUYffvFq0x83jfe2O7GSLJ8zevc=";
   };
 
-  preCheck = ''
-    export HOME=$TMPDIR
-  '';
   vendorSha256 = "sha256-fGRLYkxZDowkuHcX26aRclLind0PRKkC64CQBVrnBr8=";
+
   doCheck = false;
+
   meta = with lib; {
-    description = "Simple command-line snippet manager, written in Go";
     homepage = "https://github.com/cosmos/gaia";
     license = licenses.mit;
     maintainers = with maintainers; [];
+    description = ''
+      The Cosmos Hub is built using the Cosmos SDK and compiled to a binary
+      called gaiad (Gaia Daemon). The Cosmos Hub and other fully sovereign
+      Cosmos SDK blockchains interact with one another using a protocol called
+      IBC that enables Inter-Blockchain Communication.
+    '';
   };
 }
