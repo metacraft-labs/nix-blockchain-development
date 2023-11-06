@@ -5,14 +5,13 @@
   buildGoModule,
   fetchurl,
 }: let
-  genesis = fetchurl {
-    url = "https://github.com/hyphacoop/testnets/raw/add-theta-testnet/v7-theta/local-testnet/genesis.json.gz";
-    sha256 = "0041873l59xapdxgb22b61rvqqp48laa3a5xcyim2dmjbc01zb5b";
-  };
-
-  validator_key = fetchurl {
-    url = "https://github.com/hyphacoop/testnets/raw/add-theta-testnet/v7-theta/local-testnet/priv_validator_key.json";
-    sha256 = "0h4qx6iaqvklrzhj15nz8lz61ckf4dbfwp93fafmy4c2dc43fva8";
+  dir = "local/previous-local-testnets/v7-theta";
+  v7-local-testnet-files = fetchFromGitHub {
+    owner = "hyphacoop";
+    repo = "testnets";
+    rev = "16f13e4ec649445387d4be0edf92eaaae7619c88";
+    sparseCheckout = [dir];
+    hash = "sha256-TFN0CtaSsfEHBxYhoFl8m5pu0iVLoW4aK2ArkyQOymk=";
   };
 in
   buildGoModule rec {
@@ -40,8 +39,8 @@ in
     };
 
     postInstall = ''
-      mkdir $out/data
-      gunzip -c ${genesis} > $out/data/genesis.json
-      cp ${validator_key} $out/data/priv_validator_key.json
+      mkdir -p $out/data
+      gunzip -c ${v7-local-testnet-files}/${dir}/genesis.json.gz > $out/data/genesis.json
+      cp ${v7-local-testnet-files}/${dir}/priv_validator_key.json $out/data
     '';
   }
