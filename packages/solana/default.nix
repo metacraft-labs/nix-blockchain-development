@@ -19,22 +19,21 @@
       "solana-gossip"
       "solana-install"
       "solana-keygen"
+      "solana-ledger-tool"
       "solana-log-analyzer"
       "solana-net-shaper"
-      "solana-sys-tuner"
-      "rbpf-cli"
       "solana-validator"
-      "solana-ledger-tool"
+      "rbpf-cli"
       "cargo-build-bpf"
+      "cargo-build-sbf"
       "cargo-test-bpf"
+      "cargo-test-sbf"
       "solana-dos"
       "solana-install-init"
       "solana-stake-accounts"
       "solana-test-validator"
       "solana-tokens"
       "solana-watchtower"
-      "cargo-test-sbf"
-      "cargo-build-sbf"
     ]
     ++ [
       # XXX: Ensure `solana-genesis` is built LAST!
@@ -44,20 +43,20 @@
 }:
 rustPlatform.buildRustPackage rec {
   pname = "solana";
-  version = "1.16.23";
+  version = "1.17.10";
 
   src = fetchFromGitHub {
     owner = "solana-labs";
     repo = "solana";
     rev = "v${version}";
-    hash = "sha256-6xRoJMQYTOhAw09rA8jkBiwq5Ry9mpdVplFHaFExrNg=";
+    hash = "sha256-iDQfHkr8G3e97IVpuE6U/h0Fykt/rFDFBpKya+0vLIE=";
   };
 
   cargoLock = {
     lockFile = ./Cargo.lock;
     outputHashes = {
       "crossbeam-epoch-0.9.5" = "sha256-Jf0RarsgJiXiZ+ddy0vp4jQ59J9m0k3sgXhWhCdhgws=";
-      "ntapi-0.3.7" = "sha256-G6ZCsa3GWiI/FeGKiK9TWkmTxen7nwpXvm5FtjNtjWU=";
+      "tokio-1.29.1" = "sha256-Z/kewMCqkPVTXdoBcSaFKG5GSQAdkdpj3mAzLLCjjGk=";
     };
   };
 
@@ -81,6 +80,9 @@ rustPlatform.buildRustPackage rec {
         Libsystem
       ]
     );
+
+  cargoBuildFlags = builtins.map (n: "--bin=${n}") solanaPkgs;
+
   env = {
     OPENSSL_NO_VENDOR = true;
     ROCKSDB_INCLUDE_DIR = "${rocksdb}/include";
@@ -90,6 +92,7 @@ rustPlatform.buildRustPackage rec {
   meta = with lib; {
     description = "Web-Scale Blockchain for fast, secure, scalable, decentralized apps and marketplaces";
     homepage = "https://github.com/solana-labs/solana";
+    changelog = "https://github.com/solana-labs/solana/blob/${src.rev}/CHANGELOG.md";
     license = licenses.asl20;
     maintainers = with maintainers; [];
     mainProgram = "solana";
