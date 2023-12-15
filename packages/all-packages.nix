@@ -161,6 +161,11 @@
           inherit solana-rust-artifacts solana-bpf-tools;
         };
 
+        solana2 = callPackage ./solana/default.nix {};
+        solana2Crane = callPackage ./solana/default-crane.nix {
+          craneLib = craneLib-stable;
+        };
+
         inherit cryptography36;
 
         inherit py-ecc;

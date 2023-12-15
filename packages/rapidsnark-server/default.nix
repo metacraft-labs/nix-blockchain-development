@@ -14,7 +14,7 @@ in
     meta =
       rapidsnark.meta
       // {
-        platforms = with lib.platforms; linux;
+        platforms = with lib.platforms; unix;
       };
     buildInputs = rapidsnark.buildInputs ++ [pistache];
 
