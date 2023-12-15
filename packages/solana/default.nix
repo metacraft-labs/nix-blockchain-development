@@ -4,6 +4,7 @@
   fetchFromGitHub,
   pkg-config,
   protobuf,
+  udev,
   bzip2,
   openssl,
   stdenv,
@@ -67,14 +68,19 @@ rustPlatform.buildRustPackage rec {
   ];
 
   buildInputs =
-    [
-      bzip2
-      openssl
-    ]
-    ++ lib.optionals stdenv.isDarwin [
-      darwin.apple_sdk.frameworks.Security
-    ];
-
+    [openssl]
+    ++ lib.optionals stdenv.isLinux [udev]
+    ++ lib.optionals stdenv.isDarwin (
+      with darwin.apple_sdk_11_0;
+      with darwin.apple_sdk_11_0.frameworks; [
+        libcxx
+        IOKit
+        Security
+        AppKit
+        System
+        Libsystem
+      ]
+    );
   env = {
     OPENSSL_NO_VENDOR = true;
     ROCKSDB_INCLUDE_DIR = "${rocksdb}/include";
