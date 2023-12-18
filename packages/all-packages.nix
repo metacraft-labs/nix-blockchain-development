@@ -8,6 +8,7 @@
     inherit (pkgs.lib) optionalAttrs callPackageWith;
     inherit
       (self'.legacyPackages)
+      rust-bin
       rustPlatformStable
       craneLib-stable
       cardano-node
@@ -161,7 +162,9 @@
           inherit solana-rust-artifacts solana-bpf-tools;
         };
 
-        solana2 = callPackage ./solana/default.nix {};
+        solana2 = callPackage ./solana/default.nix {
+          inherit rust-bin;
+        };
         solana2Crane = callPackage ./solana/default-crane.nix {
           craneLib = craneLib-stable;
         };
