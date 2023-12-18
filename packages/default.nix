@@ -9,7 +9,8 @@
     rust-overlay = inputs.rust-overlay.overlays.default;
     pkgs-extended = pkgs.extend rust-overlay;
     craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
-    rust-stable = pkgs-extended.rust-bin.stable.latest.default.override {
+    rust-bin = pkgs-extended.rust-bin;
+    rust-stable = rust-bin.stable.latest.default.override {
       extensions = ["rust-src"];
       targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
     };
@@ -24,7 +25,7 @@
       nix2container = inputs'.nix2container.packages.nix2container;
       inherit (inputs'.cardano-node.packages) cardano-node cardano-cli;
       noir = inputs'.noir.packages;
-      inherit rust-stable craneLib-stable;
+      inherit rust-bin rust-stable craneLib-stable;
 
       rustPlatformStable = pkgs.makeRustPlatform {
         rustc = rust-stable;
