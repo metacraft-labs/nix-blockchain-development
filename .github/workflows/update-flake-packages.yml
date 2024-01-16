@@ -8,9 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
       - name: Install Nix
-        uses: cachix/install-nix-action@v20
+        uses: DeterminateSystems/nix-installer-action@v9
+        with:
+          extra-conf:
+            accept-flake-config = true
+            allow-import-from-derivation = true
+
+      - name: Run the Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v2
+        
       - name: Update flake packages
         uses: selfuryon/nix-update-action@v1.0.1
         with:
