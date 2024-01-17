@@ -3,34 +3,35 @@
   lib,
   darwin,
   rustPlatform,
+  craneLib,
   fetchFromGitHub,
-}:
-rustPlatform.buildRustPackage rec {
-  pname = "circom";
-  version = "2.1.5";
+}: let
+  commonArgs = rec {
+    pname = "circom";
+    version = "2.1.5";
 
-  buildInputs =
-    []
-    ++ (
-      lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.Security]
-    );
+    buildInputs =
+      []
+      ++ (
+        lib.optionals stdenv.isDarwin [darwin.apple_sdk.frameworks.Security]
+      );
+    nativeBuildInputs = [
+      rustPlatform.bindgenHook
+    ];
 
-  src = fetchFromGitHub {
-    owner = "iden3";
-    repo = "circom";
-    rev = "v${version}";
-    hash = "sha256-enZr1fkiUxDDDzajsd/CTV7DN//9xP64IyKLQSaJqXk=";
+    src = fetchFromGitHub {
+      owner = "iden3";
+      repo = "circom";
+      rev = "v${version}";
+      hash = "sha256-enZr1fkiUxDDDzajsd/CTV7DN//9xP64IyKLQSaJqXk=";
+    };
   };
 
-  doCheck = false;
+  cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+in
+  craneLib.buildPackage (commonArgs
+    // rec {
+      inherit cargoArtifacts;
 
-  postPatch = ''
-    cp ${./Cargo.lock} Cargo.lock
-  '';
-
-  cargoLock = let
-    fixupLockFile = path: (builtins.readFile path);
-  in {
-    lockFileContents = fixupLockFile ./Cargo.lock;
-  };
-}
+      doCheck = false;
+    })
