@@ -111,8 +111,8 @@
         blst = callPackage ./blst {};
         bnb-beacon-node = callPackage ./bnb-beacon-node {};
 
-        circom = callPackage ./circom/default.nix {};
-        circ = callPackage ./circ/default.nix {};
+        circom = callPackage ./circom/default.nix {craneLib = craneLib-stable;};
+        circ = callPackage ./circ/default.nix {craneLib = craneLib-stable;};
 
         emscripten = pkgs.emscripten.overrideAttrs (old: {
           postInstall = ''
