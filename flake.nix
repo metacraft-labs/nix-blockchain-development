@@ -57,6 +57,13 @@
       inputs.rust-overlay.follows = "rust-overlay";
       inputs.crane.follows = "crane";
     };
+
+    ethereum_nix = {
+      url = "github:metacraft-labs/ethereum.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.flake-compat.follows = "flake-compat";
+    };
   };
 
   outputs = inputs @ {
