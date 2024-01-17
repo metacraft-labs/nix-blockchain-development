@@ -114,23 +114,6 @@
         circom = callPackage ./circom/default.nix {};
         circ = callPackage ./circ/default.nix {};
 
-        # https://discourse.nixos.org/t/inconsistent-vendoring-in-buildgomodule-when-overriding-source/9225/6
-        go-ethereum-capella = pkgs.go-ethereum.override rec {
-          buildGoModule = args:
-            pkgs.buildGoModule (args
-              // {
-                version = "1.11.1";
-                src = fetchFromGitHub {
-                  owner = "ethereum";
-                  repo = "go-ethereum";
-                  rev = "v1.11.1";
-                  sha256 = "sha256-mYLxwJ0oiKfiz+NZ5bnlY0h2uq5wbeQKrwoCCw23Bg0=";
-                };
-                subPackages = builtins.filter (x: x != "cmd/puppeth") args.subPackages;
-                vendorHash = "sha256-6yLkeT5DrAPUohAmobssKkvxgXI8kACxiu17WYbw+n0=";
-              });
-        };
-
         emscripten = pkgs.emscripten.overrideAttrs (old: {
           postInstall = ''
             pushd $TMPDIR
