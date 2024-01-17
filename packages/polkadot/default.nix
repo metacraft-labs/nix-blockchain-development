@@ -30,9 +30,9 @@
     };
   };
 
-  version = "0.9.43";
+  commonArgs = rec {
+    version = "0.9.43";
 
-  commonArgs = {
     src = fetchFromGitHub {
       owner = "paritytech";
       repo = "polkadot";
