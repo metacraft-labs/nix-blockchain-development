@@ -17,13 +17,10 @@ jobs:
             accept-flake-config = true
             allow-import-from-derivation = true
 
-      - name: Print nix.conf
-        run: nix show-config
-
       - name: Run the Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v2
         
       - name: Update flake packages
         uses: selfuryon/nix-update-action@v1.0.1
         with:
-          blacklist: ""
+          blacklist: "cardano,circ,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,ffiasm-src,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd"
