@@ -31,8 +31,6 @@ in
 
         metacraft-labs.go-opera
 
-        metacraft-labs.go-ethereum-capella
-
         # Test nix2container
         example-container.copyToDockerDaemon
 
@@ -42,6 +40,9 @@ in
         # noir
         self'.legacyPackages.noir.noir-native
         self'.legacyPackages.noir.noir-wasm
+
+        # ethereum.nix
+        self'.legacyPackages.ethereum_nix.geth
 
         # avalanche cli
         metacraft-labs.avalanche-cli

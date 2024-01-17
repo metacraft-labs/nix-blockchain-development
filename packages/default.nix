@@ -38,6 +38,7 @@
       inherit (cardano-node.outputs.packages.${system}) cardano-node cardano-cli;
 
       noir = inputs'.noir.packages;
+      ethereum_nix = inputs'.ethereum_nix.packages;
 
       inherit rust-stable rust-nightly craneLib-stable craneLib-nightly pkgs-with-rust-overlay;
 
