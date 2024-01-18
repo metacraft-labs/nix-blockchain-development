@@ -5,16 +5,16 @@
 }:
 buildGoModule rec {
   pname = "gaia";
-  version = "1.0.0";
+  version = "14.1.0";
 
   src = fetchFromGitHub {
     owner = "cosmos";
     repo = "gaia";
-    rev = "edb81681654d0d111652df9fd933ed6e69d3c9fe";
-    sha256 = "sha256-x0CvVxGKeDPY/oKHSUYffvFq0x83jfe2O7GSLJ8zevc=";
+    rev = "v${version}";
+    sha256 = "sha256-kx4dn7Cj0RhIg5oUqMkbowJ396AUQo9hJEwn/y495yI=";
   };
 
-  vendorSha256 = "sha256-fGRLYkxZDowkuHcX26aRclLind0PRKkC64CQBVrnBr8=";
+  vendorSha256 = "sha256-zKeVgrvINTuIU2EI7HyzYR3gnQyQ2qTAMiOHmC0ln/o=";
 
   doCheck = false;
 

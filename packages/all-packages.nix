@@ -106,7 +106,8 @@
   in {
     legacyPackages.metacraft-labs =
       rec {
-        cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {};
+        gaiad = callPackage ./gaiad {};
+        cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {inherit gaiad;};
         blst = callPackage ./blst {};
         bnb-beacon-node = callPackage ./bnb-beacon-node {};
 
