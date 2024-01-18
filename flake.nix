@@ -81,10 +81,11 @@
         self',
         ...
       }: {
-        devShells.default = import ./shell.nix {
+        devShells.default = import ./shells/all.nix {
           pkgs = final;
           inherit self';
         };
+        devShells.ci = import ./shells/ci.nix {pkgs = final;};
       };
     };
 }
