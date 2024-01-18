@@ -3,6 +3,7 @@
   fetchFromGitHub,
   runCommand,
   symlinkJoin,
+  gaiad,
 }: let
   dir = "local/previous-local-testnets/v7-theta";
   v7-local-testnet-files = fetchFromGitHub {
@@ -12,7 +13,6 @@
     sparseCheckout = [dir];
     hash = "sha256-TFN0CtaSsfEHBxYhoFl8m5pu0iVLoW4aK2ArkyQOymk=";
   };
-  gaiad = callPackage ./gaiad.nix {};
 in
   symlinkJoin {
     name = "cosmos-theta-testnet";
