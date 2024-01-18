@@ -2,12 +2,12 @@
 with pkgs;
   buildGoModule rec {
     pname = "go-opera";
-    version = "1.1.1-rc.2";
+    version = "1.1.3-rc.5";
 
     src = fetchgit {
       url = "https://github.com/Fantom-foundation/go-opera";
       rev = "v${version}";
-      sha256 = "sha256-OoDjbCKUoWsZ6jfzmeCwDyvuo28H9YMXxPTRTJOsBcU=";
+      sha256 = "sha256-j2FSsMpWCrMo9PfkpGoCML4kPVlR3OlK+sSWER/dMVw=";
     };
 
     karalabe-usb = fetchgit {
@@ -23,8 +23,7 @@ with pkgs;
     # GIT_DATE = "1669028682";
     # ldflags = "-s -w -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitCommit=$${GIT_COMMIT} -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitDate=$${GIT_DATE}";
 
-    vendorSha256 = "sha256-fRMMjPFyFpFbN/NRzi1KBwwMZsu6DFrVwRPsBW3J6uU=";
-    modSha256 = lib.fakeSha256;
+    vendorSha256 = "sha256-FYOY7RwpLGm/0FldrXTKg2d68HzOmUQBt6EolQ2f3hA=";
 
     meta = with lib; {
       description = "Opera blockchain protocol secured by the Lachesis consensus algorithm ";
