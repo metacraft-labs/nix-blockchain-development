@@ -80,7 +80,7 @@ in
         metacraft-labs.cdt
 
         # Ethereum
-        metacraft-labs.nimbus
+        self'.legacyPackages.ethereum_nix.nimbus
 
         # py-ecc
         metacraft-labs.py-ecc
