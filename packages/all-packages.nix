@@ -160,9 +160,6 @@
         leap = callPackage ./leap/default.nix {};
         eos-vm = callPackage ./eos-vm/default.nix {};
         cdt = callPackage ./cdt/default.nix {};
-
-        # Nimbus
-        nimbus = callPackage ./nimbus/default.nix {};
       }
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
