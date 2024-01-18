@@ -91,9 +91,9 @@ build-not-cached:
     | $cols, $rows[]
     | @tsv
   ')
-  packages_csv=$(echo "$packages_csv" | tail -n +2)
-
-  echo "$packages_csv" | column -t -s $'\t' -o ' | ' -N name,cached
+  packages_csv=$(echo name$'\t'cached$'\n'"$packages_csv" | sed -e 's/\t/\t| /g' | tail -n +2)
+  
+  echo "$packages_csv" | column -t -s $'\t'
   echo
   echo "------------------"
 
