@@ -5,7 +5,7 @@ result-dir := root-dir / "result"
 gc-roots-dir := result-dir / "gc-roots"
 nix := `if tty -s; then echo nom; else echo nix; fi`
 cachix-cache-name := `echo ${CACHIX_CACHE:-}`
-cachix-deploy-spec-json := ".result/cachix-deploy-spec.json"
+cachix-deploy-spec-json := "result/cachix-deploy-spec.json"
 
 create-result-dirs:
   #!/usr/bin/env bash
@@ -18,11 +18,11 @@ build-cachix-deploy-spec:
 push-cachix-deploy-spec cache-name=cachix-cache-name: build-not-cached
   jq -r \
     '.agents | to_entries | map(.value) | .[]' \
-    .result/cachix-deploy-spec.json \
+    result/cachix-deploy-spec.json \
   | cachix push {{cache-name}}
 
 deploy-cachix-spec: build-not-cached
-  cachix deploy activate .result/cachix-deploy-spec.json --async
+  cachix deploy activate result/cachix-deploy-spec.json --async
 
 bootstrap ssh-host-before config ssh-host-after:
   ./scripts/bootstrap-machine.bash {{ssh-host-before}} {{config}} {{ssh-host-after}}
@@ -38,8 +38,20 @@ eval-packages: create-result-dirs
     max_workers="$MAX_WORKERS"
   fi
 
-  max_memory_mb="${MAX_MEMORY:-$(free -m  | grep ^Mem | tr -s ' ' | cut -d ' ' -f 3 )}"
+  if {{os() === "macos"}}; then
+    pages="$(vm_stat | grep 'Pages free:' | tr -s ' ' | cut -d ' ' -f 3 | tr -d '.')"
+    page_size="$(pagesize)"
+    max_memory_mb="${MAX_MEMORY:-$(echo $((($pages * $page_size) / 1024 / 1024 / 1024 * ${THRESHOLD:-0.8}))Gi)}"
+  else
+    free="$(cat /proc/meminfo | grep MemFree | tr -s ' ' | cut -d ' ' -f 2)"
+    cached="$(cat /proc/meminfo | grep Cached | grep -v SwapCached | tr -s ' ' | cut -d ' ' -f 2)"
+    buffers="$(cat /proc/meminfo | grep Buffers | tr -s ' ' | cut -d ' ' -f 2)"
+    shmem="$(cat /proc/meminfo | grep Shmem: | tr -s ' ' | cut -d ' ' -f 2)"
+  
+    max_memory_mb="${MAX_MEMORY:-$(echo $((($free + $cached + $buffers + $shmem) / 1024 / 1024 * ${THRESHOLD:-0.8}))Gi)}"
 
+  fi
+  
   set -x
 
   nix-eval-jobs \
@@ -53,7 +65,7 @@ build-not-cached:
   #!/usr/bin/env bash
   set -euo pipefail
 
-  rm -f .result/cachix-deploy-spec.json
+  rm -f result/cachix-deploy-spec.json
   nix_eval_result=$(just eval-packages)
 
   echo "------------------"
@@ -109,4 +121,4 @@ build-not-cached:
         key: .name, value: .out
       }) | from_entries
     }' \
-    > .result/cachix-deploy-spec.json
+    > result/cachix-deploy-spec.json
