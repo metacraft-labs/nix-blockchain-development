@@ -9,15 +9,15 @@
 }:
 buildNpmPackage rec {
   pname = "ffiasm-src";
-  version = "0.1.4";
+  version = "0.1.5";
   src = fetchFromGitHub {
     owner = "iden3";
-    repo = "ffiasm";
+    repo = "ffiasm-old";
     rev = "v${version}";
-    hash = "sha256-nwDJi9HWCdhfUD3Os8MzngQq7SH6gx52vp77UwS2DLw=";
+    hash = "sha256-HZLwzt6U8rr727MmGrH4b73isUPJ36vux0Kj7DDPHoo=";
   };
 
-  npmDepsHash = "sha256-xWXEcNDkIZhDjm5h6yweGkVjbo3mWKezg3wfTCkiOEE=";
+  npmDepsHash = "sha256-Tn27JihH8+15h4LAJc3NpoUs9Gnhe2rfLM5HspmxTUk=";
 
   npmPackFlags = ["--ignore-scripts"];
 

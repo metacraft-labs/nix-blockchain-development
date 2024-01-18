@@ -27,7 +27,7 @@
     };
 
     # RapidSnark
-    ffiasm-src = callPackage ./ffiasm/src.nix {};
+    ffiasm-src = callPackage ./ffiasm-src/default.nix {};
     zqfield = callPackage ./ffiasm/zqfield.nix {
       inherit ffiasm-src;
     };
