@@ -43,14 +43,14 @@ eval-packages: create-result-dirs
   if [ "{{os}}" = "darwin" ]; then
     pages="$(vm_stat | grep 'Pages free:' | tr -s ' ' | cut -d ' ' -f 3 | tr -d '.')"
     page_size="$(pagesize)"
-    max_memory_mb="${MAX_MEMORY:-$(echo $((($pages * $page_size) / 1024 / 1024 / 1024))Gi)}"
+    max_memory_mb="${MAX_MEMORY:-$(echo $((($pages * $page_size) / 1024 / 1024 )))}"
   else
     free="$(cat /proc/meminfo | grep MemFree | tr -s ' ' | cut -d ' ' -f 2)"
     cached="$(cat /proc/meminfo | grep Cached | grep -v SwapCached | tr -s ' ' | cut -d ' ' -f 2)"
     buffers="$(cat /proc/meminfo | grep Buffers | tr -s ' ' | cut -d ' ' -f 2)"
     shmem="$(cat /proc/meminfo | grep Shmem: | tr -s ' ' | cut -d ' ' -f 2)"
   
-    max_memory_mb="${MAX_MEMORY:-$(echo $((($free + $cached + $buffers + $shmem) / 1024 / 1024))Gi)}"
+    max_memory_mb="${MAX_MEMORY:-$(echo $((($free + $cached + $buffers + $shmem) / 1024 )))}"
 
   fi
   
