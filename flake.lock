@@ -114,11 +114,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1705500175,
-        "narHash": "sha256-X3rOEh6whTNphpB6j3+rMX2nqUvexTLjO9zPPfeFuIY=",
+        "lastModified": 1705588716,
+        "narHash": "sha256-P47l95Ywy6l5fDMFkrgtj5WcISsR0T3ey18DdAnzF7s=",
         "owner": "metacraft-labs",
         "repo": "ethereum.nix",
-        "rev": "6c710f5d04f0c403b12ce20d6752da0ee4ecd30b",
+        "rev": "6381f10e5ca7e7a9609bd608c9fe7355c920aa8b",
         "type": "github"
       },
       "original": {
