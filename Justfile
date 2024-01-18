@@ -40,7 +40,7 @@ eval-packages: create-result-dirs
     max_workers="$MAX_WORKERS"
   fi
 
-  if [ "{{os}}" = "macos" ]; then
+  if [ "{{os}}" = "darwin" ]; then
     pages="$(vm_stat | grep 'Pages free:' | tr -s ' ' | cut -d ' ' -f 3 | tr -d '.')"
     page_size="$(pagesize)"
     max_memory_mb="${MAX_MEMORY:-$(echo $((($pages * $page_size) / 1024 / 1024 / 1024))Gi)}"
