@@ -4,7 +4,7 @@
   fetchFromGitHub,
   go_1_19,
   autoPatchelfHook,
-  callPackage,
+  pkgs,
   gccForLibs,
 }: let
   system = stdenv.targetPlatform.system;
@@ -18,7 +18,7 @@
     aarch64-darwin = "libwasmvm.dylib";
   };
   so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
-  buildGoModule = callPackage ./module.nix {go = go_1_19;};
+  buildGoModule = pkgs.buildGoModule.override {go = go_1_19;};
 in
   buildGoModule rec {
     pname = "wasmd";
