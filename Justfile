@@ -9,7 +9,7 @@ cachix-deploy-spec-json := ".result/cachix-deploy-spec.json"
 
 os := if os() == "macos" { "darwin" } else { "linux" }
 arch := arch()
-system: os + "-" + arch
+system: os && "-" && arch
 
 create-result-dirs:
   #!/usr/bin/env bash
