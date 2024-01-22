@@ -23,4 +23,4 @@ jobs:
       - name: Update flake packages
         uses: selfuryon/nix-update-action@v1.0.1
         with:
-          blacklist: "cardano,circ,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd,rapidsnark,rapidsnark-server,pistache,cryptography36"
+          blacklist: "cardano,circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd,rapidsnark,rapidsnark-server,pistache,cryptography36"
