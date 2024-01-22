@@ -7,7 +7,9 @@ nix := `if tty -s; then echo nom; else echo nix; fi`
 cachix-cache-name := `echo ${CACHIX_CACHE:-}`
 cachix-deploy-spec-json := ".result/cachix-deploy-spec.json"
 
-os := if os() == "macos" { "darwin" } else { "unix" }
+os := if os() == "macos" { "darwin" } else { "linux" }
+arch := arch()
+system: os + "-" + arch
 
 create-result-dirs:
   #!/usr/bin/env bash
@@ -15,7 +17,7 @@ create-result-dirs:
   mkdir -p "{{result-dir}}" "{{gc-roots-dir}}"
 
 build-cachix-deploy-spec:
-  {{nix}} build --no-link --json --print-build-logs .#packages.x86_64-linux.cachix-deploy-bare-metal-spec | jq -r '.[].outputs | to_entries[].value'
+  {{nix}} build --no-link --json --print-build-logs .#packages.{{system}}.cachix-deploy-bare-metal-spec | jq -r '.[].outputs | to_entries[].value'
 
 push-cachix-deploy-spec cache-name=cachix-cache-name: build-not-cached
   jq -r \
@@ -49,11 +51,11 @@ eval-packages: create-result-dirs
     cached="$(cat /proc/meminfo | grep Cached | grep -v SwapCached | tr -s ' ' | cut -d ' ' -f 2)"
     buffers="$(cat /proc/meminfo | grep Buffers | tr -s ' ' | cut -d ' ' -f 2)"
     shmem="$(cat /proc/meminfo | grep Shmem: | tr -s ' ' | cut -d ' ' -f 2)"
-  
+
     max_memory_mb="${MAX_MEMORY:-$(echo $((($free + $cached + $buffers + $shmem) / 1024 )))}"
 
   fi
-  
+
   set -x
 
   nix-eval-jobs \
@@ -61,7 +63,7 @@ eval-packages: create-result-dirs
     --gc-roots-dir "{{gc-roots-dir}}" \
     --workers "$max_workers" \
     --max-memory-size "$max_memory_mb" \
-    --flake .#legacyPackages.x86_64-linux.metacraft-labs
+    --flake .#legacyPackages.{{system}}.metacraft-labs
 
 build-not-cached:
   #!/usr/bin/env bash
@@ -92,7 +94,7 @@ build-not-cached:
     | @tsv
   ')
   packages_csv=$(echo name$'\t'cached$'\n'"$packages_csv" | sed -e 's/\t/\t| /g' | tail -n +2)
-  
+
   echo "$packages_csv" | column -t -s $'\t'
   echo
   echo "------------------"
