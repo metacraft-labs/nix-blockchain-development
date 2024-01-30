@@ -11,14 +11,14 @@
 }:
 buildPythonPackage rec {
   pname = "py-ecc";
-  version = "6.0.0";
+  version = "7.0.0";
   disabled = pythonOlder "3.6";
 
   src = fetchFromGitHub {
     owner = "ethereum";
     repo = "py_ecc";
     rev = "v${version}";
-    sha256 = "sha256-638otYA3e/Ld4mcM69yrqHQnGoK/Sfl/UA9FWnjgO/U=";
+    sha256 = "sha256-DKe+bI1GEzXg4Y4n5OA1/hWYz9L3X1AvaOFPEnCaAfs=";
   };
 
   propagatedBuildInputs = [
