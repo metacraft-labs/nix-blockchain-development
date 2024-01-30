@@ -2,10 +2,10 @@
 with pkgs;
   stdenv.mkDerivation rec {
     name = "solana-bpf-tools-${version}";
-    version = "1.37";
+    version = "1.39";
     src = fetchzip {
       url = "https://github.com/solana-labs/platform-tools/releases/download/v${version}/platform-tools-linux-x86_64.tar.bz2";
-      sha256 = "sha256-llKrtYIxM8YvIiJZauYdVIV4XISS7Jk4EZ/H4bCbfN4=";
+      sha256 = "sha256-PAlPrq7WP8T4Pq78mCbPLGpywGAgqTPkas1kX2yKhJI=";
       stripRoot = false;
     };
 
