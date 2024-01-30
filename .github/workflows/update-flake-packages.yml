@@ -19,8 +19,16 @@ jobs:
 
       - name: Run the Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v2
+
+      - uses: tibdex/github-app-token@v2.0.0
+        id: generate-token
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
         
       - name: Update flake packages
-        uses: selfuryon/nix-update-action@v1.0.1
+        uses: metacraft-labs/nix-update-action@main
         with:
+          token: ${{ steps.generate-token.outputs.token }}
+          update: ""
           blacklist: "cardano,circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd,rapidsnark,rapidsnark-server,pistache,cryptography36"
