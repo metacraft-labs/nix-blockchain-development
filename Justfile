@@ -43,7 +43,9 @@ eval-packages: create-result-dirs
   fi
 
   if [ "{{os}}" = "darwin" ]; then
-    pages="$(vm_stat | grep 'Pages free:' | tr -s ' ' | cut -d ' ' -f 3 | tr -d '.')"
+    free_pages="$(vm_stat | grep 'Pages free:' | tr -s ' ' | cut -d ' ' -f 3 | tr -d '.')"
+    inactive_pages="$(vm_stat | grep 'Pages inactive:' | tr -s ' ' | cut -d ' ' -f 3 | tr -d '.')"
+    pages="$((free_pages + inactive_pages)"
     page_size="$(pagesize)"
     max_memory_mb="${MAX_MEMORY:-$(echo $((($pages * $page_size) / 1024 / 1024 )))}"
   else
