@@ -30,5 +30,5 @@ jobs:
         uses: metacraft-labs/nix-update-action@main
         with:
           token: ${{ steps.generate-token.outputs.token }}
-          update: ""
+          unstable: ""
           blacklist: "cardano,circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd,rapidsnark,rapidsnark-server,pistache,cryptography36"
