@@ -37,12 +37,5 @@ jobs:
           name: mcl-blockchain-packages
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
-      - name: Build Cachix deploy spec
+      - name: Build Packages Not Cached By Cachix
         run: nix develop .#ci -c just build-not-cached
-
-      - name: Deploy
-        if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
-        env:
-          CACHIX_ACTIVATE_TOKEN: "${{ secrets.CACHIX_ACTIVATE_TOKEN }}"
-        run: |
-          nix develop .#ci -c just deploy-cachix-spec
