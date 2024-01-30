@@ -2,15 +2,15 @@
 with pkgs;
   buildNpmPackage rec {
     pname = "circom_runtime";
-    version = "0.1.22";
+    version = "0.1.24";
     src = fetchFromGitHub {
       owner = "iden3";
       repo = "circom_runtime";
       rev = "v${version}";
-      hash = "sha256-80aqwYuu6TQURAPYIeDhuum67yDms7pBDaiuIeMFHxU=";
+      hash = "sha256-iC6kqVn1ixJlcuf+t2wbC+0/sCcXGvSRfuheLiW0Egs=";
     };
 
-    npmDepsHash = "sha256-Pcenh1cdW/2r0k/XQN4aS6iX4LQRJznxzo3ngj9lDoo=";
+    npmDepsHash = "sha256-LvgKNazeoS7FcsjFDHnA9ZLePOesFu6eeEWDRGQRPLE=";
 
     nativeBuildInputs = with pkgs; [gtest nodejs];
 
