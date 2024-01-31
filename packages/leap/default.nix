@@ -1,12 +1,12 @@
 {
-  clangStdenv,
+  clang11Stdenv,
   nodejs,
   fetchFromGitHub,
   pkgs,
   lib,
   xz,
 }:
-clangStdenv.mkDerivation rec {
+clang11Stdenv.mkDerivation rec {
   pname = "leap";
   version = "4.0.0";
 
