@@ -9,6 +9,7 @@
   openssl,
   rapidjson,
   howard-hinnant-date,
+  gcc12,
 }:
 stdenv.mkDerivation rec {
   pname = "pistache";
@@ -20,7 +21,7 @@ stdenv.mkDerivation rec {
     hash = "sha256-4mqiQRL3ucXudNRvjCExPUAlz8Q5BzEqJUMVK6f30ug=";
   };
 
-  nativeBuildInputs = [meson cmake ninja pkg-config];
+  nativeBuildInputs = [gcc12 meson cmake ninja pkg-config];
 
   buildInputs = [
     openssl
