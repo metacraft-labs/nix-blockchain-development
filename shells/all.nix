@@ -62,6 +62,9 @@ in
         # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
         # for more information
         metacraft-labs.rapidsnark-server
+
+        # Ethereum
+        self'.legacyPackages.ethereum_nix.nimbus
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
@@ -79,9 +82,6 @@ in
         metacraft-labs.leap
         metacraft-labs.eos-vm
         metacraft-labs.cdt
-
-        # Ethereum
-        self'.legacyPackages.ethereum_nix.nimbus
 
         # py-ecc
         metacraft-labs.py-ecc
