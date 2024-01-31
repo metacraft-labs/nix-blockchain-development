@@ -3,8 +3,7 @@
   fetchFromGitHub,
   writeShellScriptBin,
   stdenv,
-  clang,
-  llvmPackages,
+  clang_11,
   protobuf,
   rocksdb,
   rustPlatform,
@@ -14,6 +13,7 @@
   CoreFoundation,
   Security,
   SystemConfiguration,
+  libcxxabi,
 }: {enableFastRuntime ? false}: let
   tags = {
     "v0.9.40" = {
@@ -28,10 +28,19 @@
       commitSha1 = "ba42b9ce51d25bdaf52d2c61e0763a6e3da50d25";
       srcSha256 = "sha256-KYmMMcQMkkXfWj5ZTr549a/8ftELKo0PUvCrmRMiDaE=";
     };
+    "v1.0.0" = {
+      commitSha1 = "1ed6e2e50a4ce61f6cda46a730efc11a07b6ebb3";
+      srcSha256 = "sha256-amTWHD5T40jfnD7z0ILGEDNu7Sz60puhkB/agI+F/lo=";
+    };
   };
 
   commonArgs = rec {
     version = "0.9.43";
+
+    CC = "clang";
+    CXX = "clang++";
+    LFLAGS = "-lc++abi";
+    NIX_LDFLAGS = "${LFLAGS}";
 
     src = fetchFromGitHub {
       owner = "paritytech";
@@ -40,14 +49,16 @@
       sha256 = tags."v${version}".srcSha256;
     };
 
-    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb];
+    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb clang_11];
 
-    buildInputs = lib.optionals stdenv.isDarwin [
-      libiconv
-      CoreFoundation
-      Security
-      SystemConfiguration
-    ];
+    buildInputs =
+      [clang_11 libcxxabi libcxxabi.dev]
+      ++ lib.optionals stdenv.isDarwin [
+        libiconv
+        CoreFoundation
+        Security
+        SystemConfiguration
+      ];
 
     SUBSTRATE_CLI_GIT_COMMIT_HASH = tags."v${version}".commitSha1;
     PROTOC = "${protobuf}/bin/protoc";
