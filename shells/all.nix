@@ -31,9 +31,6 @@ in
 
         metacraft-labs.go-opera
 
-        # Test nix2container
-        example-container.copyToDockerDaemon
-
         metacraft-labs.polkadot
         metacraft-labs.polkadot-fast
 
@@ -65,6 +62,9 @@ in
 
         # Ethereum
         self'.legacyPackages.ethereum_nix.nimbus
+
+        # Test nix2container
+        example-container.copyToDockerDaemon
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
