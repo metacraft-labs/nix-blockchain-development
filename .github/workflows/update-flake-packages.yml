@@ -25,10 +25,11 @@ jobs:
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
-        
+
       - name: Update flake packages
         uses: metacraft-labs/nix-update-action@main
         with:
           token: ${{ steps.generate-token.outputs.token }}
           unstable: ""
-          blacklist: "cardano,circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd,rapidsnark,rapidsnark-server,pistache,cryptography36"
+          from_branch: "cardano, graphql"
+          blacklist: "circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,polkadot,polkadot-fast,solana,solana-rust-artifacts,zqfield-bn254,wasmd,rapidsnark,rapidsnark-server,pistache,cryptography36"
