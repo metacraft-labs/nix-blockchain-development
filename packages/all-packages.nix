@@ -89,7 +89,8 @@
     elrond-go = callPackage ./elrond-go/default.nix {};
     elrond-proxy-go = callPackage ./elrond-proxy-go/default.nix {};
 
-    cardano = callPackage ./cardano/default.nix {inherit cardano-cli cardano-node;};
+    graphql = callPackage ./graphql/default.nix {inherit cardano-cli cardano-node;};
+    cardano = callPackage ./cardano/default.nix {inherit cardano-cli cardano-node graphql;};
 
     polkadot-generic = callPackage ./polkadot/default.nix {
       craneLib = craneLib-stable;
@@ -164,7 +165,7 @@
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
 
-        inherit cardano;
+        inherit cardano graphql;
       }
       // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
         pistache = callPackage ./pistache/default.nix {};
