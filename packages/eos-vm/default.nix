@@ -21,7 +21,7 @@ clangStdenv.mkDerivation rec {
         enabledStatic = true;
       })
   ];
-  nativeBuildInputs = with pkgs; [pkgconfig cmake clang git python3];
+  nativeBuildInputs = with pkgs; [pkg-config cmake clang git python3];
 
   src = fetchgit {
     url = "https://github.com/AntelopeIO/eos-vm";

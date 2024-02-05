@@ -22,7 +22,7 @@ clangStdenv.mkDerivation rec {
     find . -type f -name '*.py' -print0 | xargs -0 -I{} sed -i -E 's#/usr/bin/env python3?#${pkgs.python3}/bin/python3#' {}
   '';
 
-  nativeBuildInputs = with pkgs; [pkgconfig cmake clang git python3];
+  nativeBuildInputs = with pkgs; [pkg-config cmake clang git python3];
 
   buildInputs = with pkgs; [
     llvm
