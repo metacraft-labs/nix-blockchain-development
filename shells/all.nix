@@ -38,8 +38,9 @@ in
         metacraft-labs.polkadot-fast
 
         # noir
-        self'.legacyPackages.noir.noir-native
-        self'.legacyPackages.noir.noir-wasm
+        self'.legacyPackages.noir.nargo
+        self'.legacyPackages.noir.noirc_abi_wasm
+        self'.legacyPackages.noir.acvm_js
 
         # ethereum.nix
         self'.legacyPackages.ethereum_nix.geth

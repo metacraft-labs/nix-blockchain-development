@@ -54,7 +54,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
       inputs.flake-compat.follows = "flake-compat";
-      inputs.rust-overlay.follows = "rust-overlay";
       inputs.crane.follows = "crane";
     };
 
