@@ -31,7 +31,7 @@ in
           rustPlatform.cargoSetupHook
           setuptools-rust
         ]
-        ++ (with rustPlatform; [rust.cargo rust.rustc]);
+        ++ (with pkgs; [cargo rustc]);
 
       buildInputs =
         [openssl]
