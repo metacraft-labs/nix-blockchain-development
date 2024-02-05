@@ -10,7 +10,7 @@ with pkgs;
       sha256 = "sha256-Rlx1DQS0JQ9MwFeYAaH5AQw5uJN7eHR1RoewPeehwYw=";
     };
 
-    vendorSha256 = "sha256-Nuq8mhZ5aNOHAZlOhtKSqoKrex6kmfuaTxNFxV/TwEw=";
+    vendorHash = "sha256-Nuq8mhZ5aNOHAZlOhtKSqoKrex6kmfuaTxNFxV/TwEw=";
     modSha256 = lib.fakeSha256;
 
     meta = with lib; {

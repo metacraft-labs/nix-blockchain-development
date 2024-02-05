@@ -23,7 +23,7 @@ with pkgs;
     # GIT_DATE = "1669028682";
     # ldflags = "-s -w -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitCommit=$${GIT_COMMIT} -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitDate=$${GIT_DATE}";
 
-    vendorSha256 = "sha256-FYOY7RwpLGm/0FldrXTKg2d68HzOmUQBt6EolQ2f3hA=";
+    vendorHash = "sha256-FYOY7RwpLGm/0FldrXTKg2d68HzOmUQBt6EolQ2f3hA=";
 
     meta = with lib; {
       description = "Opera blockchain protocol secured by the Lachesis consensus algorithm ";
