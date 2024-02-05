@@ -16,22 +16,7 @@ create-result-dirs:
   set -euo pipefail
   mkdir -p "{{result-dir}}" "{{gc-roots-dir}}"
 
-build-cachix-deploy-spec:
-  {{nix}} build --no-link --json --print-build-logs .#packages.{{system}}.cachix-deploy-bare-metal-spec | jq -r '.[].outputs | to_entries[].value'
-
-push-cachix-deploy-spec cache-name=cachix-cache-name: build-not-cached
-  jq -r \
-    '.agents | to_entries | map(.value) | .[]' \
-    .result/cachix-deploy-spec.json \
-  | cachix push {{cache-name}}
-
-deploy-cachix-spec: build-not-cached
-  cachix deploy activate .result/cachix-deploy-spec.json --async
-
-bootstrap ssh-host-before config ssh-host-after:
-  ./scripts/bootstrap-machine.bash {{ssh-host-before}} {{config}} {{ssh-host-after}}
-
-eval-packages: create-result-dirs
+eval-packages eval-system: create-result-dirs
   #!/usr/bin/env bash
   set -euo pipefail
 
@@ -65,20 +50,14 @@ eval-packages: create-result-dirs
     --gc-roots-dir "{{gc-roots-dir}}" \
     --workers "$max_workers" \
     --max-memory-size "$max_memory_mb" \
-    --flake .#legacyPackages.x86_64-linux.metacraft-labs
-  nix-eval-jobs \
-    --check-cache-status \
-    --gc-roots-dir "{{gc-roots-dir}}" \
-    --workers "$max_workers" \
-    --max-memory-size "$max_memory_mb" \
-    --flake .#legacyPackages.x86_64-darwin.metacraft-labs
+    --flake .#legacyPackages.{{eval-system}}.metacraft-labs
 
-generate-matrix:
+generate-matrix: create-result-dirs
   #!/usr/bin/env bash
   set -euo pipefail
 
   rm -f .result/cachix-deploy-spec.json
-  nix_eval_result=$(just eval-packages)
+  nix_eval_result=$(just eval-packages x86_64-linux 2> /dev/null)$(just eval-packages x86_64-darwin 2> /dev/null)
 
   packages=$(echo "$nix_eval_result" | jq -sr '
     map({ package: .attr, isCached, allowedToFail: false, system: .system, attrPath: (.system + "." + .attr), os: (if (.system == "x86_64-linux") then "ubuntu-latest" else "macos-12" end)})
@@ -95,66 +74,3 @@ generate-matrix:
 
   comment="Building (not-cached): "$(echo "$packages" | jq -r '. | map(.package + " (" + .system + ")") | join(", ")')
   echo "comment=$comment" >> "$GITHUB_OUTPUT"
-
-
-build-not-cached:
-  #!/usr/bin/env bash
-  set -euo pipefail
-
-  rm -f .result/cachix-deploy-spec.json
-  nix_eval_result=$(just eval-packages)
-
-  echo "------------------"
-  echo "Nix eval complete."
-  echo
-
-  packages=$(echo "$nix_eval_result" | jq -sr '
-    map({ name: .attr, isCached, drvPath, out: .outputs.out })
-    | sort_by(.name | ascii_downcase)
-  ')
-
-  packages_to_build=$(echo "$packages" | jq '. | map(select(.isCached | not))')
-  num_packages_to_build=$(echo "$packages_to_build" | jq '. | length')
-  num_packages=$(echo "$packages" | jq '. | length')
-
-  echo "* $num_packages packages found:"
-
-  packages_csv=$(echo "$packages" | jq -r '.
-    | ["name", "isCached"] as $cols
-    | map(. as $row | $cols | map($row[.])) as $rows
-    | $cols, $rows[]
-    | @tsv
-  ')
-  packages_csv=$(echo name$'\t'cached$'\n'"$packages_csv" | sed -e 's/\t/\t| /g' | tail -n +2)
-
-  echo "$packages_csv" | column -t -s $'\t'
-  echo
-  echo "------------------"
-
-  echo "* $((num_packages - num_packages_to_build)) packages cached"
-  echo "* $num_packages_to_build packages to build"
-  echo "------------------"
-  echo
-
-  if [ "$num_packages_to_build" -gt 0 ]; then
-    IFS=$'\n' drvs=( $(echo "$packages_to_build" | jq -r '.[] | .drvPath') )
-    derivations=( ${drvs[@]/%/^*} )
-
-    (
-      set -x
-      {{nix}} build --no-link --json -L ${derivations[*]} | jq 'map(.outputs.out)'
-    )
-
-    echo "------------------"
-    echo "Build complete."
-  else
-    echo "All packages are cached, skipping build."
-  fi
-
-  echo "$packages" | jq '
-    {
-      agents: map({
-        key: .name, value: .out
-      }) | from_entries
-    }' \
-    > .result/cachix-deploy-spec.json
