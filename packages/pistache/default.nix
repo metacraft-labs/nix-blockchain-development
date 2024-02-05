@@ -5,7 +5,7 @@
   meson,
   cmake,
   ninja,
-  pkgconfig,
+  pkg-config,
   openssl,
   rapidjson,
   howard-hinnant-date,
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
     hash = "sha256-4mqiQRL3ucXudNRvjCExPUAlz8Q5BzEqJUMVK6f30ug=";
   };
 
-  nativeBuildInputs = [meson cmake ninja pkgconfig];
+  nativeBuildInputs = [meson cmake ninja pkg-config];
 
   buildInputs = [
     openssl
