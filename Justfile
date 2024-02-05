@@ -65,7 +65,37 @@ eval-packages: create-result-dirs
     --gc-roots-dir "{{gc-roots-dir}}" \
     --workers "$max_workers" \
     --max-memory-size "$max_memory_mb" \
-    --flake .#legacyPackages.{{system}}.metacraft-labs
+    --flake .#legacyPackages.x86_64-linux.metacraft-labs
+  nix-eval-jobs \
+    --check-cache-status \
+    --gc-roots-dir "{{gc-roots-dir}}" \
+    --workers "$max_workers" \
+    --max-memory-size "$max_memory_mb" \
+    --flake .#legacyPackages.x86_64-darwin.metacraft-labs
+
+generate-matrix:
+  #!/usr/bin/env bash
+  set -euo pipefail
+
+  rm -f .result/cachix-deploy-spec.json
+  nix_eval_result=$(just eval-packages)
+
+  packages=$(echo "$nix_eval_result" | jq -sr '
+    map({ package: .attr, isCached, allowedToFail: false, system: .system, attrPath: (.system + "." + .attr), os: (if (.system == "x86_64-linux") then "ubuntu-latest" else "macos-12" end)})
+      | sort_by(.package | ascii_downcase )
+  ')
+  packages_to_build=$(echo "$packages" | jq -c '. | map(select(.isCached | not))')
+  if (( $(echo "$packages_to_build" | jq '. | length') > 0 )); then
+    matrix='{"include":'"$packages_to_build"'}'
+  else
+    matrix='{}'
+  fi
+  echo "$matrix" > matrix.txt
+  echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+
+  comment="Building (not-cached): "$(echo "$packages" | jq -r '. | map(.package + " (" + .system + ")") | join(", ")')
+  echo "comment=$comment" >> "$GITHUB_OUTPUT"
+
 
 build-not-cached:
   #!/usr/bin/env bash
