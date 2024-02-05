@@ -9,7 +9,7 @@ with pkgs; let
       name = "example";
       tag = "latest";
       config = {
-        entrypoint = ["${pkgs.lib.getExe pkgs.figlet}" "MCL"];
+        entrypoint = ["${pkgs.figlet}/bin/figlet" "MCL"];
       };
     };
 in
