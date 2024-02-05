@@ -13,7 +13,7 @@ with pkgs;
 
     doCheck = false;
     proxyVendor = true;
-    vendorSha256 = "sha256-SC+9t2B3W4+4wDQWZqcpU8R1xNH8uc5rF3okLN2Df10=";
+    vendorHash = "sha256-SC+9t2B3W4+4wDQWZqcpU8R1xNH8uc5rF3okLN2Df10=";
 
     meta = with lib; {
       description = "Avalanche CLI is a command line tool that gives developers access to everything Avalanche.";
