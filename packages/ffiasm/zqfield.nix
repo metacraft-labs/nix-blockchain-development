@@ -16,7 +16,7 @@
 in
   runCommand "zqfield-${filename}-${primeNumber}" {} ''
     ${lib.getExe ffiasm-src} -q ${primeNumber} -n ${name}
-    ${lib.getExe nasm} ${nasmArgs} ${filename}.asm
+    ${nasm}/bin/nasm ${nasmArgs} ${filename}.asm
     mkdir -p $out/lib
     cp ${filename}.{asm,cpp,hpp,o} $out/lib/
   ''
