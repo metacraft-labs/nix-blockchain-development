@@ -14,3 +14,9 @@
 # Nix
 result
 .result
+
+# CI
+matrix.json
+matrix-pre.json
+matrix-post.json
+comment.md

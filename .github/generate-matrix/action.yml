@@ -1,0 +1,41 @@
+name: Evaluate CI Matrix
+description: Evaluate all packages, check cache status generate CI matrix and publish comment with the summary
+
+inputs:
+  is-initial:
+    description: Is this the start of the CI workflow, or the end
+    default: 'true'
+    required: true
+outputs:
+  matrix:
+    description: 'Generated Matrix'
+    value: ${{ steps.generate-matrix.outputs.matrix }}
+  comment:
+    description: 'Comment'
+    value: ${{ steps.generate-matrix.outputs.comment }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Nix
+      uses: cachix/install-nix-action@v25
+      with:
+        extra_nix_config: accept-flake-config = true
+
+    - name: Generate CI Matrix
+      id: generate-matrix
+      shell: bash
+      env:
+        IS_INITIAL: ${{ inputs.is-initial }}
+      run: nix develop .#ci -c just generate-matrix
+
+    - name: Upload CI Matrix
+      uses: actions/upload-artifact@v4
+      with:
+        name: matrix-${{ inputs.is-initial == 'true' && 'pre' || 'post' }}.json
+        path: matrix-${{ inputs.is-initial == 'true' && 'pre' || 'post' }}.json
+
+    - name: Update GitHub Comment
+      uses: marocchino/sticky-pull-request-comment@v2.9.0
+      with:
+        path: comment.md

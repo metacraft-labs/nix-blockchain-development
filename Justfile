@@ -57,20 +57,48 @@ generate-matrix: create-result-dirs
   set -euo pipefail
 
   rm -f .result/cachix-deploy-spec.json
-  nix_eval_result=$(just eval-packages x86_64-linux 2> /dev/null)$(just eval-packages x86_64-darwin 2> /dev/null)
+  nix_eval_result=$(just eval-packages x86_64-linux 2> /dev/null)$(just eval-packages x86_64-darwin 2> /dev/null)$(just eval-packages aarch64-darwin 2> /dev/null)
 
-  packages=$(echo "$nix_eval_result" | jq -sr '
-    map({ package: .attr, isCached, allowedToFail: false, system: .system, attrPath: (.system + "." + .attr), os: (if (.system == "x86_64-linux") then "ubuntu-latest" else "macos-12" end)})
+  packages=$(echo "$nix_eval_result" | jq -csr '
+    map({
+      package: .attr,
+      isCached,
+      allowedToFail: false,
+      system: .system,
+      attrPath: (.system + "." + .attr),
+      out: (
+        .outputs.out
+        | ( "https://mcl-blockchain-packages.cachix.org/" + match("^\/nix\/store\/([^-]+)-").captures[0].string + ".narinfo")
+      ),
+      os: (
+        if (.system == "x86_64-linux")
+        then "ubuntu-latest"
+        else "macos-14"
+        end
+      )
+    })
       | sort_by(.package | ascii_downcase )
   ')
+
+  table_inputs=$(echo "$packages" | jq -c 'group_by(.package) |
+    map({package: .[0].package, "x86_64-linux": "🚫 not supported", "x86_64-darwin": "🚫 not supported", "aarch64-darwin": "🚫 not supported"}
+      + (map({(.system): (if .isCached then ("[✅ cached](" + .out + ")") else ("[building](" + .out + ")") end)}) | add)) | sort_by(.package)')
+
   packages_to_build=$(echo "$packages" | jq -c '. | map(select(.isCached | not))')
   if (( $(echo "$packages_to_build" | jq '. | length') > 0 )); then
     matrix='{"include":'"$packages_to_build"'}'
   else
     matrix='{}'
   fi
-  echo "$matrix" > matrix.txt
+  echo "$matrix" > matrix.json
   echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
 
-  comment="Building (not-cached): "$(echo "$packages" | jq -r '. | map(.package + " (" + .system + ")") | join(", ")')
-  echo "comment=$comment" >> "$GITHUB_OUTPUT"
+  table=$(echo "$table_inputs" | commentablefmt )
+  {
+    echo "Thanks for your Pull Request!"
+    echo
+    echo "Below you will find a summary of the cachix status of each package, for each supported platform."
+    echo
+    echo "$table"
+    echo
+  } > comment.md
