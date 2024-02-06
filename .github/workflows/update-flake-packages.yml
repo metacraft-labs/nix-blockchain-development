@@ -17,9 +17,6 @@ jobs:
             accept-flake-config = true
             allow-import-from-derivation = true
 
-      - name: Run the Magic Nix Cache
-        uses: DeterminateSystems/magic-nix-cache-action@v3
-
       - uses: tibdex/github-app-token@v2.1.0
         id: generate-token
         with:
