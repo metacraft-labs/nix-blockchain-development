@@ -5,18 +5,23 @@ result-dir := root-dir / ".result"
 gc-roots-dir := result-dir / "gc-roots"
 nix := `if tty -s; then echo nom; else echo nix; fi`
 cachix-cache-name := `echo ${CACHIX_CACHE:-}`
-cachix-deploy-spec-json := ".result/cachix-deploy-spec.json"
 
 os := if os() == "macos" { "darwin" } else { "linux" }
 arch := arch()
 system:= arch + "-" + os
+
+default:
+  @just --list
+
+get-system:
+  @echo {{ system }}
 
 create-result-dirs:
   #!/usr/bin/env bash
   set -euo pipefail
   mkdir -p "{{result-dir}}" "{{gc-roots-dir}}"
 
-eval-packages eval-system: create-result-dirs
+eval-packages eval-system=system: create-result-dirs
   #!/usr/bin/env bash
   set -euo pipefail
 
