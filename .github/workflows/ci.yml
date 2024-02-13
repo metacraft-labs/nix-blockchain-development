@@ -34,6 +34,7 @@ jobs:
         uses: ./.github/generate-matrix
         with:
           is-initial: 'true'
+          cachix-cache: ${{ vars.CACHIX_CACHE }}
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
       comment: ${{ steps.generate-matrix.outputs.comment }}
@@ -77,6 +78,7 @@ jobs:
         uses: ./.github/generate-matrix
         with:
           is-initial: 'false'
+          cachix-cache: ${{ vars.CACHIX_CACHE }}
 
       - run: exit 1
         if: >-

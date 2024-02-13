@@ -6,6 +6,9 @@ inputs:
     description: Is this the start of the CI workflow, or the end
     default: 'true'
     required: true
+  cachix-cache:
+    description: The name of the cachix cache to use
+    required: true
 outputs:
   matrix:
     description: 'Generated Matrix'
@@ -27,7 +30,8 @@ runs:
       shell: bash
       env:
         IS_INITIAL: ${{ inputs.is-initial }}
-      run: nix develop .#ci -c just generate-matrix
+        CACHIX_CACHE: ${{ inputs.cachix-cache }}
+      run: nix develop .#ci -c ./scripts/ci-matrix.sh
 
     - name: Upload CI Matrix
       uses: actions/upload-artifact@v4
