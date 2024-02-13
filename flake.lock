@@ -72,9 +72,7 @@
         "foundry-nix": "foundry-nix",
         "lib-extras": "lib-extras",
         "mynixpkgs": "mynixpkgs",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "poetry2nix": "poetry2nix",
         "treefmt-nix": "treefmt-nix_2"
@@ -394,16 +392,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1707689078,
-        "narHash": "sha256-UUGmRa84ZJHpGZ1WZEBEUOzaPOWG8LZ0yPg1pdDF/yM=",
-        "owner": "NixOS",
+        "lastModified": 1685566663,
+        "narHash": "sha256-btHN1czJ6rzteeCuE/PNrdssqYD2nIA4w48miQAFloM=",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "f9d39fb9aff0efee4a3d5f4a6d7c17701d38a1d8",
+        "rev": "4ecab3273592f27479a583fb6d975d4aba3486fe",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "owner": "nixos",
+        "ref": "23.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -420,6 +418,22 @@
       "original": {
         "owner": "nixos",
         "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1707689078,
+        "narHash": "sha256-UUGmRa84ZJHpGZ1WZEBEUOzaPOWG8LZ0yPg1pdDF/yM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f9d39fb9aff0efee4a3d5f4a6d7c17701d38a1d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -487,7 +501,7 @@
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils_3",
         "nix2container": "nix2container",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": "nixpkgs_2",
         "noir": "noir",
         "rust-overlay": "rust-overlay"
       }
