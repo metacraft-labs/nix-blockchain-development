@@ -1,5 +1,5 @@
 {pkgs}: let
-  jq = (pkgs.jq.override {onigurumaSupport = false;}).overrideAttrs (oldAttrs: {
+  jq = pkgs.jq.overrideAttrs (oldAttrs: {
     # outputs = ["bin" "doc" "man" "dev" "lib" "out"];
     outputs = ["bin" "dev" "lib" "out"];
     configureFlags = oldAttrs.configureFlags ++ ["--mandir=/tmp" "--datadir=/tmp"];
