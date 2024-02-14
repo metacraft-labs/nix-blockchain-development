@@ -139,6 +139,8 @@
         avalanche-cli = callPackage ./avalanche-cli/default.nix {};
 
         inherit corepack-shims;
+
+        ci-matrix = callPackage ./ci-matrix/default.nix {};
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         wasmd = callPackage ./wasmd/default.nix {};
