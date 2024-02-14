@@ -8,8 +8,8 @@ root_dir="$(git rev-parse --show-toplevel)"
 source "$root_dir/scripts/nix-eval-jobs.sh"
 
 eval_packages_to_json() {
-  flake_attr_pre="${1:-legacyPackages}"
-  flake_attr_post="${2:-metacraft-labs}"
+  flake_attr_pre="${1:-checks}"
+  flake_attr_post="${2:-}"
 
   cachix_url="https://${CACHIX_CACHE}.cachix.org"
 
@@ -22,7 +22,7 @@ eval_packages_to_json() {
     |
     map({
       package: .attr,
-      attrPath: "\(.system).\(.attr)",
+      attrPath: "'"${flake_attr_pre}".'\(.system).\(.attr)",
       allowedToFail: false,
       isCached,
       system,
