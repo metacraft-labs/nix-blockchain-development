@@ -32,7 +32,7 @@ runs:
       env:
         IS_INITIAL: ${{ inputs.is-initial }}
         CACHIX_CACHE: ${{ inputs.cachix-cache }}
-      run: nix develop .#ci -c ./scripts/ci-matrix.sh
+      run: nix run .#ci-matrix
 
     - name: Upload CI Matrix
       uses: actions/upload-artifact@v4
