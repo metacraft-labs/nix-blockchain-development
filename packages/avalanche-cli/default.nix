@@ -1,7 +1,7 @@
 {pkgs}:
 with pkgs;
   buildGoModule rec {
-    pname = "test123-avalanche-cli";
+    pname = "test1234-avalanche-cli";
     version = "1.3.7";
 
     src = fetchFromGitHub {
