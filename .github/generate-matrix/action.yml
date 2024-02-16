@@ -20,19 +20,13 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Nix
-      uses: cachix/install-nix-action@v25
-      with:
-        extra_nix_config: accept-flake-config = true
-        install_url: "https://releases.nixos.org/nix/nix-2.19.3/install"
-
     - name: Generate CI Matrix
       id: generate-matrix
       shell: bash
       env:
         IS_INITIAL: ${{ inputs.is-initial }}
         CACHIX_CACHE: ${{ inputs.cachix-cache }}
-      run: nix run .#ci-matrix
+      run: ci-matrix
 
     - name: Upload CI Matrix
       uses: actions/upload-artifact@v4

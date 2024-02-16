@@ -17,6 +17,8 @@ concurrency:
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/metacraft-labs/docker-ci:latest
     steps:
       - uses: actions/checkout@v4
 
@@ -72,6 +74,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Final Results
     needs: [build, generate-matrix]
+    container:
+      image: ghcr.io/metacraft-labs/docker-ci:latest
     steps:
       - uses: actions/checkout@v4
 

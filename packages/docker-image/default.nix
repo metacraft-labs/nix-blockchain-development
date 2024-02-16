@@ -7,7 +7,7 @@
   replaceDependency,
 }: let
   image = (dockerTools.override {jq = minimalPkgs.jq;}).buildImageWithNixDb {
-    name = "docker-ci";
+    name = "ghcr.io/metacraft-labs/docker-ci";
     tag = "latest";
 
     contents = with pkgs; [
