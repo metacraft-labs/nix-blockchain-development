@@ -21,6 +21,7 @@ runs:
   using: "composite"
   steps:
     - name: Pull Docker Image
+      shell: bash
       run: docker pull ghcr.io/metacraft-labs/docker-ci:latest
 
     - name: Generate CI Matrix
