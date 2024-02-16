@@ -17,11 +17,6 @@ concurrency:
 jobs:
   generate-matrix:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/metacraft-labs/docker-ci:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -77,11 +72,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Final Results
     needs: [build, generate-matrix]
-    container:
-      image: ghcr.io/metacraft-labs/docker-ci:latest
-      credentials:
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 

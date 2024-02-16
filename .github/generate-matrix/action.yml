@@ -20,13 +20,16 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Pull Docker Image
+      run: docker pull ghcr.io/metacraft-labs/docker-ci:latest
+
     - name: Generate CI Matrix
       id: generate-matrix
       shell: bash
       env:
         IS_INITIAL: ${{ inputs.is-initial }}
         CACHIX_CACHE: ${{ inputs.cachix-cache }}
-      run: ci-matrix
+      run: docker run -v "$(pwd)":/mnt ghcr.io/metacraft-labs/docker-ci:latest ci
 
     - name: Upload CI Matrix
       uses: actions/upload-artifact@v4

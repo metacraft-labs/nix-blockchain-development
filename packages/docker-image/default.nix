@@ -91,7 +91,7 @@
       (replaceDependency
         {
           drv =
-            writeShellScriptBin "test-ci"
+            writeShellScriptBin "ci"
             ''
               cd /mnt
               export CACHIX_CACHE=mcl-blockchain-packages
