@@ -104,75 +104,82 @@
     };
     polkadot = polkadot-generic {};
     polkadot-fast = polkadot-generic {enableFastRuntime = true;};
+    minimalPkgs = callPackage ./minimal-packages/default.nix {};
+    ci-matrix = callPackage ./ci-matrix/default.nix {inherit minimalPkgs;};
   in {
-    legacyPackages.metacraft-labs =
-      rec {
-        gaiad = callPackage ./gaiad {};
-        cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {inherit gaiad;};
-        blst = callPackage ./blst {};
-        bnb-beacon-node = callPackage ./bnb-beacon-node {};
+    legacyPackages = {
+      metacraft-labs =
+        rec {
+          gaiad = callPackage ./gaiad {};
+          cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {inherit gaiad;};
+          blst = callPackage ./blst {};
+          bnb-beacon-node = callPackage ./bnb-beacon-node {};
 
-        circom = callPackage ./circom/default.nix {craneLib = craneLib-stable;};
-        circ = callPackage ./circ/default.nix {craneLib = craneLib-stable;};
+          circom = callPackage ./circom/default.nix {craneLib = craneLib-stable;};
+          circ = callPackage ./circ/default.nix {craneLib = craneLib-stable;};
 
-        emscripten = pkgs.emscripten.overrideAttrs (old: {
-          postInstall = ''
-            pushd $TMPDIR
-            echo 'int __main_argc_argv() { return 42; }' >test.c
-            for MEM in "-s ALLOW_MEMORY_GROWTH" ""; do
-              for LTO in -flto ""; do
-                for OPT in "-O2" "-O3" "-Oz" "-Os"; do
-                  $out/bin/emcc $MEM $LTO $OPT -s WASM=1 -s STANDALONE_WASM test.c
+          emscripten = pkgs.emscripten.overrideAttrs (old: {
+            postInstall = ''
+              pushd $TMPDIR
+              echo 'int __main_argc_argv() { return 42; }' >test.c
+              for MEM in "-s ALLOW_MEMORY_GROWTH" ""; do
+                for LTO in -flto ""; do
+                  for OPT in "-O2" "-O3" "-Oz" "-Os"; do
+                    $out/bin/emcc $MEM $LTO $OPT -s WASM=1 -s STANDALONE_WASM test.c
+                  done
                 done
               done
-            done
-          '';
-        });
+            '';
+          });
 
-        go-opera = callPackage ./go-opera/default.nix {};
+          go-opera = callPackage ./go-opera/default.nix {};
 
-        circom_runtime = callPackage ./circom_runtime/default.nix {};
+          circom_runtime = callPackage ./circom_runtime/default.nix {};
 
-        # Polkadot
-        inherit polkadot polkadot-fast;
+          # Polkadot
+          inherit polkadot polkadot-fast;
 
-        avalanche-cli = callPackage ./avalanche-cli/default.nix {};
+          avalanche-cli = callPackage ./avalanche-cli/default.nix {};
 
-        inherit corepack-shims;
-      }
-      // lib.optionalAttrs hostPlatform.isLinux rec {
-        wasmd = callPackage ./wasmd/default.nix {};
+          inherit corepack-shims;
+        }
+        // lib.optionalAttrs hostPlatform.isLinux rec {
+          wasmd = callPackage ./wasmd/default.nix {};
 
-        # Solana
-        solana-rust-artifacts = callPackage ./solana-rust-artifacts {};
+          # Solana
+          solana-rust-artifacts = callPackage ./solana-rust-artifacts {};
 
-        solana-bpf-tools = callPackage ./solana-bpf-tools {};
+          solana-bpf-tools = callPackage ./solana-bpf-tools {};
 
-        solana = callPackage ./solana-full-sdk {
-          inherit solana-rust-artifacts solana-bpf-tools;
+          solana = callPackage ./solana-full-sdk {
+            inherit solana-rust-artifacts solana-bpf-tools;
+          };
+
+          inherit cryptography36;
+
+          inherit py-ecc;
+          # inherit erdpy elrond-go elrond-proxy-go;
+
+          # EOS / Antelope
+          leap = callPackage ./leap/default.nix {};
+          eos-vm = callPackage ./eos-vm/default.nix {};
+          cdt = callPackage ./cdt/default.nix {};
+        }
+        // lib.optionalAttrs hostPlatform.isx86 rec {
+          inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
+
+          inherit cardano graphql;
+        }
+        // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
+          pistache = callPackage ./pistache/default.nix {};
+          inherit zqfield-bn254;
+          rapidsnark-server = callPackage ./rapidsnark-server/default.nix {
+            inherit ffiasm zqfield-bn254 rapidsnark pistache;
+          };
         };
 
-        inherit cryptography36;
-
-        inherit py-ecc;
-        # inherit erdpy elrond-go elrond-proxy-go;
-
-        # EOS / Antelope
-        leap = callPackage ./leap/default.nix {};
-        eos-vm = callPackage ./eos-vm/default.nix {};
-        cdt = callPackage ./cdt/default.nix {};
-      }
-      // lib.optionalAttrs hostPlatform.isx86 rec {
-        inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
-
-        inherit cardano graphql;
-      }
-      // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
-        pistache = callPackage ./pistache/default.nix {};
-        inherit zqfield-bn254;
-        rapidsnark-server = callPackage ./rapidsnark-server/default.nix {
-          inherit ffiasm zqfield-bn254 rapidsnark pistache;
-        };
-      };
+      inherit ci-matrix;
+      docker-image = callPackage ./docker-image/default.nix {inherit ci-matrix minimalPkgs;};
+    };
   };
 }

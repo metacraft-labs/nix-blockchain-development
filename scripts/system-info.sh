@@ -35,7 +35,7 @@ get_platform() {
         export is_darwin=true
         ;;
     Darwin.arm64|Darwin.aarch64)
-        system=aarch64-darwin
+        export system=aarch64-darwin
         export is_linux=false
         export is_darwin=true
         ;;
