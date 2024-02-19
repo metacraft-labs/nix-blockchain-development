@@ -8,35 +8,8 @@ on:
   schedule:
     - cron: 0 0 * * 0
 
+
 jobs:
-  main:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Nix
-        uses: cachix/install-nix-action@v25
-        with:
-          extra_nix_config: accept-flake-config = true
-
-      - name: Run `nix flake update`
-        id: update-lockfile
-        run: ./scripts/commit_flake_update.bash
-
-      - uses: tibdex/github-app-token@v2.1.0
-        id: generate-token
-        with:
-          app_id: ${{ secrets.APP_ID }}
-          private_key: ${{ secrets.APP_PRIVATE_KEY }}
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ steps.generate-token.outputs.token }}
-          title: 'Update Nix Flake lockfile'
-          commit-message: ${{ env.COMMIT_MSG }}
-          branch: 'create-pull-request/update-flake-lockfile'
-          delete-branch: true
-          branch-suffix: timestamp
-          add-paths: flake.lock
+  update-flake-lock:
+    uses: metacraft-labs/nixos-modules/.github/workflows/update-flake-lock.yml@feat/reusable-workflow
+    secrets: inherit
