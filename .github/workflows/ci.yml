@@ -16,5 +16,5 @@ concurrency:
 
 jobs:
   ci:
-    uses: metacraft-labs/nixos-modules/.github/workflows/ci.yml@feat/reusable-workflow
+    uses: metacraft-labs/nixos-modules/.github/workflows/ci.yml@main
     secrets: inherit

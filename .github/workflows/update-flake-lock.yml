@@ -11,5 +11,5 @@ on:
 
 jobs:
   update-flake-lock:
-    uses: metacraft-labs/nixos-modules/.github/workflows/update-flake-lock.yml@feat/reusable-workflow
+    uses: metacraft-labs/nixos-modules/.github/workflows/update-flake-lock.yml@main
     secrets: inherit
