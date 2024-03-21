@@ -8,7 +8,7 @@
 in
   symlinkJoin rec {
     name = "cardano-automation-${version}";
-    version = "unstable-2023-04-25";
+    version = "0-unstable-2023-04-25";
     paths = [graphql automate cardano-node cardano-cli];
     src = pkgs.fetchFromGitHub {
       owner = "metacraft-labs";
