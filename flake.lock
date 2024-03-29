@@ -1090,7 +1090,11 @@
           "nixpkgs"
         ],
         "noir": "noir",
-        "rust-overlay": "rust-overlay"
+        "rust-overlay": "rust-overlay",
+        "treefmt-nix": [
+          "nixos-modules",
+          "treefmt-nix"
+        ]
       }
     },
     "rust-analyzer-src": {
