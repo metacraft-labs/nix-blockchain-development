@@ -15,14 +15,16 @@
   };
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-modules.url = "github:metacraft-labs/nixos-modules";
 
-    flake-utils.url = "github:numtide/flake-utils";
-
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
+    nixpkgs.follows = "nixos-modules/nixpkgs";
+    flake-parts.follows = "nixos-modules/flake-parts";
+    flake-utils.follows = "nixos-modules/flake-utils";
+    flake-compat.follows = "nixos-modules/flake-compat";
+    nix2container.follows = "nixos-modules/nix2container";
+    crane.follows = "nixos-modules/crane";
+    fenix.follows = "nixos-modules/fenix";
+    ethereum_nix.follows = "nixos-modules/ethereum-nix";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
@@ -30,35 +32,15 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
-    flake-parts = {
-      url = "github:hercules-ci/flake-parts";
-      inputs.nixpkgs-lib.follows = "nixpkgs";
-    };
-
-    nix2container = {
-      url = "github:nlewo/nix2container";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
-    crane = {
-      url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     noir = {
       url = "github:noir-lang/noir";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-      inputs.flake-compat.follows = "flake-compat";
-      inputs.crane.follows = "crane";
-    };
-
-    ethereum_nix = {
-      url = "github:metacraft-labs/ethereum.nix";
-      # inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-parts.follows = "flake-parts";
-      inputs.flake-compat.follows = "flake-compat";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "flake-utils";
+        flake-compat.follows = "flake-compat";
+        fenix.follows = "fenix";
+        crane.follows = "crane";
+      };
     };
   };
 
