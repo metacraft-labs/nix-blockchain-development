@@ -6,16 +6,16 @@
 }:
 buildGoModule rec {
   pname = "bnb-beacon-node";
-  version = "0.10.16";
+  version = "0.10.20";
 
   src = fetchFromGitHub {
     owner = "bnb-chain";
     repo = "node";
     rev = "v${version}";
-    hash = "sha256-wW2KJf6W4vyBLcqcZ0Efb1oEzmztRJtCPdg3GOnoVCc=";
+    hash = "sha256-x7wHdCdGMEhFuBNwYXlOxh6MwCG4uprM9TOxuujccQU=";
   };
 
-  vendorHash = "sha256-DQis6uG6E+2KK8gViudIpDTxRO2zRoufuQlkyFXqO7s=";
+  vendorHash = "sha256-8mgLgAvsd6MiiuKe2vzflpp/WIAuVbYbND5Y12Wrqks=";
 
   proxyVendor = true;
 
