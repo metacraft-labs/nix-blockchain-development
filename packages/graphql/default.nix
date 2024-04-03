@@ -7,7 +7,7 @@
 in
   symlinkJoin rec {
     name = "graphql-${version}";
-    version = "unstable-2023-05-09";
+    version = "0-unstable-2023-05-09";
     src = pkgs.fetchFromGitHub {
       owner = "metacraft-labs";
       repo = "cardano-graphql";
