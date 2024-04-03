@@ -38,19 +38,19 @@
         // lib.optionalAttrs (pkgs.hostPlatform.isx86 && pkgs.hostPlatform.isLinux) {
           # nimbus = inputs'.ethereum_nix.packages.nimbus-eth2; # TODO: re-enable when flake show/check passes
         };
-      noir = {
-        nargo = inputs'.noir.packages.nargo;
-        noirc_abi_wasm = inputs'.noir.packages.noirc_abi_wasm;
-        acvm_js = inputs'.noir.packages.acvm_js;
-      };
+      # noir = {
+      #   nargo = inputs'.noir.packages.nargo;
+      #   noirc_abi_wasm = inputs'.noir.packages.noirc_abi_wasm;
+      #   acvm_js = inputs'.noir.packages.acvm_js;
+      # };
     };
   in rec {
     packages = self'.legacyPackages.metacraft-labs;
 
     checks =
       self'.legacyPackages.metacraft-labs
-      // reexportedPackages.ethereum_nix
-      // reexportedPackages.noir;
+      // reexportedPackages.ethereum_nix;
+    # // reexportedPackages.noir;
 
     overlayAttrs = {
       inherit (self'.legacyPackages) metacraft-labs nix2container noir;
