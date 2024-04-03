@@ -144,13 +144,7 @@
         wasmd = callPackage ./wasmd/default.nix {};
 
         # Solana
-        solana-rust-artifacts = callPackage ./solana-rust-artifacts {};
-
-        solana-bpf-tools = callPackage ./solana-bpf-tools {};
-
-        solana = callPackage ./solana-full-sdk {
-          inherit solana-rust-artifacts solana-bpf-tools;
-        };
+        solana-validator = callPackage ./solana-validator {};
 
         inherit cryptography36;
 
