@@ -29,7 +29,7 @@
       gcc
       openssl
       cvc4
-      cbc
+      (cbc.overrideAttrs (finalAttrs: previousAttrs: {configureFlags = ["-C" "--enable-static" "CXXFLAGS=-std=c++14"];}))
       binutils
       gnum4
     ];
