@@ -950,38 +950,6 @@
         "type": "github"
       }
     },
-    "noir": {
-      "inputs": {
-        "crane": [
-          "crane"
-        ],
-        "fenix": [
-          "fenix"
-        ],
-        "flake-compat": [
-          "flake-compat"
-        ],
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1711648104,
-        "narHash": "sha256-6+13TNmoWxuBon2lqMCsGoMzyndNvKm8tq5UmbMOCao=",
-        "owner": "noir-lang",
-        "repo": "noir",
-        "rev": "05b32fc9595d0a281e49b99b153030416115f436",
-        "type": "github"
-      },
-      "original": {
-        "owner": "noir-lang",
-        "repo": "noir",
-        "type": "github"
-      }
-    },
     "poetry2nix": {
       "inputs": {
         "flake-utils": [
@@ -1089,7 +1057,6 @@
           "nixos-modules",
           "nixpkgs"
         ],
-        "noir": "noir",
         "rust-overlay": "rust-overlay",
         "treefmt-nix": [
           "nixos-modules",
