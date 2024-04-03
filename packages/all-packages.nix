@@ -144,7 +144,7 @@
         wasmd = callPackage ./wasmd/default.nix {};
 
         # Solana
-        solana-validator = callPackage ./solana-validator {};
+        # solana-validator = callPackage ./solana-validator {};
 
         inherit cryptography36;
 
