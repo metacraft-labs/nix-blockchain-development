@@ -1028,6 +1028,10 @@
           "nixos-modules",
           "crane"
         ],
+        "devenv": [
+          "nixos-modules",
+          "devenv"
+        ],
         "ethereum_nix": [
           "nixos-modules",
           "ethereum-nix"

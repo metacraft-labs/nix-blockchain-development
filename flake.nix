@@ -26,6 +26,7 @@
     fenix.follows = "nixos-modules/fenix";
     ethereum_nix.follows = "nixos-modules/ethereum-nix";
     treefmt-nix.follows = "nixos-modules/treefmt-nix";
+    devenv.follows = "nixos-modules/devenv";
 
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
