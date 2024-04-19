@@ -1061,6 +1061,10 @@
           "nixos-modules",
           "nixpkgs"
         ],
+        "nixpkgs-unstable": [
+          "nixos-modules",
+          "nixpkgs-unstable"
+        ],
         "rust-overlay": "rust-overlay",
         "treefmt-nix": [
           "nixos-modules",

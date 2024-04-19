@@ -18,6 +18,7 @@
     nixos-modules.url = "github:metacraft-labs/nixos-modules";
 
     nixpkgs.follows = "nixos-modules/nixpkgs";
+    nixpkgs-unstable.follows = "nixos-modules/nixpkgs-unstable";
     flake-parts.follows = "nixos-modules/flake-parts";
     flake-utils.follows = "nixos-modules/flake-utils";
     flake-compat.follows = "nixos-modules/flake-compat";
