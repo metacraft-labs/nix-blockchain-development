@@ -68,7 +68,7 @@ in
       ]
       ++ lib.optionals (!stdenv.isDarwin) [
         # Solana is still not compatible with macOS on M1
-        metacraft-labs.solana
+        # metacraft-labs.solana
         metacraft-labs.wasmd
 
         # Disabled until elrond-go can build with Go >= 1.19

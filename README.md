@@ -76,7 +76,7 @@ nix shell github:metacraft-labs/nix-blockchain-development#solana
   with pkgs;
     mkShell {
       packages = [
-        metacraft-labs.solana # <after>
+        metacraft-labs.polkadot # <after>
       ];
     }
   ```
