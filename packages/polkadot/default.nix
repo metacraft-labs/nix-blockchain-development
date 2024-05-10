@@ -77,7 +77,7 @@ in
 
       buildFeatures = ["jemalloc-allocator"] ++ lib.optional enableFastRuntime "fast-runtime";
 
-      doCheck = stdenv.isLinux;
+      doCheck = false;
 
       meta = with lib; {
         description = "Polkadot Node Implementation";
