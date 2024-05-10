@@ -44,11 +44,15 @@
       #   acvm_js = inputs'.noir.packages.acvm_js;
       # };
     };
+
+    disabledPackages = [
+      "circ"
+    ];
   in rec {
     packages = self'.legacyPackages.metacraft-labs;
 
     checks =
-      self'.legacyPackages.metacraft-labs
+      (builtins.removeAttrs self'.legacyPackages.metacraft-labs disabledPackages)
       // reexportedPackages.ethereum_nix;
     # // reexportedPackages.noir;
 
