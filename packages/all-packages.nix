@@ -167,6 +167,8 @@
         rapidsnark-server = callPackage ./rapidsnark-server/default.nix {
           inherit ffiasm zqfield-bn254 rapidsnark pistache;
         };
+
+        nearcore = callPackage ./nearcore {};
       };
   };
 }
