@@ -31,7 +31,12 @@
   };
 
   outputs =
-    inputs@{ flake-parts, nixos-modules, ... }:
+    inputs@{
+      flake-parts,
+      nixos-modules,
+      nixpkgs,
+      ...
+    }:
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = [
         "x86_64-linux"
@@ -45,26 +50,29 @@
       ];
       perSystem =
         {
-          final,
           self',
           config,
+          system,
+          pkgs,
           ...
         }:
         {
+          _module.args.pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
           devShells.default = import ./shells/all.nix {
-            pkgs = final;
-            inherit self';
+            inherit pkgs self';
           };
           devShells.ci = import ./shells/ci.nix {
-            pkgs = final;
-            inherit config;
+            inherit pkgs config;
           };
-          devShells.nexus = import ./shells/nexus.nix { pkgs = final; };
-          devShells.jolt = import ./shells/jolt.nix { pkgs = final; };
-          devShells.zkm = import ./shells/zkm.nix { pkgs = final; };
-          devShells.zkwasm = import ./shells/zkwasm.nix { pkgs = final; };
-          devShells.sp1 = import ./shells/sp1.nix { pkgs = final; };
-          devShells.risc0 = import ./shells/risc0.nix { pkgs = final; };
+          devShells.nexus = import ./shells/nexus.nix { inherit pkgs config; };
+          devShells.jolt = import ./shells/jolt.nix { inherit pkgs config; };
+          devShells.zkm = import ./shells/zkm.nix { inherit pkgs config; };
+          devShells.zkwasm = import ./shells/zkwasm.nix { inherit pkgs config; };
+          devShells.sp1 = import ./shells/sp1.nix { inherit pkgs config; };
+          devShells.risc0 = import ./shells/risc0.nix { inherit pkgs config; };
         };
     };
 }
