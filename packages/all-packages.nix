@@ -68,6 +68,9 @@
       rapidsnark = callPackage ./rapidsnark/default.nix {
         inherit ffiasm zqfield-bn254;
       };
+      rapidsnark-gpu = callPackage ./rapidsnark-gpu/default.nix {
+        inherit ffiasm zqfield-bn254;
+      };
 
       # Elrond / MultiversX
       # copied from https://github.com/NixOS/nixpkgs/blob/8df7949791250b580220eb266e72e77211bedad9/pkgs/development/python-modules/cryptography/default.nix
@@ -229,7 +232,7 @@
         }
         // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
           pistache = callPackage ./pistache/default.nix { };
-          inherit zqfield-bn254;
+          inherit zqfield-bn254 rapidsnark-gpu;
           rapidsnark-server = callPackage ./rapidsnark-server/default.nix {
             inherit
               ffiasm
