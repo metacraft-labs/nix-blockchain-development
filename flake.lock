@@ -284,11 +284,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1717766241,
-        "narHash": "sha256-A0at+p+Y0pZ/U3MC2Ly4+PkaM8x3uYKwRmO6LQxpWUA=",
+        "lastModified": 1718853265,
+        "narHash": "sha256-6LAnuueI0IvICZrWZOGKg1pec7jZOabGVpVDVvFFxVM=",
         "owner": "metacraft-labs",
         "repo": "ethereum.nix",
-        "rev": "fb2684d8eebcc57e67ce44b256b04d84e4d9a80d",
+        "rev": "29f3b2610e0e86cf0b7e270ade331838042e417a",
         "type": "github"
       },
       "original": {
@@ -925,11 +925,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1718566095,
-        "narHash": "sha256-2NcsWzE5VkHVNKEFITNPyoIZ9BlcsGU1HedqGCZcSGY=",
+        "lastModified": 1718865947,
+        "narHash": "sha256-YvHN/4IXCxG6FuvlS+GrVwU4z+ZTpuKe1nHM5h/NNl8=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "278c2412e31c58ec5e75e2caffce17aafd664f42",
+        "rev": "331571b5769968afc6beca7eb25a65c6a3cbfde6",
         "type": "github"
       },
       "original": {
@@ -1125,19 +1125,16 @@
     },
     "rust-overlay": {
       "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1718590793,
-        "narHash": "sha256-92OO8XrQTvdvDtRi0BAkjTaoZXW5ORuvqdk677wW7ko=",
+        "lastModified": 1719022649,
+        "narHash": "sha256-ZDS8x9XpFeSBs9gMTHoujKWPn+i9ecqE9NWEUF07Yuc=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "5265b8a1e1d2e370e8b45b557326b691aec7d163",
+        "rev": "ff019b65a656d36dca3e57b43c40c44eec7852c5",
         "type": "github"
       },
       "original": {
