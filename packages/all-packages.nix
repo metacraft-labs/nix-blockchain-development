@@ -141,6 +141,8 @@
         inherit corepack-shims;
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
+        kurtosis = callPackage ./kurtosis/default.nix {};
+
         wasmd = callPackage ./wasmd/default.nix {};
 
         # Solana
