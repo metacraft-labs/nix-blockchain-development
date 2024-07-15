@@ -32,7 +32,7 @@ in
     };
 
     proxyVendor = true;
-    vendorHash = "sha256-Om8XoqgTaNzVr3VdX+MkUv+3JdJWjAg1AsHzBIS0r8U=";
+    vendorHash = "sha256-xf4yCCb+VnU+fGHTyJ4Y9DKDDZpgUeemuEQCavHhFdM=";
 
     subPackages = ["cmd/wasmd"];
 
