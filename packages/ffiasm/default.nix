@@ -43,7 +43,7 @@ in
             ''${sources[*]} \
             -L${gtest}/lib -lgtest \
             ''${extra_cppflags[*]} \
-            -pthread -std=c++11 ${noexecstack} \
+            -pthread -std=c++14 ${noexecstack} \
             -o ./$1
 
           ./$1 ''${test_args[@]}
