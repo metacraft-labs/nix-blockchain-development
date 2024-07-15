@@ -1,9 +1,8 @@
 {
   lib,
   fetchFromGitHub,
-  writeShellScriptBin,
   stdenv,
-  clang_11,
+  clang,
   protobuf,
   rocksdb,
   rustPlatform,
@@ -13,7 +12,7 @@
   CoreFoundation,
   Security,
   SystemConfiguration,
-  libcxxabi,
+  libcxx,
 }: {enableFastRuntime ? false}: let
   tags = {
     "v0.9.40" = {
@@ -49,10 +48,10 @@
       sha256 = tags."v${version}".srcSha256;
     };
 
-    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb clang_11];
+    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb clang];
 
     buildInputs =
-      [clang_11 libcxxabi libcxxabi.dev]
+      [clang libcxx libcxx.dev]
       ++ lib.optionals stdenv.isDarwin [
         libiconv
         CoreFoundation
