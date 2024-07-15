@@ -2,12 +2,12 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  go_1_20,
+  go_1_22,
   autoPatchelfHook,
   pkgs,
   gccForLibs,
 }: let
-  system = stdenv.targetPlatform.system;
+  inherit (stdenv.targetPlatform) system;
   libwasmvm_files = {
     x86_64-linux = "libwasmvm.x86_64.so";
     aarch64-linux = "libwasmvm.aarch64.so";
@@ -18,7 +18,7 @@
     aarch64-darwin = "libwasmvm.dylib";
   };
   so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
-  buildGoModule = pkgs.buildGoModule.override {go = go_1_20;};
+  buildGoModule = pkgs.buildGoModule.override {go = go_1_22;};
 in
   buildGoModule rec {
     pname = "wasmd";
