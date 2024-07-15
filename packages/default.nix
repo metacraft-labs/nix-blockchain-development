@@ -47,6 +47,7 @@
 
     disabledPackages = [
       "circ"
+      "leap"
     ];
   in rec {
     packages = self'.legacyPackages.metacraft-labs;
