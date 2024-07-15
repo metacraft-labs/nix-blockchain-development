@@ -148,7 +148,7 @@
         # Solana
         # solana-validator = callPackage ./solana-validator {};
 
-        inherit cryptography36;
+        # inherit cryptography36;
 
         inherit py-ecc;
         # inherit erdpy elrond-go elrond-proxy-go;
