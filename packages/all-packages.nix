@@ -111,7 +111,7 @@
         cosmos-theta-testnet = callPackage ./cosmos-theta-testnet {inherit gaiad;};
         blst = callPackage ./blst {};
         bnb-beacon-node = callPackage ./bnb-beacon-node {};
-
+        teatime = callPackage ./teatime/default.nix {inherit python3Packages;};
         circom = callPackage ./circom/default.nix {craneLib = craneLib-stable;};
         circ = callPackage ./circ/default.nix {craneLib = craneLib-stable;};
 
