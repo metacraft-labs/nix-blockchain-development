@@ -13,4 +13,6 @@ on:
 jobs:
   ci:
     uses: metacraft-labs/nixos-modules/.github/workflows/ci.yml@main
-    secrets: inherit
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      CACHIX_ACTIVATE_TOKEN: ${{ secrets.CACHIX_ACTIVATE_TOKEN }}
