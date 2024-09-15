@@ -887,11 +887,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1725266916,
-        "narHash": "sha256-fJK7IsOGyTBJ4Cei9VSGHpZyZ1ffNoL85TBdP/92qFc=",
+        "lastModified": 1725830436,
+        "narHash": "sha256-9pcnGn2+7qlkvHXFMcL+aof2Z6xUPtBaKPET0a1O3rM=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "8e1158421a2be7183673121b0faf79016e9b4a47",
+        "rev": "9af27f08cdaa96921507e866d828a11b6cc5ed63",
         "type": "github"
       },
       "original": {
@@ -1071,11 +1071,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1725243956,
-        "narHash": "sha256-0A5ZP8uDCyBdYUzayZfy6JFdTefP79oZVAjyqA/yuSI=",
+        "lastModified": 1726280639,
+        "narHash": "sha256-YfLRPlFZWrT2oRLNAoqf7G3+NnUTDdlIJk6tmBU7kXM=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "a10c8092d5f82622be79ed4dd12289f72011f850",
+        "rev": "e9f8641c92f26fd1e076e705edb12147c384171d",
         "type": "github"
       },
       "original": {
