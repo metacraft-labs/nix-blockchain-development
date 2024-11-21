@@ -12,7 +12,9 @@ on:
 
 jobs:
   ci:
-    uses: metacraft-labs/nixos-modules/.github/workflows/ci.yml@main
+    uses: metacraft-labs/nixos-modules/.github/workflows/reusable-flake-checks-ci-matrix.yml@main
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
       CACHIX_ACTIVATE_TOKEN: ${{ secrets.CACHIX_ACTIVATE_TOKEN }}
+    with:
+      runner: '["self-hosted", "Linux", "x86-64-v2"]'
