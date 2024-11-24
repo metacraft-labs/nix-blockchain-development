@@ -115,13 +115,16 @@
         circom = callPackage ./circom/default.nix {craneLib = craneLib-stable;};
         circ = callPackage ./circ/default.nix {craneLib = craneLib-stable;};
 
-        emscripten = pkgs.emscripten.overrideAttrs (old: {
+        emscripten = pkgs.emscripten.overrideAttrs (_old: {
           postInstall = ''
             pushd $TMPDIR
-            echo 'int __main_argc_argv() { return 42; }' >test.c
+            echo 'int __main_argc_argv( int a, int b ) { return 42; }' >test.c
             for MEM in "-s ALLOW_MEMORY_GROWTH" ""; do
               for LTO in -flto ""; do
-                for OPT in "-O2" "-O3" "-Oz" "-Os"; do
+                # FIXME: change to the following, once binaryen is updated to
+                # >= v119 in Nixpkgs:
+                # for OPT in "-O2" "-O3" "-Oz" "-Os"; do
+                for OPT in "-O2"; do
                   $out/bin/emcc $MEM $LTO $OPT -s WASM=1 -s STANDALONE_WASM test.c
                 done
               done
