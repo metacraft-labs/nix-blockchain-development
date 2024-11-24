@@ -136,7 +136,9 @@
         # Polkadot
         inherit polkadot polkadot-fast;
 
-        avalanche-cli = callPackage ./avalanche-cli/default.nix {};
+        avalanche-cli = callPackage ./avalanche-cli/default.nix {
+          inherit blst;
+        };
 
         inherit corepack-shims;
       }
