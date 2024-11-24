@@ -48,6 +48,7 @@
     disabledPackages = [
       "circ"
       "leap"
+      "go-opera"
     ];
   in rec {
     packages = self'.legacyPackages.metacraft-labs;
