@@ -2,25 +2,36 @@
   lib,
   buildGoModule,
   fetchFromGitHub,
+  blst,
+  libusb1,
 }:
 buildGoModule rec {
   pname = "avalanche-cli";
-  version = "1.4.2";
+  version = "unstable-2024-11-23";
 
   src = fetchFromGitHub {
     owner = "ava-labs";
     repo = "avalanche-cli";
-    rev = "v${version}";
-    hash = "sha256-KhUPQVOHHbRNhnEzHVPSB1JMgtbJKsm2NYMtIAK8kk4=";
+    rev = "6debe4169dce2c64352d8c9d0d0acac49e573661";
+    hash = "sha256-kYEgKpR6FM3f6Lq3Wxhi8MVh8ojxyqFYgjeu2E8lNcs=";
   };
 
-  doCheck = false;
   proxyVendor = true;
-  vendorHash = "sha256-vhytojvmCOakN9RubjKkFnfA8tzOsOb+hKuACeQGSk4=";
+  vendorHash = "sha256-FLuu2Q9O4kPtdT1LWaClv+96G0m0PFpZx22506V+Sts=";
 
-  meta = with lib; {
-    description = "Avalanche CLI is a command line tool that gives developers access to everything Avalanche.";
+  doCheck = false;
+
+  ldflags = [
+    "-X=github.com/ava-labs/avalanche-cli/cmd.Version=${version}"
+  ];
+
+  buildInputs = [blst libusb1];
+
+  meta = {
+    description = "";
     homepage = "https://github.com/ava-labs/avalanche-cli";
-    license = licenses.lgpl3;
+    # FIXME: nix-init did not find a license
+    maintainers = with lib.maintainers; [];
+    mainProgram = "avalanche-cli";
   };
 }
