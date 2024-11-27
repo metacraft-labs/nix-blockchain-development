@@ -4,10 +4,9 @@
   rust-bin,
   craneLib-stable,
   fetchFromGitHub,
+  fetchurl,
 }:
 let
-  craneLib = craneLib-stable.overrideToolchain rust-bin.nightly."2023-06-01".default;
-
   commonArgs = rec {
     pname = "zkWasm";
     version = "unstable-2024-10-19";
@@ -26,6 +25,13 @@ let
       fetchSubmodules = true;
     };
   };
+
+  craneLib = craneLib-stable.overrideToolchain (rust-bin.fromRustupToolchainFile
+    (fetchurl {
+      url =
+      "https://raw.githubusercontent.com/${commonArgs.src.owner}/${commonArgs.src.repo}/${commonArgs.src.rev}/rust-toolchain";
+      hash = "sha256-gHLj2AMKnStjvZcowfe9ZdTnwOBUPCRADmv81H7dAak=";
+    }));
 
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
