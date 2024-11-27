@@ -12,10 +12,15 @@
       craneLib-stable
       cardano-node
       cardano-cli
+      pkgs-with-rust-overlay
       ;
     python3Packages = pkgs.python3Packages;
 
-    callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
+    callPackage = callPackageWith (pkgs // {
+      rustPlatform = rustPlatformStable;
+      rust-bin = pkgs-with-rust-overlay.rust-bin;
+    });
+
     darwinPkgs = {
       inherit
         (darwin.apple_sdk.frameworks)
@@ -144,6 +149,8 @@
         };
 
         inherit corepack-shims;
+
+        zkwasm = callPackage ./zkwasm/default.nix {craneLib-stable = craneLib-stable;};
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         kurtosis = callPackage ./kurtosis/default.nix {};
