@@ -10,6 +10,7 @@
       (self'.legacyPackages)
       rustPlatformStable
       craneLib-stable
+      craneLib-nightly
       cardano-node
       cardano-cli
       pkgs-with-rust-overlay
@@ -150,8 +151,8 @@
 
         inherit corepack-shims;
 
-        zkwasm = callPackage ./zkwasm/default.nix {craneLib-stable = craneLib-stable;};
-        jolt = callPackage ./jolt/default.nix {craneLib-stable = craneLib-stable;};
+        zkwasm = callPackage ./zkwasm/default.nix {craneLib-nightly = craneLib-nightly;};
+        jolt = callPackage ./jolt/default.nix {craneLib-nightly = craneLib-nightly;};
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
         kurtosis = callPackage ./kurtosis/default.nix {};
