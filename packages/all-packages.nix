@@ -172,11 +172,14 @@
           };
 
           inherit corepack-shims;
+
+          zkwasm = callPackage ./zkwasm/default.nix {craneLib-stable = craneLib-stable;};
+          jolt = callPackage ./jolt/default.nix {craneLib-stable = craneLib-stable;};
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
-          kurtosis = callPackage ./kurtosis/default.nix { };
+          kurtosis = callPackage ./kurtosis/default.nix {};
 
-          wasmd = callPackage ./wasmd/default.nix { };
+          wasmd = callPackage ./wasmd/default.nix {};
 
           # Solana
           # solana-validator = callPackage ./solana-validator {};
