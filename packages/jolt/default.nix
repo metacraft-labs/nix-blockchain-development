@@ -1,5 +1,5 @@
 { rust-bin,
-  craneLib-stable,
+  craneLib-nightly,
   fetchFromGitHub,
   fetchurl,
   pkg-config,
@@ -28,7 +28,7 @@ let
     };
   };
 
-  craneLib = craneLib-stable.overrideToolchain (rust-bin.fromRustupToolchainFile
+  craneLib = craneLib-nightly.overrideToolchain (rust-bin.fromRustupToolchainFile
     (fetchurl {
       url =
       "https://raw.githubusercontent.com/${commonArgs.src.owner}/${commonArgs.src.repo}/${commonArgs.src.rev}/rust-toolchain.toml";
