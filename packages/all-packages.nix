@@ -18,6 +18,7 @@
       inherit (self'.legacyPackages)
         rustPlatformStable
         craneLib-stable
+        craneLib-nightly
         cardano-node
         cardano-cli
         pkgs-with-rust-overlay
