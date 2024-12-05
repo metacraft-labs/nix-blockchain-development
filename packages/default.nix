@@ -22,7 +22,7 @@
     };
     rust-nightly = pkgs-with-rust-overlay.rust-bin.nightly.latest.default.override {
       extensions = ["rust-src"];
-      targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
+      targets = ["wasm32-wasip1" "wasm32-unknown-unknown"];
     };
 
     craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
