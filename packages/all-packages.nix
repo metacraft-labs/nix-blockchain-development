@@ -177,6 +177,7 @@
           zkwasm = callPackage ./zkwasm/default.nix {craneLib-nightly = craneLib-nightly;};
           jolt = callPackage ./jolt/default.nix {craneLib-nightly = craneLib-nightly;};
           zkm = callPackage ./zkm/default.nix {craneLib-nightly = craneLib-nightly;};
+          nexus = callPackage ./nexus/default.nix {craneLib-nightly = craneLib-nightly;};
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix {};
