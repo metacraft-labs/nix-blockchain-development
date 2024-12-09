@@ -132,6 +132,10 @@
       };
       polkadot = polkadot-generic { };
       polkadot-fast = polkadot-generic { enableFastRuntime = true; };
+
+      args-zkVM = {
+        inherit craneLib-nightly;
+      };
     in
     {
       legacyPackages.metacraft-labs =
@@ -174,10 +178,10 @@
 
           inherit corepack-shims;
 
-          zkwasm = callPackage ./zkwasm/default.nix {craneLib-nightly = craneLib-nightly;};
-          jolt = callPackage ./jolt/default.nix {craneLib-nightly = craneLib-nightly;};
-          zkm = callPackage ./zkm/default.nix {craneLib-nightly = craneLib-nightly;};
-          nexus = callPackage ./nexus/default.nix {craneLib-nightly = craneLib-nightly;};
+          zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
+          jolt = callPackage ./jolt/default.nix args-zkVM;
+          zkm = callPackage ./zkm/default.nix args-zkVM;
+          nexus = callPackage ./nexus/default.nix args-zkVM;
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix {};
