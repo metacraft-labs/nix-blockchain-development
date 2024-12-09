@@ -1,13 +1,10 @@
-{ clang,
-  lld,
-  cmake,
-  rust-bin,
+{ rust-bin,
   craneLib-nightly,
   fetchFromGitHub,
-  fetchurl,
   fetchzip,
   pkg-config,
   openssl,
+  ...
 }:
 let
   commonArgs = rec {
