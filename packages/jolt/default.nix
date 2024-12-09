@@ -35,12 +35,15 @@ let
       hash = "sha256-Fyj+Bp/dt3epuTN9kXN+r7Z3gzXYCDrcVEPWTr1sQqk=";
     }));
 
-
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
   craneLib.buildPackage (commonArgs
     // rec {
       inherit cargoArtifacts;
+
+      installPhaseCommand = ''
+        cp -r /build/source/. $out
+      '';
 
       doCheck = false;
     })
