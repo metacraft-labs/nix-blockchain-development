@@ -133,8 +133,16 @@
       polkadot = polkadot-generic { };
       polkadot-fast = polkadot-generic { enableFastRuntime = true; };
 
+      fetchGitHubFile = { commonArgs, file, hash }:
+      let
+        inherit (commonArgs.src) owner repo rev;
+      in pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
+          inherit hash;
+      };
       args-zkVM = {
         inherit craneLib-nightly;
+        inherit fetchGitHubFile;
       };
     in
     {
