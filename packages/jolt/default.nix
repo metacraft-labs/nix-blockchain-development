@@ -4,6 +4,7 @@
   fetchGitHubFile,
   pkg-config,
   openssl,
+  ...
 }:
 let
   commonArgs = rec {
