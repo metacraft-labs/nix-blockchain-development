@@ -1,7 +1,7 @@
 { rust-bin,
   craneLib-nightly,
   fetchFromGitHub,
-  fetchurl,
+  fetchGitHubFile,
   pkg-config,
   openssl,
 }:
@@ -29,9 +29,9 @@ let
   };
 
   craneLib = craneLib-nightly.overrideToolchain (rust-bin.fromRustupToolchainFile
-    (fetchurl {
-      url =
-      "https://raw.githubusercontent.com/${commonArgs.src.owner}/${commonArgs.src.repo}/${commonArgs.src.rev}/rust-toolchain.toml";
+    (fetchGitHubFile {
+      inherit commonArgs;
+      file = "rust-toolchain.toml";
       hash = "sha256-Fyj+Bp/dt3epuTN9kXN+r7Z3gzXYCDrcVEPWTr1sQqk=";
     }));
 
