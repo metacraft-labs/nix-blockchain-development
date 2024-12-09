@@ -17,10 +17,7 @@
       ;
     python3Packages = pkgs.python3Packages;
 
-    callPackage = callPackageWith (pkgs // {
-      rustPlatform = rustPlatformStable;
-      rust-bin = pkgs-with-rust-overlay.rust-bin;
-    });
+    callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
 
     darwinPkgs = {
       inherit
@@ -119,6 +116,7 @@
         inherit hash;
     };
     args-zkVM = {
+      inherit (pkgs-with-rust-overlay) rust-bin;
       inherit craneLib-nightly;
       inherit fetchGitHubFile;
     };
