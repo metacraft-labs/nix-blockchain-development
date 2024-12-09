@@ -27,9 +27,9 @@ let
   };
 
   craneLib = craneLib-nightly.overrideToolchain (rust-bin.fromRustupToolchainFile
-    (fetchurl {
-      url =
-      "https://raw.githubusercontent.com/${commonArgs.src.owner}/${commonArgs.src.repo}/${commonArgs.src.rev}/rust-toolchain";
+    (fetchGitHubFile {
+      inherit commonArgs;
+      file = "rust-toolchain";
       hash = "sha256-gHLj2AMKnStjvZcowfe9ZdTnwOBUPCRADmv81H7dAak=";
     }));
 
