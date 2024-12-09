@@ -18,6 +18,7 @@ let
 
     preBuild = ''
       sed -i 's/%2F/\//g' $CARGO_HOME/config.toml
+      sed -i 's|package =.*git = "https://github.com/a16z/jolt"|path = "'$out'"|' src/main.rs
     '';
 
     src = fetchFromGitHub {
@@ -29,13 +30,13 @@ let
     };
   };
 
-  craneLib = craneLib-nightly.overrideToolchain (rust-bin.fromRustupToolchainFile
+  rust-toolchain = rust-bin.fromRustupToolchainFile
     (fetchGitHubFile {
       inherit commonArgs;
       file = "rust-toolchain.toml";
       hash = "sha256-Fyj+Bp/dt3epuTN9kXN+r7Z3gzXYCDrcVEPWTr1sQqk=";
-    }));
-
+    });
+  craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
   craneLib.buildPackage (commonArgs
@@ -44,6 +45,13 @@ in
 
       installPhaseCommand = ''
         cp -r /build/source/. $out
+        mkdir -p $out/bin; cp target/release/jolt $out/bin/
+
+        # Add cargo (and similar) commands to bin output, so
+        # nix shell [flake path]#jolt
+        # gives you everything needed to create and work with a jolt-powered
+        # projects.
+        ln -s "${rust-toolchain}"/bin/* $out/bin/
       '';
 
       doCheck = false;
