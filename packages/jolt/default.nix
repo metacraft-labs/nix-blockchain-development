@@ -2,6 +2,7 @@
   craneLib-nightly,
   fetchFromGitHub,
   fetchGitHubFile,
+  installSourceAndCargo,
   pkg-config,
   openssl,
   ...
@@ -40,19 +41,9 @@ let
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
   craneLib.buildPackage (commonArgs
+    // (installSourceAndCargo rust-toolchain)
     // rec {
       inherit cargoArtifacts;
-
-      installPhaseCommand = ''
-        cp -r /build/source/. $out
-        mkdir -p $out/bin; cp target/release/jolt $out/bin/
-
-        # Add cargo (and similar) commands to bin output, so
-        # nix shell [flake path]#jolt
-        # gives you everything needed to create and work with a jolt-powered
-        # projects.
-        ln -s "${rust-toolchain}"/bin/* $out/bin/
-      '';
 
       doCheck = false;
     })
