@@ -49,6 +49,7 @@
           inherit self';
         };
         devShells.ci = import ./shells/ci.nix {pkgs = final;};
+        devShells.nexus = import ./shells/nexus.nix {pkgs = final;};
       };
     };
 }
