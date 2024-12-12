@@ -64,6 +64,7 @@
             pkgs = final;
             inherit config;
           };
+          devShells.nexus = import ./shells/nexus.nix {pkgs = final;};
         };
     };
 }
