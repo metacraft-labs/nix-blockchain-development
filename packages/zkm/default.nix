@@ -8,6 +8,12 @@
   ...
 }:
 let
+  # musl.cc don't provide versioning, so this archive could change at any time.
+  # It could be replaced with somethng like pkgsCross.mips-linux-gnu.gcc11.
+  # However, package building time increases by a lot, I think the gcc paths are
+  # hard-coded so patching/symlinking will need to be done and to top it all off,
+  # after ~14 minutes of compilation, gcc11 failed to build.
+  # It hasn't changed since 2021, so it's probably fine to leave for now.
   mips-musl = fetchzip {
     url = "http://musl.cc/mips-linux-muslsf-cross.tgz";
     hash = "sha256-aUp+UJgyisJu5PXTktuw1kWsTevNm0BX3qOt2eEO4EY=";
