@@ -40,5 +40,9 @@ in
     // rec {
       inherit cargoArtifacts;
 
+      postPatch = ''
+        sed -i '/"add"/{n;s/--git/--path/;n;s|".*"|"'$out'/runtime"|}' cli/src/command/new.rs
+      '';
+
       doCheck = false;
     })
