@@ -19,7 +19,6 @@ let
 
     preBuild = ''
       sed -i 's/%2F/\//g' $CARGO_HOME/config.toml
-      sed -i 's|package =.*git = "https://github.com/a16z/jolt"|path = "'$out'"|' src/main.rs
     '';
 
     src = fetchFromGitHub {
@@ -44,6 +43,10 @@ in
     // (installSourceAndCargo rust-toolchain)
     // rec {
       inherit cargoArtifacts;
+
+      postPatch = ''
+        sed -i 's|package =.*git = "https://github.com/a16z/jolt"|path = "'$out'"|' src/main.rs
+      '';
 
       doCheck = false;
     })
