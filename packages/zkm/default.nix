@@ -1,6 +1,7 @@
 { rust-bin,
   craneLib-nightly,
   fetchFromGitHub,
+  installSourceAndCargo,
   fetchzip,
   pkg-config,
   openssl,
@@ -37,10 +38,11 @@ let
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
   craneLib.buildPackage (commonArgs
+    // (installSourceAndCargo rust-toolchain)
     // rec {
       inherit cargoArtifacts;
 
-      installPhaseCommand = let
+      postInstall = let
         variables = ''
           export RUST_LOG=info
           export BASEDIR="$out"
@@ -48,25 +50,6 @@ in
           export ARGS='2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824 hello'
           export SEG_OUTPUT=/tmp/output
           export SEG_FILE_DIR=/tmp/output
-        '';
-
-        # Convenience scripts which set env variables and select cargo versions
-        cargo-scripts = ''
-          cat <<EOF > $out/bin/cargo-guest
-          #!/usr/bin/env sh
-          ${variables}
-          export PATH="${guest-toolchain}/bin:$PATH"
-          cargo --config "$out/.cargo-config" \$@
-          EOF
-
-          cat <<EOF > $out/bin/cargo-host
-          #!/usr/bin/env sh
-          ${variables}
-          export PATH="${rust-toolchain}/bin:$PATH"
-          cargo \$@
-          EOF
-
-          chmod +x $out/bin/cargo-guest $out/bin/cargo-host
         '';
 
         # Prebuilt binaries for mips-unknown-linux-musl target seem to have
@@ -77,22 +60,27 @@ in
           targets = [ "mips-unknown-linux-musl" ];
         };
       in ''
-        cp -r /build/source/. $out
-
-        cat <<EOF >> $out/.cargo-config
+        cat <<EOF >> "$out"/.cargo-config
         [target.mips-unknown-linux-musl]
         linker = "${mips-musl}/bin/mips-linux-muslsf-gcc"
         rustflags = ["--cfg", 'target_os="zkvm"',"-C", "target-feature=+crt-static", "-C", "link-arg=-g"]
         EOF
 
-        mkdir -p $out/bin
-        ${cargo-scripts}
+        cat <<EOF > "$out"/bin/cargo_guest
+        #!/usr/bin/env sh
+        ${variables}
+        export PATH="${guest-toolchain}/bin:$PATH"
+        cargo --config "$out/.cargo-config" \$@
+        EOF
 
-        # Add cargo (and similar) commands to bin output, so
-        # nix shell [flake path]#zkm
-        # gives you everything needed to create and work with a zkm-powered
-        # projects.
-        ln -s "${rust-toolchain}"/bin/* $out/bin/
+        cat <<EOF > "$out"/bin/cargo_host
+        #!/usr/bin/env sh
+        ${variables}
+        export PATH="${rust-toolchain}/bin:$PATH"
+        cargo \$@
+        EOF
+
+        chmod +x "$out"/bin/cargo_guest "$out"/bin/cargo_host
       '';
 
       doCheck = false;
