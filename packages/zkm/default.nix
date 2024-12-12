@@ -44,12 +44,13 @@ in
 
       postInstall = let
         variables = ''
-          export RUST_LOG=info
-          export BASEDIR="$out"
-          export SEG_SIZE=65536 # See cycles above for exact value based on your RAM
-          export ARGS='2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824 hello'
-          export SEG_OUTPUT=/tmp/output
-          export SEG_FILE_DIR=/tmp/output
+          : \''${RUST_LOG:=info}
+          : \''${BASEDIR:='$out'}
+          : \''${SEG_SIZE:=65536}
+          : \''${ARGS:='2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824 hello'}
+          : \''${SEG_OUTPUT:='/tmp/output'}
+          : \''${SEG_FILE_DIR:='/tmp/output'}
+          export RUST_LOG BASEDIR SEG_SIZE ARGS SEG_OUTPUT SEG_FILE_DIR
         '';
 
         # Prebuilt binaries for mips-unknown-linux-musl target seem to have
@@ -69,14 +70,14 @@ in
         cat <<EOF > "$out"/bin/cargo_guest
         #!/usr/bin/env sh
         ${variables}
-        export PATH="${guest-toolchain}/bin:$PATH"
+        export PATH="${guest-toolchain}/bin:\$PATH"
         cargo --config "$out/.cargo-config" \$@
         EOF
 
         cat <<EOF > "$out"/bin/cargo_host
         #!/usr/bin/env sh
         ${variables}
-        export PATH="${rust-toolchain}/bin:$PATH"
+        export PATH="${rust-toolchain}/bin:\$PATH"
         cargo \$@
         EOF
 
