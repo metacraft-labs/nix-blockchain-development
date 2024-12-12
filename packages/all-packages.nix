@@ -137,10 +137,26 @@
           url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
           inherit hash;
       };
+      installSourceAndCargo = rust-toolchain: rec {
+        installPhaseCommand = ''
+          mkdir -p "$out"/bin
+          # Install source code
+          cp -r /build/source/. "$out"
+          # Install cargo commands
+          ln -s "${rust-toolchain}"/bin/* "$out"/bin/
+          # Install binaries
+          for result in target/release/*
+          do
+            [ "''${result:15:5}" != 'crane' -a -f "$result" -a -x "$result" ] \
+              && ln -s "$out/$result" "$out"/bin/
+          done
+        '';
+      };
       args-zkVM = {
         inherit (pkgs-with-rust-overlay) rust-bin;
         inherit craneLib-nightly;
         inherit fetchGitHubFile;
+        inherit installSourceAndCargo;
       };
     in
     {
