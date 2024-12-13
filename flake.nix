@@ -49,6 +49,10 @@
           inherit self';
         };
         devShells.ci = import ./shells/ci.nix {pkgs = final;};
+        devShells.teatime-test = import ./shells/teatime-test.nix {
+          inherit self';
+          pkgs = final;
+        };
       };
     };
 }
