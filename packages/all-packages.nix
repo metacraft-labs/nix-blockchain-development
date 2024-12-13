@@ -158,6 +158,16 @@
         inherit fetchGitHubFile;
         inherit installSourceAndCargo;
       };
+
+      fetchGitHubReleaseAsset = { owner, repo, tag, asset, hash }:
+        pkgs.fetchzip {
+          url = "https://github.com/${owner}/${repo}/releases/download/${tag}/${asset}";
+          inherit hash;
+          stripRoot = false;
+        };
+      args-zkVM-rust = {
+        inherit fetchGitHubReleaseAsset;
+      };
     in
     {
       legacyPackages.metacraft-labs =
@@ -204,6 +214,7 @@
           jolt = callPackage ./jolt/default.nix args-zkVM;
           zkm = callPackage ./zkm/default.nix args-zkVM;
           nexus = callPackage ./nexus/default.nix args-zkVM;
+          sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix {};
