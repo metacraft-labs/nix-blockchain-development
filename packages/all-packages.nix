@@ -217,6 +217,7 @@
           sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
           sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
           risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
+          risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix {};
