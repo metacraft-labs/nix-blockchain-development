@@ -32,7 +32,7 @@ let
 
   rust-toolchain = rust-bin.fromRustupToolchainFile
     (fetchGitHubFile {
-      inherit commonArgs;
+      inherit (commonArgs.src) owner repo rev;
       file = "rust-toolchain.toml";
       hash = "sha256-Fyj+Bp/dt3epuTN9kXN+r7Z3gzXYCDrcVEPWTr1sQqk=";
     });
