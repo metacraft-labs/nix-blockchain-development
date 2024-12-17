@@ -130,13 +130,31 @@
       polkadot = polkadot-generic { };
       polkadot-fast = polkadot-generic { enableFastRuntime = true; };
 
-      fetchGitHubFile = { commonArgs, file, hash }:
-      let
+      fetchGitHubFile = {
+        commonArgs,
+        file,
+        hash
+      }: let
         inherit (commonArgs.src) owner repo rev;
-      in pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
+      in
+        pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
+            inherit hash;
+        };
+
+      fetchGitHubReleaseAsset = {
+        owner,
+        repo,
+        tag,
+        asset,
+        hash
+      }:
+        pkgs.fetchzip {
+          url = "https://github.com/${owner}/${repo}/releases/download/${tag}/${asset}";
           inherit hash;
-      };
+          stripRoot = false;
+        };
+
       installSourceAndCargo = rust-toolchain: rec {
         installPhaseCommand = ''
           mkdir -p "$out"/bin
@@ -152,6 +170,7 @@
           done
         '';
       };
+
       args-zkVM = {
         inherit (pkgs-with-rust-overlay) rust-bin;
         inherit craneLib-nightly;
@@ -159,12 +178,6 @@
         inherit installSourceAndCargo;
       };
 
-      fetchGitHubReleaseAsset = { owner, repo, tag, asset, hash }:
-        pkgs.fetchzip {
-          url = "https://github.com/${owner}/${repo}/releases/download/${tag}/${asset}";
-          inherit hash;
-          stripRoot = false;
-        };
       args-zkVM-rust = {
         inherit fetchGitHubReleaseAsset;
       };
