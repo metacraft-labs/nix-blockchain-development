@@ -46,6 +46,7 @@ in
 
       postPatch = ''
         sed -i 's|package =.*git = "https://github.com/a16z/jolt"|path = "'$out'"|' src/main.rs
+        sed -i '44,46d' jolt-core/src/host/toolchain.rs
       '';
 
       doCheck = false;
