@@ -3,27 +3,28 @@
   fetchurl,
   fetchFromGitHub,
   installSourceAndCargo,
+  autoPatchelfHook,
   pkg-config,
   openssl,
-  autoPatchelfHook,
   ...
 }:
 let
   recursion-zkr = let
     hash' = "ffc503386276f809137161f18d2f3ddcba3bb4b2d8b5d893b2c5d94b35afaf47";
-  in fetchurl rec {
-    url = "https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkr/${hash'}.zip";
-    hash = "sha256-/8UDOGJ2+AkTcWHxjS893Lo7tLLYtdiTssXZSzWvr0c=";
-  };
+  in
+    fetchurl rec {
+      url = "https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkr/${hash'}.zip";
+      hash = "sha256-/8UDOGJ2+AkTcWHxjS893Lo7tLLYtdiTssXZSzWvr0c=";
+    };
 
   commonArgs = rec {
     pname = "risc0";
     version = "unstable-2024-12-12";
 
     nativeBuildInputs = [
+      autoPatchelfHook
       pkg-config
       openssl
-      autoPatchelfHook
     ];
 
     src = fetchFromGitHub {
