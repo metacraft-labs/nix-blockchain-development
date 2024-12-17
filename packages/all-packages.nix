@@ -224,8 +224,8 @@
           inherit corepack-shims;
 
           zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
-          jolt = callPackage ./jolt/default.nix args-zkVM;
           jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
+          jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
           zkm = callPackage ./zkm/default.nix args-zkVM;
           nexus = callPackage ./nexus/default.nix args-zkVM;
           sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
