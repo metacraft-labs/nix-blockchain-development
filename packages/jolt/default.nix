@@ -53,17 +53,16 @@ in
       # Different toolchain is used when guest has std features
       # https://github.com/a16z/jolt/blob/fa45507aaddb1815bafd54332e4b14173a7f8699/jolt-core/src/host/mod.rs#L132-L134
       postInstall = ''
-        rm $out/bin/rustc
-        cat <<EOF > $out/bin/rustc
+        rm $out/bin/cargo
+        cat <<EOF > $out/bin/cargo
         #!/bin/sh
         if [ -z "\''${RUSTUP_TOOLCHAIN+x}" ]
         then
-            ${jolt-guest-rust}/rust/build/host/stage2/bin/rustc \$@
-        else
-            ${rust-toolchain}/bin/rustc \$@
+            export PATH="${jolt-guest-rust}/rust/build/host/stage2/bin:$PATH"
         fi
+        ${rust-toolchain}/bin/cargo \$@
         EOF
-        chmod +x $out/bin/rustc
+        chmod +x $out/bin/cargo
       '';
 
       doCheck = false;
