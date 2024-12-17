@@ -29,7 +29,7 @@ let
 
   craneLib = craneLib-nightly.overrideToolchain (rust-bin.fromRustupToolchainFile
     (fetchGitHubFile {
-      inherit commonArgs;
+      inherit (commonArgs.src) owner repo rev;
       file = "rust-toolchain";
       hash = "sha256-gHLj2AMKnStjvZcowfe9ZdTnwOBUPCRADmv81H7dAak=";
     }));
