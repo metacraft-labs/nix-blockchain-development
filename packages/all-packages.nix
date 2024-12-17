@@ -131,12 +131,12 @@
       polkadot-fast = polkadot-generic { enableFastRuntime = true; };
 
       fetchGitHubFile = {
-        commonArgs,
+        owner,
+        repo,
+        rev,
         file,
         hash
-      }: let
-        inherit (commonArgs.src) owner repo rev;
-      in
+      }:
         pkgs.fetchurl {
             url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
             inherit hash;
