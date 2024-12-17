@@ -225,6 +225,7 @@
 
           zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
           jolt = callPackage ./jolt/default.nix args-zkVM;
+          jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
           zkm = callPackage ./zkm/default.nix args-zkVM;
           nexus = callPackage ./nexus/default.nix args-zkVM;
           sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
