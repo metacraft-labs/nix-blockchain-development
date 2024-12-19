@@ -7,62 +7,62 @@ A Nix flake offering blockchain development tools
 This repo is provided as a Nix Flake. The packages defined here can be consumed
 via one of the flake output categories:
 
-- `overlays.default` (which you can e.g. apply on top of Nixpkgs)
-  - All packages are placed inside the `metacraft-labs` namespace
-  - For example: `metacraft-labs.solana`
-- `packages.${arch}.${pkg}` - suitable for use with `nix shell`
+* `overlays.default` (which you can e.g. apply on top of Nixpkgs)
+  * All packages are placed inside the `metacraft-labs` namespace
+  * For example: `metacraft-labs.solana`
+* `packages.${arch}.${pkg}` - suitable for use with `nix shell`
 
-1. Blockchain Node Software
+### Blockchain Node Software
 
-   | package name                             | description                                                                                                             | supported platforms                         |
-   | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-   | [avalanche-cli]([avalanche-url])         | Helps developers develop and test subnets                                                                               | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [bnb-beacon-node]([bnb-beacon-node-url]) | Blockchain with a flexible set of native assets and pluggable modules                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [cardano]([cardano-url])                 | HTTP server & command-line for managing UTxOs and HD wallets in Cardano                                                 | x86_64-linux, x86_64-darwin                 |
-   | [cardano-graphql]([cardano-graphql-url]) | GraphQL API for Cardano                                                                                                 | x86_64-linux, x86_64-darwin                 |
-   | [cosmos-theta-testnet][cosmos-url]       | Cosmos Testnets                                                                                                         | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [gaiad]([gaiad-url])                     | Cosmos Hub is the first of many interconnected blockchains powered by the interchain stack: CometBFT, CosmosSDK and IBC | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [wasmd]([wasmd-url])                     | Basic cosmos-sdk app with web assembly smart contracts                                                                  | x86_64-linux                                |
-   | [cdt]([cdt-url])                         | A suite of tools to facilitate C/C++ development of contracts for Antelope blockchains                                  | x86_64-linux                                |
-   | [eos-vm]([eos-vm-url])                   | A Low-Latency, High Performance and Extensible WebAssembly Engine                                                       | x86_64-linux                                |
-   | [leap]([leap-url])                       | C++ implementation of the Antelope protocol                                                                             | x86_64-linux                                |
-   | [go-opera]([go-opera-url])               | Opera blockchain protocol secured by the Lachesis consensus algorithm                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [polkadot]([polkadot-url])               | Polkadot Node Implementation                                                                                            | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | polkadot-fast                            | Polkadot Node Implementation with [fast-runtime][polkadot-fast-url] enabled                                             | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| package name                             | description                                                                                                             | supported platforms                         |
+|------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| [avalanche-cli]([avalanche-url])         | Helps developers develop and test subnets                                                                               | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [bnb-beacon-node]([bnb-beacon-node-url]) | Blockchain with a flexible set of native assets and pluggable modules                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [cardano]([cardano-url])                 | HTTP server & command-line for managing UTxOs and HD wallets in Cardano                                                 | x86_64-linux, x86_64-darwin                 |
+| [cardano-graphql]([cardano-graphql-url]) | GraphQL API for Cardano                                                                                                 | x86_64-linux, x86_64-darwin                 |
+| [cosmos-theta-testnet][cosmos-url]       | Cosmos Testnets                                                                                                         | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [gaiad]([gaiad-url])                     | Cosmos Hub is the first of many interconnected blockchains powered by the interchain stack: CometBFT, CosmosSDK and IBC | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [wasmd]([wasmd-url])                     | Basic cosmos-sdk app with web assembly smart contracts                                                                  | x86_64-linux                                |
+| [cdt]([cdt-url])                         | A suite of tools to facilitate C/C++ development of contracts for Antelope blockchains                                  | x86_64-linux                                |
+| [eos-vm]([eos-vm-url])                   | A Low-Latency, High Performance and Extensible WebAssembly Engine                                                       | x86_64-linux                                |
+| [leap]([leap-url])                       | C++ implementation of the Antelope protocol                                                                             | x86_64-linux                                |
+| [go-opera]([go-opera-url])               | Opera blockchain protocol secured by the Lachesis consensus algorithm                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [polkadot]([polkadot-url])               | Polkadot Node Implementation                                                                                            | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| polkadot-fast                            | Polkadot Node Implementation with [fast-runtime][polkadot-fast-url] enabled                                             | x86_64-linux, x86_64-darwin, aarch64-darwin |
 
-2. ZK Circuit-related Software
+### ZK Circuit-related Software
 
-   | package name                           | description                                                                | supported platforms                         |
-   | -------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
-   | [circom]([circom-url])                 | zkSnark circuit compiler                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [circom_runtime]([circom_runtime-url]) | The code needed to calculate the witness by a circuit compiled with circom | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [ffiasm]([ffiasm-url])                 | A script that generates a Finite field Library in Intel64 and ARM Assembly | x86_64-linux, x86_64-darwin                 |
-   | [ffiasm-src]([ffiasm-src-url])         | Intel assembly finite field library generator                              | x86_64-linux, x86_64-darwin                 |
-   | [rapidsnark]([rapidsnark-url])         | zkSnark proof generation written in C++ and intel assembly                 | x86_64-linux, x86_64-darwin                 |
-   | rapidsnark-server                      |                                                                            | x86_64-linux                                |
-   | zqfield-bn254                          |                                                                            | x86_64-linux, x86_64-darwin                 |
+| package name                           | description                                                                | supported platforms                         |
+|----------------------------------------|----------------------------------------------------------------------------|---------------------------------------------|
+| [circom]([circom-url])                 | zkSnark circuit compiler                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [circom_runtime]([circom_runtime-url]) | The code needed to calculate the witness by a circuit compiled with circom | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [ffiasm]([ffiasm-url])                 | A script that generates a Finite field Library in Intel64 and ARM Assembly | x86_64-linux, x86_64-darwin                 |
+| [ffiasm-src]([ffiasm-src-url])         | Intel assembly finite field library generator                              | x86_64-linux, x86_64-darwin                 |
+| [rapidsnark]([rapidsnark-url])         | zkSnark proof generation written in C++ and intel assembly                 | x86_64-linux, x86_64-darwin                 |
+| rapidsnark-server                      |                                                                            | x86_64-linux                                |
+| zqfield-bn254                          |                                                                            | x86_64-linux, x86_64-darwin                 |
 
-3. General Dev Tools
+### General Dev Tools
 
-   | package name                 | description                                                                                                               | supported platforms                         |
-   | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-   | [emscripten][emscripten-url] | An LLVM-to-WebAssembly Compiler                                                                                           | x86_64-linux, x86_64-darwin, aarch64-darwin |
-   | [kurtosis]([kurtosis-url])   | A platform for packaging and launching ephemeral backend stacks with a focus on approachability for the average developer | x86_64-linux                                |
+| package name                 | description                                                                                                               | supported platforms                         |
+|------------------------------|---------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+| [emscripten][emscripten-url] | An LLVM-to-WebAssembly Compiler                                                                                           | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [kurtosis]([kurtosis-url])   | A platform for packaging and launching ephemeral backend stacks with a focus on approachability for the average developer | x86_64-linux                                |
 
-4. Libraries
+### Libraries
 
-   - Cryptography-related
+#### Cryptography-related
 
-     | package name           | description                                                                    | supported platforms                         |
-     | ---------------------- | ------------------------------------------------------------------------------ | ------------------------------------------- |
-     | [blst]([blst-url])     | Multilingual BLS12-381 signature library                                       | x86_64-linux, x86_64-darwin, aarch64-darwin |
-     | [py-ecc]([py-ecc-url]) | Python implementation of ECC pairing and bn_128 and bls12_381 curve operations | x86_64-linux                                |
+| package name               | description                                                                    | supported platforms                         |
+|----------------------------|--------------------------------------------------------------------------------|---------------------------------------------|
+| [blst]([blst-url])         | Multilingual BLS12-381 signature library                                       | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [py-ecc]([py-ecc-url])     | Python implementation of ECC pairing and bn_128 and bls12_381 curve operations | x86_64-linux                                |
 
-   - General-purpose
+#### General-purpose
 
-     | package name               | description                                    | supported platforms |
-     | -------------------------- | ---------------------------------------------- | ------------------- |
-     | [pistache]([pistache-url]) | A high-performance REST toolkit written in C++ | x86_64-linux        |
+| package name               | description                                    | supported platforms |
+|----------------------------|------------------------------------------------|---------------------|
+| [pistache]([pistache-url]) | A high-performance REST toolkit written in C++ | x86_64-linux        |
 
 [cosmos-url]: https://github.com/hyphacoop/testnets/blob/master/local/previous-local-testnets/v7-theta/priv_validator_key.json
 [emscripten-url]: https://github.com/emscripten-core/emscripten
