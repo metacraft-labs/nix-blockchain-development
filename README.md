@@ -42,6 +42,26 @@ via one of the flake output categories:
 | rapidsnark-server                      |                                                                            | x86_64-linux                                |
 | zqfield-bn254                          |                                                                            | x86_64-linux, x86_64-darwin                 |
 
+### ZK Virtual Machines
+
+#### Virtual Machines
+
+| package name           | description                                                                                                        | supported platforms |
+|------------------------|--------------------------------------------------------------------------------------------------------------------|---------------------|
+| [jolt]([jolt-url])     | RISC-V-based zkVM with simplicity, speed and extensibility in mind                                                 | x86_64-linux        |
+| [nexus]([nexus-url])   | A modular, extensible and highly-parallelized zkVM                                                                 | x86_64-linux        |
+| [risc0]([risc0-url])   | Zero-knowledge verifiable general computing platform based on zk-STARKS and RISC-V                                 | x86_64-linux        |
+| [sp1]([sp1-url])       | The fastest, most-feature complete zkVM for developers                                                             | x86_64-linux        |
+| [zkm]([zkm-url])       | General verifiable computing infrastructure, empowering Ethereum as the Global Settlement Layer                    | x86_64-linux        |
+| [zkwasm]([zkwasm-url]) | ZKWASM serves as a trustless layer between rich applilcations running on WASM runtime and smart contracts on chain | x86_64-linux        |
+
+#### Virtual Machine Rust forks
+
+| package name                             | description                                               | supported platforms |
+|------------------------------------------|-----------------------------------------------------------|---------------------|
+| [jolt-guest-rust]([jolt-guest-rust-url]) | Rust with the riscv32im-jolt-zkvm-elf compilation target  | x86_64-linux        |
+| [risc0-rust]([risc0-rust-url])           | Rust with the riscv32im-risc0-zkvm-elf compilation target | x86_64-linux        |
+
 ### General Dev Tools
 
 | package name                 | description                                                                                                               | supported platforms                         |
@@ -79,6 +99,14 @@ via one of the flake output categories:
 [gaiad-url]: https://github.com/cosmos/gaia
 [go-opera-url]: https://github.com/Fantom-foundation/go-opera
 [cardano-graphql-url]: https://github.com/cardano-foundation/cardano-graphql
+[jolt-url]: https://github.com/a16z/jolt
+[nexus-url]: https://github.com/nexus-xyz/nexus-zkvm
+[risc0-url]: https://github.com/risc0/risc0
+[sp1-url]: https://github.com/succinctlabs/sp1
+[zkm-url]: https://github.com/zkMIPS/zkm
+[zkwasm-url]: https://github.com/DelphinusLab/zkWasm
+[jolt-guest-rust]: https://github.com/a16z/rust
+[risc0-rust]: https://github.com/risc0/rust
 [kurtosis-url]: https://github.com/kurtosis-tech/kurtosis
 [pistache-url]: https://github.com/pistacheio/pistache
 [polkadot-url]: https://github.com/paritytech/polkadot
