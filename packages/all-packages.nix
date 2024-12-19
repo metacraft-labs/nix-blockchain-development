@@ -222,16 +222,6 @@
           };
 
           inherit corepack-shims;
-
-          zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
-          jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
-          jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
-          zkm = callPackage ./zkm/default.nix args-zkVM;
-          nexus = callPackage ./nexus/default.nix args-zkVM;
-          sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
-          sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
-          risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
-          risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix {};
@@ -250,6 +240,16 @@
           leap = callPackage ./leap/default.nix { };
           eos-vm = callPackage ./eos-vm/default.nix { };
           cdt = callPackage ./cdt/default.nix { };
+
+          zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
+          jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
+          jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
+          zkm = callPackage ./zkm/default.nix args-zkVM;
+          nexus = callPackage ./nexus/default.nix args-zkVM;
+          sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
+          sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
+          risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
+          risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
         }
         // lib.optionalAttrs hostPlatform.isx86 rec {
           inherit
