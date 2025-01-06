@@ -9,6 +9,8 @@
   ...
 }:
 let
+  # Value from "SHA256_HASH" constant here:
+  # https://github.com/risc0/risc0/blob/main/risc0/circuit/recursion/build.rs
   recursion-zkr = let
     hash' = "ffc503386276f809137161f18d2f3ddcba3bb4b2d8b5d893b2c5d94b35afaf47";
   in
@@ -19,7 +21,7 @@ let
 
   commonArgs = rec {
     pname = "risc0";
-    version = "unstable-2024-12-12";
+    version = "unstable-2024-12-21";
 
     nativeBuildInputs = [
       autoPatchelfHook
@@ -30,8 +32,8 @@ let
     src = fetchFromGitHub {
       owner = "risc0";
       repo = "risc0";
-      rev = "b33c13fd22f9a07afa11edc969c56aad22dcbd53";
-      hash = "sha256-cCqEum/HU0cGIxm2V3cPirRM5H1eDWuiaR1sGAzuPTk=";
+      rev = "3e042891fbad365fb1db7b17bd4afbb5e6fea99e";
+      hash = "sha256-wX8d44eGq1VxWMAduqPs8IMRMhcKcLuKKFhnRSQZeBc=";
     };
   };
 
