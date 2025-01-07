@@ -10,12 +10,15 @@
       (self'.legacyPackages)
       rustPlatformStable
       craneLib-stable
+      craneLib-nightly
       cardano-node
       cardano-cli
+      pkgs-with-rust-overlay
       ;
     python3Packages = pkgs.python3Packages;
 
     callPackage = callPackageWith (pkgs // {rustPlatform = rustPlatformStable;});
+
     darwinPkgs = {
       inherit
         (darwin.apple_sdk.frameworks)
@@ -104,6 +107,58 @@
     };
     polkadot = polkadot-generic {};
     polkadot-fast = polkadot-generic {enableFastRuntime = true;};
+
+    fetchGitHubFile = {
+      owner,
+      repo,
+      rev,
+      file,
+      hash
+    }:
+      pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
+          inherit hash;
+      };
+
+    fetchGitHubReleaseAsset = {
+      owner,
+      repo,
+      tag,
+      asset,
+      hash
+    }:
+      pkgs.fetchzip {
+        url = "https://github.com/${owner}/${repo}/releases/download/${tag}/${asset}";
+        inherit hash;
+        stripRoot = false;
+      };
+
+    installSourceAndCargo = rust-toolchain: rec {
+      installPhaseCommand = ''
+        mkdir -p "$out"/bin
+        # Install source code
+        cp -r /build/source/. "$out"
+        # Install cargo commands
+        ln -s "${rust-toolchain}"/bin/* "$out"/bin/
+        # Install binaries
+        for result in target/release/*
+        do
+          [ "''${result:15:5}" != 'crane' -a -f "$result" -a -x "$result" ] \
+            && ln -s "$out/$result" "$out"/bin/
+        done
+      '';
+    };
+
+    args-zkVM = {
+      inherit (pkgs-with-rust-overlay) rust-bin;
+      inherit craneLib-nightly;
+      inherit fetchGitHubFile;
+      inherit installSourceAndCargo;
+    };
+
+    args-zkVM-rust = {
+      inherit fetchGitHubReleaseAsset;
+    };
   in {
     legacyPackages.metacraft-labs =
       rec {
@@ -162,6 +217,17 @@
         leap = callPackage ./leap/default.nix {};
         eos-vm = callPackage ./eos-vm/default.nix {};
         cdt = callPackage ./cdt/default.nix {};
+
+        zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
+        jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
+        jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
+        zkm-rust = callPackage ./zkm-rust/default.nix args-zkVM-rust;
+        zkm = callPackage ./zkm/default.nix (args-zkVM // { inherit zkm-rust; });
+        nexus = callPackage ./nexus/default.nix args-zkVM;
+        sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
+        sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
+        risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
+        risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
       }
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit zqfield-bn254 ffiasm ffiasm-src rapidsnark;
