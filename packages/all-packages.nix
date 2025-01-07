@@ -244,8 +244,8 @@
           zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
           jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
           jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
-          zkm = callPackage ./zkm/default.nix args-zkVM;
           zkm-rust = callPackage ./zkm-rust/default.nix args-zkVM-rust;
+          zkm = callPackage ./zkm/default.nix (args-zkVM // { inherit zkm-rust; });
           nexus = callPackage ./nexus/default.nix args-zkVM;
           sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
           sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
