@@ -20,3 +20,6 @@ matrix.json
 matrix-pre.json
 matrix-post.json
 comment.md
+
+# Pre Commit
+.pre-commit-config.yaml
