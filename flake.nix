@@ -35,20 +35,35 @@
     };
   };
 
-  outputs = inputs @ {flake-parts, ...}:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
-      imports = [./packages];
-      perSystem = {
-        final,
-        self',
-        ...
-      }: {
-        devShells.default = import ./shells/all.nix {
-          pkgs = final;
-          inherit self';
+  outputs =
+    inputs@{ flake-parts, nixos-modules, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      imports = [
+        nixos-modules.modules.flake.git-hooks
+        ./packages
+      ];
+      perSystem =
+        {
+          final,
+          self',
+          config,
+          ...
+        }:
+        {
+          devShells.default = import ./shells/all.nix {
+            pkgs = final;
+            inherit self';
+          };
+          devShells.ci = import ./shells/ci.nix {
+            pkgs = final;
+            inherit config;
+          };
         };
-        devShells.ci = import ./shells/ci.nix {pkgs = final;};
-      };
     };
 }

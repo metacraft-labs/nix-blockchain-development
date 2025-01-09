@@ -11,6 +11,11 @@ on:
       - main
 
 jobs:
+  lint:
+    uses: metacraft-labs/nixos-modules/.github/workflows/reusable-lint.yml@main
+    secrets:
+      NIX_GITHUB_TOKEN: ${{ secrets.NIX_GITHUB_TOKEN }}
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
   ci:
     uses: metacraft-labs/nixos-modules/.github/workflows/reusable-flake-checks-ci-matrix.yml@main
     secrets:
