@@ -8,11 +8,24 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 indent_style = space
 indent_size = 2
-max_line_length = 80
 
 [*.{d,h,hpp,c,cpp,cxx,cs,hs,java,kt,py,rs,sol}]
 indent_size = 4
 
-[{Makefile,go.mod,go.sum,*.go,.gitmodules}]
+[{Makefile,go.mod,go.sum,*.go,.gitmodules,dub.selections.json}]
 indent_style = tab
 indent_size = 4
+[*.md]
+indent_style = space
+# Prettier handles formatting for markdown files
+# and `indent_size` is not enforcable because ordered and unordered lists use
+# different indentation:
+indent_size = unset
+[**/Cargo.lock]
+indent_style = space
+indent_size = unset
+[*.wit]
+indent_style = space
+indent_size = 2
+[*.rs]
+indent_size = unset
