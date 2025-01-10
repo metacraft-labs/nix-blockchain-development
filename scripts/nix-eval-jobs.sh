@@ -50,4 +50,3 @@ nix_eval_for_all_systems() {
     nix_eval_jobs "${flake_pre}.${system}${flake_post}"
   done
 }
-

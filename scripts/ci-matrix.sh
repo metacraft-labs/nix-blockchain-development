@@ -95,4 +95,3 @@ printTableForCacheStatus() {
 }
 
 printTableForCacheStatus "$@"
-

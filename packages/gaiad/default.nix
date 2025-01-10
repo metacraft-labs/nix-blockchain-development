@@ -21,7 +21,7 @@ buildGoModule rec {
   meta = with lib; {
     homepage = "https://github.com/cosmos/gaia";
     license = licenses.mit;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     description = ''
       The Cosmos Hub is built using the Cosmos SDK and compiled to a binary
       called gaiad (Gaia Daemon). The Cosmos Hub and other fully sovereign

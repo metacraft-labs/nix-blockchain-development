@@ -19,7 +19,7 @@ buildNpmPackage rec {
 
   npmDepsHash = "sha256-Tn27JihH8+15h4LAJc3NpoUs9Gnhe2rfLM5HspmxTUk=";
 
-  npmPackFlags = ["--ignore-scripts"];
+  npmPackFlags = [ "--ignore-scripts" ];
 
   dontNpmBuild = true;
 
@@ -28,8 +28,12 @@ buildNpmPackage rec {
   # TODO: Re-enable them when we figure out if we can speed them up (e.g. reduce
   # number of iterations, or run a smaller subset).
   doCheck = false;
-  nativeCheckInputs = [nasm nodePackages.mocha gccStdenv.cc];
-  checkInputs = [gmp];
+  nativeCheckInputs = [
+    nasm
+    nodePackages.mocha
+    gccStdenv.cc
+  ];
+  checkInputs = [ gmp ];
   checkPhase = "mocha --bail";
 
   meta = {

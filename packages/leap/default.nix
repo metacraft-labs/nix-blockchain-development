@@ -22,7 +22,13 @@ clang11Stdenv.mkDerivation rec {
     find . -type f -name '*.py' -print0 | xargs -0 -I{} sed -i -E 's#/usr/bin/env python3?#${pkgs.python3}/bin/python3#' {}
   '';
 
-  nativeBuildInputs = with pkgs; [pkg-config cmake clang_11 git python3];
+  nativeBuildInputs = with pkgs; [
+    pkg-config
+    cmake
+    clang_11
+    git
+    python3
+  ];
 
   buildInputs = with pkgs; [
     llvm_11
@@ -32,10 +38,9 @@ clang11Stdenv.mkDerivation rec {
     libusb1.dev
     bzip2.dev
     (lib.getLib xz)
-    (boost.override
-      {
-        enableShared = false;
-        enabledStatic = true;
-      })
+    (boost.override {
+      enableShared = false;
+      enabledStatic = true;
+    })
   ];
 }

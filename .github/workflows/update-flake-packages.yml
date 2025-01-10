@@ -1,8 +1,8 @@
-name: "Update Flake Packages ❄️"
+name: 'Update Flake Packages ❄️'
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *" # https://crontab.guru/#0_0_*_*_*
+    - cron: '0 0 * * *' # https://crontab.guru/#0_0_*_*_*
 
 jobs:
   update-flake-packages:

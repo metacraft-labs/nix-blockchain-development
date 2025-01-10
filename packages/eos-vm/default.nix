@@ -15,13 +15,18 @@ clangStdenv.mkDerivation rec {
     openssl.dev
     libusb1.dev
     bzip2.dev
-    (boost.override
-      {
-        enableShared = false;
-        enabledStatic = true;
-      })
+    (boost.override {
+      enableShared = false;
+      enabledStatic = true;
+    })
   ];
-  nativeBuildInputs = with pkgs; [pkg-config cmake clang git python3];
+  nativeBuildInputs = with pkgs; [
+    pkg-config
+    cmake
+    clang
+    git
+    python3
+  ];
 
   src = fetchgit {
     url = "https://github.com/AntelopeIO/eos-vm";

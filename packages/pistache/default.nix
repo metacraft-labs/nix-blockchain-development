@@ -21,7 +21,13 @@ stdenv.mkDerivation rec {
     hash = "sha256-4mqiQRL3ucXudNRvjCExPUAlz8Q5BzEqJUMVK6f30ug=";
   };
 
-  nativeBuildInputs = [gcc12 meson cmake ninja pkg-config];
+  nativeBuildInputs = [
+    gcc12
+    meson
+    cmake
+    ninja
+    pkg-config
+  ];
 
   buildInputs = [
     openssl
@@ -29,9 +35,7 @@ stdenv.mkDerivation rec {
     howard-hinnant-date
   ];
 
-  mesonFlags =
-    lib.optional (openssl != null)
-    (lib.mesonOption "PISTACHE_USE_SSL" "true");
+  mesonFlags = lib.optional (openssl != null) (lib.mesonOption "PISTACHE_USE_SSL" "true");
 
   meta = {
     homepage = "https://github.com/pistacheio/pistache";

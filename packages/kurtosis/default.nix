@@ -21,7 +21,7 @@ buildGoModule rec {
     ./scripts/generate-kurtosis-version.sh "${version}"
   '';
 
-  subPackages = ["cli/cli"];
+  subPackages = [ "cli/cli" ];
 
   proxyVendor = true;
   vendorHash = "sha256-GaEIitoRiuYxtS7cDKobFyIlraDNQjcvbRvzG3nUKFU=";
@@ -35,7 +35,7 @@ buildGoModule rec {
     homepage = "https://github.com/kurtosis-tech/kurtosis";
     changelog = "https://github.com/kurtosis-tech/kurtosis/blob/${src.rev}/CHANGELOG.md";
     license = licenses.asl20;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     mainProgram = "kurtosis";
     platforms = platforms.all;
   };

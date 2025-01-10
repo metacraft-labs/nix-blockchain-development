@@ -28,14 +28,17 @@ buildGoModule rec {
     libpcap
   ];
 
-  ldflags = ["-s" "-w"];
+  ldflags = [
+    "-s"
+    "-w"
+  ];
 
   meta = with lib; {
     description = "";
     homepage = "https://github.com/bnb-chain/node";
     changelog = "https://github.com/bnb-chain/node/blob/${src.rev}/CHANGELOG.md";
     license = licenses.mpl20;
-    maintainers = with maintainers; [];
+    maintainers = with maintainers; [ ];
     mainProgram = "bnb-beacon-node";
   };
 
