@@ -19,4 +19,3 @@ chore(flake.lock): Update all Flake inputs ($(date -I))
 
 $(git log -1 '--pretty=format:%b' | sed '1,2d')
 EOF
-

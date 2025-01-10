@@ -13,7 +13,11 @@
   Security,
   SystemConfiguration,
   libcxx,
-}: {enableFastRuntime ? false}: let
+}:
+{
+  enableFastRuntime ? false,
+}:
+let
   tags = {
     "v0.9.40" = {
       commitSha1 = "a2b62fb872ba22622aaf8e13f9dcd9a4adcc454f";
@@ -48,10 +52,18 @@
       sha256 = tags."v${version}".srcSha256;
     };
 
-    nativeBuildInputs = [rustPlatform.bindgenHook rocksdb clang];
+    nativeBuildInputs = [
+      rustPlatform.bindgenHook
+      rocksdb
+      clang
+    ];
 
     buildInputs =
-      [clang libcxx libcxx.dev]
+      [
+        clang
+        libcxx
+        libcxx.dev
+      ]
       ++ lib.optionals stdenv.isDarwin [
         libiconv
         CoreFoundation
@@ -64,25 +76,35 @@
     ROCKSDB_LIB_DIR = "${rocksdb}/lib";
   };
 
-  cargoArtifacts = craneLib.buildDepsOnly (commonArgs
+  cargoArtifacts = craneLib.buildDepsOnly (
+    commonArgs
     // {
       pname = "polkadot";
-    });
+    }
+  );
 in
-  craneLib.buildPackage (commonArgs
-    // rec {
-      pname = "polkadot" + lib.optionalString enableFastRuntime "-fast";
-      inherit cargoArtifacts;
+craneLib.buildPackage (
+  commonArgs
+  // rec {
+    pname = "polkadot" + lib.optionalString enableFastRuntime "-fast";
+    inherit cargoArtifacts;
 
-      buildFeatures = ["jemalloc-allocator"] ++ lib.optional enableFastRuntime "fast-runtime";
+    buildFeatures = [ "jemalloc-allocator" ] ++ lib.optional enableFastRuntime "fast-runtime";
 
-      doCheck = false;
+    doCheck = false;
 
-      meta = with lib; {
-        description = "Polkadot Node Implementation";
-        homepage = "https://polkadot.network";
-        license = licenses.gpl3Only;
-        maintainers = with maintainers; [akru andresilva asymmetric FlorianFranzen RaghavSood];
-        platforms = platforms.unix;
-      };
-    })
+    meta = with lib; {
+      description = "Polkadot Node Implementation";
+      homepage = "https://polkadot.network";
+      license = licenses.gpl3Only;
+      maintainers = with maintainers; [
+        akru
+        andresilva
+        asymmetric
+        FlorianFranzen
+        RaghavSood
+      ];
+      platforms = platforms.unix;
+    };
+  }
+)

@@ -3,17 +3,17 @@ index a602f6715f..a2451f3ce1 100644
 --- a/sdk/cargo-build-bpf/src/main.rs
 +++ b/sdk/cargo-build-bpf/src/main.rs
 @@ -2,7 +2,6 @@ use {
-     bzip2::bufread::BzDecoder,
-     clap::{crate_description, crate_name, crate_version, Arg},
-     regex::Regex,
+    bzip2::bufread::BzDecoder,
+    clap::{crate_description, crate_name, crate_version, Arg},
+    regex::Regex,
 -    solana_download_utils::download_file,
-     solana_sdk::signature::{write_keypair_file, Keypair},
-     std::{
-         collections::{HashMap, HashSet},
+    solana_sdk::signature::{write_keypair_file, Keypair},
+    std::{
+        collections::{HashMap, HashSet},
 @@ -113,81 +112,12 @@ where
- 
- // Check whether a package is installed and install it if missing.
- fn install_if_missing(
+
+// Check whether a package is installed and install it if missing.
+fn install_if_missing(
 -    config: &Config,
 -    package: &str,
 -    url: &str,
@@ -24,7 +24,7 @@ index a602f6715f..a2451f3ce1 100644
 +    _url: &str,
 +    _download_file_name: &str,
 +    _target_path: &Path,
- ) -> Result<(), String> {
+) -> Result<(), String> {
 -    // Check whether the target path is an empty directory. This can
 -    // happen if package download failed on previous run of
 -    // cargo-build-bpf.  Remove the target_path directory in this
@@ -94,6 +94,5 @@ index a602f6715f..a2451f3ce1 100644
 -        std::os::windows::fs::symlink_dir(target_path, source_path)
 -            .map_err(|err| err.to_string())?;
 -    }
-     Ok(())
- }
- 
+    Ok(())
+}

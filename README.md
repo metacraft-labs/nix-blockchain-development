@@ -7,16 +7,15 @@ A Nix flake offering blockchain development tools
 This repo is provided as a Nix Flake. The packages defined here can be consumed
 via one of the flake output categories:
 
-* `overlays.default` (which you can e.g. apply on top of Nixpkgs)
-  * All packages are placed inside the `metacraft-labs` namespace
-  * For example: `metacraft-labs.solana`
-* `packages.${arch}.${pkg}` - suitable for use with `nix shell`
-
+- `overlays.default` (which you can e.g. apply on top of Nixpkgs)
+  - All packages are placed inside the `metacraft-labs` namespace
+  - For example: `metacraft-labs.solana`
+- `packages.${arch}.${pkg}` - suitable for use with `nix shell`
 
 1. Blockchain Node Software
-   
+
    | package name                             | description                                                                                                             | supported platforms                         |
-   |------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+   | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
    | [avalanche-cli]([avalanche-url])         | Helps developers develop and test subnets                                                                               | x86_64-linux, x86_64-darwin, aarch64-darwin |
    | [bnb-beacon-node]([bnb-beacon-node-url]) | Blockchain with a flexible set of native assets and pluggable modules                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
    | [cardano]([cardano-url])                 | HTTP server & command-line for managing UTxOs and HD wallets in Cardano                                                 | x86_64-linux, x86_64-darwin                 |
@@ -34,7 +33,7 @@ via one of the flake output categories:
 2. ZK Circuit-related Software
 
    | package name                           | description                                                                | supported platforms                         |
-   |----------------------------------------|----------------------------------------------------------------------------|---------------------------------------------|
+   | -------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------- |
    | [circom]([circom-url])                 | zkSnark circuit compiler                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
    | [circom_runtime]([circom_runtime-url]) | The code needed to calculate the witness by a circuit compiled with circom | x86_64-linux, x86_64-darwin, aarch64-darwin |
    | [ffiasm]([ffiasm-url])                 | A script that generates a Finite field Library in Intel64 and ARM Assembly | x86_64-linux, x86_64-darwin                 |
@@ -46,22 +45,23 @@ via one of the flake output categories:
 3. General Dev Tools
 
    | package name                 | description                                                                                                               | supported platforms                         |
-   |------------------------------|---------------------------------------------------------------------------------------------------------------------------|---------------------------------------------|
+   | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
    | [emscripten][emscripten-url] | An LLVM-to-WebAssembly Compiler                                                                                           | x86_64-linux, x86_64-darwin, aarch64-darwin |
    | [kurtosis]([kurtosis-url])   | A platform for packaging and launching ephemeral backend stacks with a focus on approachability for the average developer | x86_64-linux                                |
 
 4. Libraries
-   * Cryptography-related
 
-     | package name               | description                                                                    | supported platforms                         |
-     |----------------------------|--------------------------------------------------------------------------------|---------------------------------------------|
-     | [blst]([blst-url])         | Multilingual BLS12-381 signature library                                       | x86_64-linux, x86_64-darwin, aarch64-darwin |
-     | [py-ecc]([py-ecc-url])     | Python implementation of ECC pairing and bn_128 and bls12_381 curve operations | x86_64-linux                                |
+   - Cryptography-related
 
-   * General-purpose
+     | package name           | description                                                                    | supported platforms                         |
+     | ---------------------- | ------------------------------------------------------------------------------ | ------------------------------------------- |
+     | [blst]([blst-url])     | Multilingual BLS12-381 signature library                                       | x86_64-linux, x86_64-darwin, aarch64-darwin |
+     | [py-ecc]([py-ecc-url]) | Python implementation of ECC pairing and bn_128 and bls12_381 curve operations | x86_64-linux                                |
+
+   - General-purpose
 
      | package name               | description                                    | supported platforms |
-     |----------------------------|------------------------------------------------|---------------------|
+     | -------------------------- | ---------------------------------------------- | ------------------- |
      | [pistache]([pistache-url]) | A high-performance REST toolkit written in C++ | x86_64-linux        |
 
 [cosmos-url]: https://github.com/hyphacoop/testnets/blob/master/local/previous-local-testnets/v7-theta/priv_validator_key.json
@@ -98,7 +98,7 @@ nix shell github:metacraft-labs/nix-blockchain-development#solana
 
 ### Declarative with Nix Flakes dev shell
 
-* `flake.nix`:
+- `flake.nix`:
 
   ```nix
   {
@@ -144,7 +144,7 @@ nix shell github:metacraft-labs/nix-blockchain-development#solana
   }
   ```
 
-* `shell.nix`:
+- `shell.nix`:
 
   ```nix
   {pkgs}:

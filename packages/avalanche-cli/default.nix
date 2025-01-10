@@ -25,13 +25,16 @@ buildGoModule rec {
     "-X=github.com/ava-labs/avalanche-cli/cmd.Version=${version}"
   ];
 
-  buildInputs = [blst libusb1];
+  buildInputs = [
+    blst
+    libusb1
+  ];
 
   meta = {
     description = "";
     homepage = "https://github.com/ava-labs/avalanche-cli";
     # FIXME: nix-init did not find a license
-    maintainers = with lib.maintainers; [];
+    maintainers = with lib.maintainers; [ ];
     mainProgram = "avalanche-cli";
   };
 }
