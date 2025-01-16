@@ -56,7 +56,7 @@ in
         rm $out/bin/cargo
         cat <<EOF > $out/bin/cargo
         #!/bin/sh
-        if [ -z "\''${RUSTUP_TOOLCHAIN+x}" ]
+        if [ -n "\''${RUSTUP_TOOLCHAIN+x}" ]
         then
             export PATH="${jolt-guest-rust}/rust/build/host/stage2/bin:$PATH"
         fi
