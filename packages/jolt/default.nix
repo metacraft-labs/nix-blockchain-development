@@ -58,7 +58,7 @@ in
         #!/bin/sh
         if [ -n "\''${RUSTUP_TOOLCHAIN+x}" ]
         then
-            export PATH="${jolt-guest-rust}/rust/build/host/stage2/bin:$PATH"
+            export PATH="${jolt-guest-rust}/rust/build/host/stage2/bin:\$PATH"
         fi
         ${rust-toolchain}/bin/cargo \$@
         EOF
