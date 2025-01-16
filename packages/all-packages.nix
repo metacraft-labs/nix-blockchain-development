@@ -130,25 +130,27 @@
       polkadot = polkadot-generic { };
       polkadot-fast = polkadot-generic { enableFastRuntime = true; };
 
-      fetchGitHubFile = {
-        owner,
-        repo,
-        rev,
-        file,
-        hash
-      }:
+      fetchGitHubFile =
+        {
+          owner,
+          repo,
+          rev,
+          file,
+          hash,
+        }:
         pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
-            inherit hash;
+          url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
+          inherit hash;
         };
 
-      fetchGitHubReleaseAsset = {
-        owner,
-        repo,
-        tag,
-        asset,
-        hash
-      }:
+      fetchGitHubReleaseAsset =
+        {
+          owner,
+          repo,
+          tag,
+          asset,
+          hash,
+        }:
         pkgs.fetchzip {
           url = "https://github.com/${owner}/${repo}/releases/download/${tag}/${asset}";
           inherit hash;
@@ -224,9 +226,9 @@
           inherit corepack-shims;
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
-          kurtosis = callPackage ./kurtosis/default.nix {};
+          kurtosis = callPackage ./kurtosis/default.nix { };
 
-          wasmd = callPackage ./wasmd/default.nix {};
+          wasmd = callPackage ./wasmd/default.nix { };
 
           # Solana
           # solana-validator = callPackage ./solana-validator {};

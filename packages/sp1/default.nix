@@ -1,4 +1,5 @@
-{ sp1-rust,
+{
+  sp1-rust,
   craneLib-nightly,
   fetchFromGitHub,
   installSourceAndCargo,
@@ -29,12 +30,14 @@ let
   craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
-  craneLib.buildPackage (commonArgs
-    // (installSourceAndCargo rust-toolchain)
-    // rec {
-      inherit cargoArtifacts;
+craneLib.buildPackage (
+  commonArgs
+  // (installSourceAndCargo rust-toolchain)
+  // rec {
+    inherit cargoArtifacts;
 
-      cargoBuildCommand = "cargo build --release -p sp1-cli";
+    cargoBuildCommand = "cargo build --release -p sp1-cli";
 
-      doCheck = false;
-    })
+    doCheck = false;
+  }
+)

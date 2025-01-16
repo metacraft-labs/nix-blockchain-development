@@ -1,4 +1,5 @@
-{ zkm-rust,
+{
+  zkm-rust,
   craneLib-nightly,
   fetchFromGitHub,
   installSourceAndCargo,
@@ -32,27 +33,29 @@ let
   craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
-  craneLib.buildPackage (commonArgs
-    // (installSourceAndCargo rust-toolchain)
-    // rec {
-      inherit cargoArtifacts;
+craneLib.buildPackage (
+  commonArgs
+  // (installSourceAndCargo rust-toolchain)
+  // rec {
+    inherit cargoArtifacts;
 
-      postInstall = ''
-        rm "$out"/bin/cargo
-        cat <<EOF > "$out"/bin/cargo
-        #!/usr/bin/env sh
-        : \''${RUST_LOG:=info}
-        : \''${BASEDIR:='$out'}
-        : \''${SEG_SIZE:=65536}
-        : \''${ARGS:='2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824 hello'}
-        : \''${SEG_OUTPUT:='/tmp/output'}
-        : \''${SEG_FILE_DIR:='/tmp/output'}
-        LD_LIBRARY_PATH="\''${LD_LIBRARY_PATH-}:${openssl.out}/lib"
-        export RUST_LOG BASEDIR SEG_SIZE ARGS SEG_OUTPUT SEG_FILE_DIR LD_LIBRARY_PATH
-        ${rust-toolchain}/bin/cargo \$@
-        EOF
-        chmod +x "$out"/bin/cargo
-      '';
+    postInstall = ''
+      rm "$out"/bin/cargo
+      cat <<EOF > "$out"/bin/cargo
+      #!/usr/bin/env sh
+      : \''${RUST_LOG:=info}
+      : \''${BASEDIR:='$out'}
+      : \''${SEG_SIZE:=65536}
+      : \''${ARGS:='2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824 hello'}
+      : \''${SEG_OUTPUT:='/tmp/output'}
+      : \''${SEG_FILE_DIR:='/tmp/output'}
+      LD_LIBRARY_PATH="\''${LD_LIBRARY_PATH-}:${openssl.out}/lib"
+      export RUST_LOG BASEDIR SEG_SIZE ARGS SEG_OUTPUT SEG_FILE_DIR LD_LIBRARY_PATH
+      ${rust-toolchain}/bin/cargo \$@
+      EOF
+      chmod +x "$out"/bin/cargo
+    '';
 
-      doCheck = false;
-    })
+    doCheck = false;
+  }
+)

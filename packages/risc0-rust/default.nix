@@ -1,4 +1,5 @@
-{ stdenv,
+{
+  stdenv,
   fetchGitHubReleaseAsset,
   autoPatchelfHook,
   zlib,
@@ -24,7 +25,7 @@ stdenv.mkDerivation rec {
   src = fetchGitHubReleaseAsset {
     owner = "risc0";
     repo = "rust";
-    tag  = "r0.${version}";
+    tag = "r0.${version}";
     asset = "rust-toolchain-x86_64-unknown-linux-gnu.tar.gz";
     hash = "sha256-CzeZKT5Ubjk9nZZ2I12ak5Vnv2kFQNuueyzAF+blprU=";
   };
