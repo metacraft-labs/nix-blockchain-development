@@ -1,4 +1,5 @@
-{ rust-bin,
+{
+  rust-bin,
   craneLib-nightly,
   fetchFromGitHub,
   fetchGitHubFile,
@@ -27,18 +28,21 @@ let
     };
   };
 
-  craneLib = craneLib-nightly.overrideToolchain (rust-bin.fromRustupToolchainFile
-    (fetchGitHubFile {
+  craneLib = craneLib-nightly.overrideToolchain (
+    rust-bin.fromRustupToolchainFile (fetchGitHubFile {
       inherit (commonArgs.src) owner repo rev;
       file = "rust-toolchain";
       hash = "sha256-gHLj2AMKnStjvZcowfe9ZdTnwOBUPCRADmv81H7dAak=";
-    }));
+    })
+  );
 
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
-  craneLib.buildPackage (commonArgs
-    // rec {
-      inherit cargoArtifacts;
+craneLib.buildPackage (
+  commonArgs
+  // rec {
+    inherit cargoArtifacts;
 
-      doCheck = false;
-    })
+    doCheck = false;
+  }
+)

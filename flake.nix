@@ -64,12 +64,12 @@
             pkgs = final;
             inherit config;
           };
-          devShells.nexus = import ./shells/nexus.nix {pkgs = final;};
-          devShells.jolt = import ./shells/jolt.nix {pkgs = final;};
-          devShells.zkm = import ./shells/zkm.nix {pkgs = final;};
-          devShells.zkwasm = import ./shells/zkwasm.nix {pkgs = final;};
-          devShells.sp1 = import ./shells/sp1.nix {pkgs = final;};
-          devShells.risc0 = import ./shells/risc0.nix {pkgs = final;};
+          devShells.nexus = import ./shells/nexus.nix { pkgs = final; };
+          devShells.jolt = import ./shells/jolt.nix { pkgs = final; };
+          devShells.zkm = import ./shells/zkm.nix { pkgs = final; };
+          devShells.zkwasm = import ./shells/zkwasm.nix { pkgs = final; };
+          devShells.sp1 = import ./shells/sp1.nix { pkgs = final; };
+          devShells.risc0 = import ./shells/risc0.nix { pkgs = final; };
         };
     };
 }

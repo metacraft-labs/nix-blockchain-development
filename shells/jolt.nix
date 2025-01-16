@@ -1,9 +1,9 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 with pkgs;
-  mkShell {
-    packages = [
-      pkg-config
-      openssl
-      metacraft-labs.jolt
-    ];
-  }
+mkShell {
+  packages = [
+    pkg-config
+    openssl
+    metacraft-labs.jolt
+  ];
+}

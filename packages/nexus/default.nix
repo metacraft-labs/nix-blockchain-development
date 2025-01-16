@@ -1,4 +1,5 @@
-{ rust-bin,
+{
+  rust-bin,
   craneLib-nightly,
   fetchFromGitHub,
   installSourceAndCargo,
@@ -30,19 +31,21 @@ let
   };
 
   rust-toolchain = rust-bin.nightly.latest.default.override {
-    targets = ["riscv32i-unknown-none-elf"];
+    targets = [ "riscv32i-unknown-none-elf" ];
   };
   craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
   cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 in
-  craneLib.buildPackage (commonArgs
-    // (installSourceAndCargo rust-toolchain)
-    // rec {
-      inherit cargoArtifacts;
+craneLib.buildPackage (
+  commonArgs
+  // (installSourceAndCargo rust-toolchain)
+  // rec {
+    inherit cargoArtifacts;
 
-      postPatch = ''
-        sed -i '/"add"/{n;s/--git/--path/;n;s|".*"|"'$out'/runtime"|}' cli/src/command/new.rs
-      '';
+    postPatch = ''
+      sed -i '/"add"/{n;s/--git/--path/;n;s|".*"|"'$out'/runtime"|}' cli/src/command/new.rs
+    '';
 
-      doCheck = false;
-    })
+    doCheck = false;
+  }
+)
