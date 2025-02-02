@@ -278,11 +278,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733694224,
-        "narHash": "sha256-BH523P77WD2Bxt3UO3EgZ3lmRPmmqHmfEDf0Atppi28=",
+        "lastModified": 1737131381,
+        "narHash": "sha256-HSB25rwO+ZWQgUVlnF1QW0Q6i16hEewDV5JQ352DvrU=",
         "owner": "metacraft-labs",
         "repo": "ethereum.nix",
-        "rev": "2f1aab0a41962dba729bdd112fed2eb8719d30d4",
+        "rev": "bb7bbe4cd420a3c05be57b1f543a89686d6b9749",
         "type": "github"
       },
       "original": {
@@ -948,11 +948,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1736252821,
-        "narHash": "sha256-dWqGeDmasADnbjpGaEzu0pdXqECsmJeDX2eT3f9Cxcw=",
+        "lastModified": 1738081834,
+        "narHash": "sha256-X8X/kNN5svhQYRhsDYC/F7gwgQDz+LjYigRWtax/VLA=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "f8d59d90b9ce8dfb7fba4e215ef85a8dbb004766",
+        "rev": "b9238bebc1fe39babd61292a77bae3ff26fbe245",
         "type": "github"
       },
       "original": {
@@ -1143,11 +1143,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1736390353,
-        "narHash": "sha256-e2SP1zV9CISHlYZwEhwT53N9CW7yPh0tKTR0vuQqiWc=",
+        "lastModified": 1738376888,
+        "narHash": "sha256-S6ErHxkSm0iA7ZMsjjDaASWxbELYcdfv8BhOkkj1rHw=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "1033caad3e26a56050de55ba0384df5ff0fa5ebd",
+        "rev": "83284068670d5ae4a43641c4afb150f3446be70d",
         "type": "github"
       },
       "original": {
@@ -1321,17 +1321,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1694401971,
-        "narHash": "sha256-7ZaJGCK/Hwz7YtPFX9xX6HtzNozUtY0qqwe2syyA5Oo=",
+        "lastModified": 1729422940,
+        "narHash": "sha256-DlvJv33ml5UTKgu4b0HauOfFIoDx6QXtbqUF3vWeRCY=",
         "owner": "nix-community",
         "repo": "nixos-vscode-server",
-        "rev": "7e581626a07486b1779ef02320e7e310feb11611",
+        "rev": "8b6db451de46ecf9b4ab3d01ef76e59957ff549f",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "nixos-vscode-server",
-        "rev": "7e581626a07486b1779ef02320e7e310feb11611",
         "type": "github"
       }
     }
