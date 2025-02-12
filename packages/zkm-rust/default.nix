@@ -7,7 +7,7 @@
   ...
 }:
 stdenv.mkDerivation rec {
-  name = "risc0-rust";
+  name = "zkm-rust";
   version = "20241217";
 
   nativeBuildInputs = [
