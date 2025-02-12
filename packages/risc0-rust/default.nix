@@ -17,8 +17,13 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-    mkdir -p $out
-    cp -r ./* $out/
+
+    mkdir -p "$out"
+    cp -r ./* "$out/"
+
+    mkdir -p "$out/r0.${version}-risc0-rust-x86_64-unknown-linux-gnu"
+    cp -r ./* "$out/r0.${version}-risc0-rust-x86_64-unknown-linux-gnu"
+
     runHook postInstall
   '';
 
