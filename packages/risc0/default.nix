@@ -36,8 +36,8 @@ let
     src = fetchFromGitHub {
       owner = "risc0";
       repo = "risc0";
-      rev = "f84f52be2b948ad121112329ab08e1722f839ebf";
-      hash = "sha256-8L35VByENIEC/su3lVTDo4Gnec7b6l68S86FLkHS2uU=";
+      rev = "26078902cb460ed6c0740132887c5e33c91777cb";
+      hash = "sha256-6L68FEhXcCaH3g1rC2Hlo606cxLc8JLu1HzX1gDYLZc=";
     };
   };
 
