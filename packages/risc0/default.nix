@@ -9,6 +9,7 @@
   autoPatchelfHook,
   pkg-config,
   openssl,
+  stdenv,
   ...
 }:
 let
@@ -16,11 +17,11 @@ let
   # https://github.com/risc0/risc0/blob/main/risc0/circuit/recursion/build.rs
   recursion-zkr =
     let
-      hash' = "a1a9a1938e3143aecd995b8f20a93f3e1efb31d8b276dfa59acb9401bd2b36be";
+      hash' = "4c67e5fe48c6db03df9518911067685542fecf0a54d5c6e3efd16e943c62a2cf";
     in
     fetchurl rec {
       url = "https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkr/${hash'}.zip";
-      hash = "sha256-oamhk44xQ67NmVuPIKk/Ph77Mdiydt+lmsuUAb0rNr4=";
+      hash = "sha256-TGfl/kjG2wPflRiREGdoVUL+zwpU1cbj79FulDxios8=";
     };
 
   commonArgs = rec {
@@ -31,13 +32,14 @@ let
       autoPatchelfHook
       pkg-config
       openssl
+      stdenv.cc.cc.lib
     ];
 
     src = fetchFromGitHub {
       owner = "risc0";
       repo = "risc0";
-      rev = "26078902cb460ed6c0740132887c5e33c91777cb";
-      hash = "sha256-6L68FEhXcCaH3g1rC2Hlo606cxLc8JLu1HzX1gDYLZc=";
+      rev = "87a82961b99ff8d98b99825425f6d77557b8d362";
+      hash = "sha256-stl7s7FGy35NvWlPRweFhOSHq5U9Ov5fuzBg3KVx+uY=";
     };
   };
 
