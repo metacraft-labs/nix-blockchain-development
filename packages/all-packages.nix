@@ -161,7 +161,6 @@
         installPhaseCommand = ''
           mkdir -p "$out"/bin
           # Install source code
-          rm -r target/release/deps
           cp -r /build/source/. "$out"
           # Install cargo commands
           ln -s "${rust-toolchain}"/bin/* "$out"/bin/
