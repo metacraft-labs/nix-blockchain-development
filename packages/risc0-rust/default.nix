@@ -21,6 +21,12 @@ stdenv.mkDerivation rec {
     mkdir -p "$out"
     cp -r ./* "$out/"
 
+    # This is needed because RISC0 expects a toolchain directory, which contains
+    # risc0 rust versions in folders, following a specific naming scheme
+    # https://github.com/risc0/risc0/blob/0181c41119cf14e3f0f302e5ede1f20f6a1f81ce/rzup/src/paths.rs#L102-L142
+    # Circumventing the toolchain directory (and overall the forced ~/.risc0 path)
+    # is done by patching the codebase in the risc0 package.
+    # Result is copied, not symlinked, in case risc0 iterates all subdirectories.
     mkdir -p "$out/r0.${version}-risc0-rust-x86_64-unknown-linux-gnu"
     cp -r ./* "$out/r0.${version}-risc0-rust-x86_64-unknown-linux-gnu"
 
