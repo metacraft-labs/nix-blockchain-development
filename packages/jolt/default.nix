@@ -12,7 +12,7 @@
 let
   commonArgs = rec {
     pname = "jolt";
-    version = "unstable-2025-02-20";
+    version = "unstable-2025-02-22";
 
     nativeBuildInputs = [
       pkg-config
@@ -26,8 +26,8 @@ let
     src = fetchFromGitHub {
       owner = "a16z";
       repo = "jolt";
-      rev = "dae559d08f350797b93747b4a0c7dfa0baef9649";
-      hash = "sha256-HR0bP4troWGZTDCh4IU/D8kJAubbNGCKCMboialVNrk=";
+      rev = "42a210aec1995fac7e1d4ecfc1b2e6afbeb1cd94";
+      hash = "sha256-/S+6kHyOpn1zBR/+7seCFv5GqXty4xo04wiGXssWv54=";
       fetchSubmodules = true;
     };
   };
