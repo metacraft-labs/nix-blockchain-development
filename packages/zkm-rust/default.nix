@@ -8,7 +8,7 @@
 }:
 stdenv.mkDerivation rec {
   name = "zkm-rust";
-  version = "20250108";
+  version = "20250224";
 
   nativeBuildInputs = [
     autoPatchelfHook
@@ -29,6 +29,6 @@ stdenv.mkDerivation rec {
     repo = "toolchain";
     tag = "${version}";
     asset = "rust-toolchain-x86-64-unknown-linux-gnu-${version}.tar.xz";
-    hash = "sha256-lPSAKd9eolXBd32sXB9qhs+fUPJLJ5QROG6P3wS5uik=";
+    hash = "sha256-smQXVZY7CqfWKyEj41V+jJGnfu/K+JL6t93LVwLOu4I=";
   };
 }
