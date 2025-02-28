@@ -1,4 +1,4 @@
-name: Update Nix Flake lockfile
+name: Flake Lock Update
 
 on:
   # Enable option to manually run the action:
@@ -13,7 +13,7 @@ jobs:
     uses: metacraft-labs/nixos-modules/.github/workflows/reusable-update-flake-lock.yml@main
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      CREATE_PR_APP_ID: ${{ secrets.APP_ID }}
-      CREATE_PR_APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      CREATE_PR_APP_ID: ${{ secrets.NIX_FLAKE_UPDATE_PR_BOT_APP_ID }}
+      CREATE_PR_APP_PRIVATE_KEY: ${{ secrets.NIX_FLAKE_UPDATE_PR_BOT_APP_PRIVATE_KEY }}
     with:
       runner: '["self-hosted", "Linux", "x86-64-v2"]'
