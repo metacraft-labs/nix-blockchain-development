@@ -29,5 +29,5 @@ jobs:
       - name: Update flake packages
         uses: metacraft-labs/nix-update-action@main
         with:
-          blacklist: cardano,circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,graphql,jolt,jolt-guest-rust,nexus,polkadot,polkadot-fast,rapidsnark,rapidsnark-server,risc0,risc0-rust,sp1,sp1-rust,zkm,zkwasm,zqfield-bn254
+          blacklist: cardano,circ,circom,corepack-shims,cosmos-theta-testnet,emscripten,eos-vm,ffiasm,go-opera,graphql,jolt,jolt-guest-rust,nexus,polkadot,polkadot-fast,rapidsnark,rapidsnark-server,risc0,risc0-rust,sp1,sp1-rust,zkm,zkwasm,zqfield-bn254
           token: ${{ steps.generate-token.outputs.token }}
