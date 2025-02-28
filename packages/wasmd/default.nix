@@ -2,7 +2,7 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  go_1_22,
+  go_1_23,
   autoPatchelfHook,
   pkgs,
   gccForLibs,
@@ -19,7 +19,7 @@ let
     aarch64-darwin = "libwasmvm.dylib";
   };
   so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
-  buildGoModule = pkgs.buildGoModule.override { go = go_1_22; };
+  buildGoModule = pkgs.buildGoModule.override { go = go_1_23; };
 in
 buildGoModule rec {
   pname = "wasmd";
