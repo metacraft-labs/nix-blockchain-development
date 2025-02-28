@@ -1,0 +1,32 @@
+name: 'Nix Packages auto-update ❄️'
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # https://crontab.guru/#0_0_*_*_*
+
+jobs:
+  update-packages:
+    runs-on: ['self-hosted']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Nix
+        uses: metacraft-labs/nixos-modules/.github/install-nix@main
+        with:
+          nix-github-token: ${{ secrets.NIX_GITHUB_TOKEN }}
+          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          cachix-cache: ${{ vars.CACHIX_CACHE }}
+          trusted-public-keys: ${{ vars.TRUSTED_PUBLIC_KEYS }}
+          substituters: ${{ vars.SUBSTITUTERS }}
+
+      - uses: tibdex/github-app-token@v2.1.0
+        id: generate-token
+        with:
+          app_id: ${{ secrets.CREATE_PR_APP_ID }}
+          private_key: ${{ secrets.CREATE_PR_APP_PRIVATE_KEY }}
+
+      - name: Update flake packages
+        uses: metacraft-labs/nix-update-action@main
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
