@@ -21,8 +21,8 @@ let
     src = fetchFromGitHub {
       owner = "succinctlabs";
       repo = "sp1";
-      rev = "6d1990750200617b50c00dff7759bbac501b10fd";
-      hash = "sha256-pUJW6uFv2H66PtEIgQlxB1Lf+olo/vvc0mN3vWfrNdk=";
+      rev = "a47c7fba9c0e2b0192c4fbd89f587a3de3c8f5c7";
+      hash = "sha256-ldSPdNlEH4Mu2prS+4oTRBEXa/AnSHfsTYkMy5/qRxg=";
       fetchSubmodules = true;
     };
   };
