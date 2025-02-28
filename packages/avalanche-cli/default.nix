@@ -7,7 +7,7 @@
 }:
 buildGoModule rec {
   pname = "avalanche-cli";
-  version = "unstable-2024-11-23";
+  version = "1.8.6";
 
   src = fetchFromGitHub {
     owner = "ava-labs";
