@@ -25,8 +25,8 @@ stdenv.mkDerivation rec {
   src = fetchGitHubReleaseAsset {
     owner = "succinctlabs";
     repo = "rust";
-    tag = "v${version}";
+    tag = "succinct-${version}";
     asset = "rust-toolchain-x86_64-unknown-linux-gnu.tar.gz";
-    hash = "sha256-3Vs11CLDXaxAJuP/UsWeznJjjsNvVZqKIra5KzldoIk=";
+    hash = "sha256-wXI2zVwfrVk28CR8PLq4xyepdlu65uamzt/+jER2M2k=";
   };
 }
