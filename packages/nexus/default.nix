@@ -11,7 +11,7 @@
 let
   commonArgs = rec {
     pname = "Nexus-zkVM";
-    version = "unstable-2025-01-08";
+    version = "unstable-2025-03-06";
 
     nativeBuildInputs = [
       pkg-config
@@ -25,12 +25,12 @@ let
     src = fetchFromGitHub {
       owner = "nexus-xyz";
       repo = "nexus-zkvm";
-      rev = "f594536f6fede8ceaf5d8c017a6f6fa2fbea3475";
-      hash = "sha256-7jBZB/PAIsFSTrZOHX+0N7zM7/skI7yMsnOJCkXDV1o=";
+      rev = "d9b3b3760cebe8ef7215cf0432fcb3c323a6f624";
+      hash = "sha256-rOKyAo+pN5M8Un+wqkymAydjKHaZQ+FYjbldavql8zY=";
     };
   };
 
-  rust-toolchain = rust-bin.nightly.latest.default.override {
+  rust-toolchain = rust-bin.nightly."2025-01-02".default.override {
     targets = [ "riscv32i-unknown-none-elf" ];
   };
   craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
@@ -43,7 +43,7 @@ craneLib.buildPackage (
     inherit cargoArtifacts;
 
     postPatch = ''
-      sed -i '/"add"/{n;s/--git/--path/;n;s|".*"|"'$out'/runtime"|}' cli/src/command/new.rs
+      sed -i '/"add"/{n;s/--git/--path/;n;s|".*"|"'$out'/runtime"|}' cli/src/command/host.rs
     '';
 
     doCheck = false;
