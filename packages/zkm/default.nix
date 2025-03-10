@@ -11,7 +11,7 @@
 let
   commonArgs = rec {
     pname = "zkm";
-    version = "unstable-2025-03-02";
+    version = "unstable-2025-03-09";
 
     nativeBuildInputs = [
       pkg-config
@@ -24,8 +24,8 @@ let
     src = fetchFromGitHub {
       owner = "zkMIPS";
       repo = "zkm";
-      rev = "64151f8e575813552402cb81e336bf991f290991";
-      hash = "sha256-eyCH2dmVTaXET3k+L1fpzLfROZfpCjRE1kn+t3DHZrM=";
+      rev = "578779db12e080ea2868aea57957ae879c6bb909";
+      hash = "sha256-2UMhD55LOs5pkIpXUQFte/6NYfYiZNPGiOWQr2m+JhQ=";
     };
   };
 
@@ -38,6 +38,12 @@ craneLib.buildPackage (
   // (installSourceAndCargo rust-toolchain)
   // rec {
     inherit cargoArtifacts;
+
+    preBuild = ''
+      export HOME=$PWD
+    '';
+
+    cargoBuildCommand = "cargo build --release -p zkm-runtime -p zkm-emulator -p zkm-prover -p zkm-build";
 
     postInstall = ''
       rm "$out"/bin/cargo
