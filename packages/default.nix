@@ -23,6 +23,8 @@
         in
         pkgs.extend rust-overlay;
 
+      unstable-pkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+
       rust-stable = pkgs-with-rust-overlay.rust-bin.stable.latest.default.override {
         extensions = [ "rust-src" ];
         targets = [
@@ -90,6 +92,7 @@
           craneLib-stable
           craneLib-nightly
           pkgs-with-rust-overlay
+          unstable-pkgs
           ;
 
         rust-bin-2024-08-01 = inputs.rust-overlay-2024-08-01.lib.mkRustBin { } pkgs;

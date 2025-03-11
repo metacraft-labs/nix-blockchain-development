@@ -23,6 +23,7 @@
         cardano-cli
         pkgs-with-rust-overlay
         rust-bin-2024-08-01
+        unstable-pkgs
         ;
       python3Packages = pkgs.python3Packages;
 
@@ -119,6 +120,8 @@
       graphql = callPackage ./graphql/default.nix { inherit cardano-cli cardano-node; };
       cardano = callPackage ./cardano/default.nix { inherit cardano-cli cardano-node graphql; };
 
+      foundry = callPackage ./foundry/default.nix { inherit unstable-pkgs; };
+
       polkadot-generic = callPackage ./polkadot/default.nix {
         craneLib = craneLib-stable;
         inherit (darwin) libiconv;
@@ -189,6 +192,9 @@
     {
       legacyPackages.metacraft-labs =
         rec {
+
+          inherit foundry;
+
           gaiad = callPackage ./gaiad { };
           cosmos-theta-testnet = callPackage ./cosmos-theta-testnet { inherit gaiad; };
           blst = callPackage ./blst { };
