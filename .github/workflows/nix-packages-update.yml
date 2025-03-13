@@ -30,5 +30,5 @@ jobs:
         uses: metacraft-labs/nix-update-action@main
         with:
           from_branch: circ,eos-vm,jolt,nexus,rapidsnark,risc0,sp1,zkm,zkwasm
-          blacklist: cardano,corepack-shims,cosmos-theta-testnet,emscripten,ffiasm,go-opera,graphql,jolt-guest-rust,polkadot-fast,rapidsnark-server,risc0-rust,sp1-rust,zqfield-bn254,cryptography36,ledgercomm,py-ecc,requests-cache
+          blacklist: cardano,corepack-shims,cosmos-theta-testnet,emscripten,ffiasm,go-opera,graphql,jolt-guest-rust,polkadot-fast,rapidsnark-server,risc0-rust,sp1-rust,zkm-rust,zqfield-bn254,cryptography36,ledgercomm,py-ecc,requests-cache
           token: ${{ steps.generate-token.outputs.token }}
