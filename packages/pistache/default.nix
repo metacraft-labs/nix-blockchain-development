@@ -13,7 +13,7 @@
 }:
 stdenv.mkDerivation rec {
   pname = "pistache";
-  version = "2023-02-25";
+  version = "0.4.26";
   src = fetchFromGitHub {
     owner = "pistacheio";
     repo = "pistache";
