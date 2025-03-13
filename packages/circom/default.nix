@@ -9,7 +9,7 @@
 let
   commonArgs = rec {
     pname = "circom";
-    version = "2.1.5";
+    version = "2.2.2";
 
     buildInputs = [ ] ++ (lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ]);
     nativeBuildInputs = [
@@ -20,7 +20,7 @@ let
       owner = "iden3";
       repo = "circom";
       rev = "v${version}";
-      hash = "sha256-enZr1fkiUxDDDzajsd/CTV7DN//9xP64IyKLQSaJqXk=";
+      hash = "sha256-BSInX4owuamRWnlKL1yJJOyzRIiE55TIzCk2TdX7aOQ=";
     };
   };
 
