@@ -159,6 +159,9 @@
         };
 
       installSourceAndCargo = rust-toolchain: rec {
+        # In certain cases, this phase replaces rust toolchain references with /nix/store/eee...
+        doNotRemoveReferencesToRustToolchain = true;
+
         installPhaseCommand = ''
           mkdir -p "$out"/bin
           # Install source code
