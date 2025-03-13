@@ -12,7 +12,7 @@
 let
   commonArgs = rec {
     pname = "jolt";
-    version = "unstable-2025-03-12";
+    version = "0-unstable-2025-03-12";
 
     nativeBuildInputs = [
       pkg-config
