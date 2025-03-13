@@ -121,6 +121,7 @@
       cardano = callPackage ./cardano/default.nix { inherit cardano-cli cardano-node graphql; };
 
       foundry = callPackage ./foundry/default.nix { inherit unstable-pkgs; };
+      cargo-stylus = callPackage ./cargo-stylus/default.nix { inherit unstable-pkgs; };
 
       polkadot-generic = callPackage ./polkadot/default.nix {
         craneLib = craneLib-stable;
@@ -194,6 +195,7 @@
         rec {
 
           inherit foundry;
+          inherit cargo-stylus;
 
           gaiad = callPackage ./gaiad { };
           cosmos-theta-testnet = callPackage ./cosmos-theta-testnet { inherit gaiad; };

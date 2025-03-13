@@ -75,6 +75,7 @@
           devShells.zkwasm = import ./shells/zkwasm.nix { pkgs = final; };
           devShells.sp1 = import ./shells/sp1.nix { pkgs = final; };
           devShells.risc0 = import ./shells/risc0.nix { pkgs = final; };
+          devShells.stylus = import ./shells/stylus.nix { pkgs = final; };
         };
     };
 }
