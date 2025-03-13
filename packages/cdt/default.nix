@@ -7,7 +7,7 @@
 }:
 clangStdenv.mkDerivation rec {
   name = "cdt";
-  version = "4.0.1";
+  version = "4.1.0";
   buildInputs = with pkgs; [
     llvm
     curl.dev
@@ -31,6 +31,6 @@ clangStdenv.mkDerivation rec {
   src = fetchgit {
     url = "https://github.com/AntelopeIO/cdt";
     rev = "v${version}";
-    sha256 = "sha256-fk+YLBVud6Kr5+FozjS4isKxHViHXxS3XJoTGDZd2Vg=";
+    sha256 = "sha256-+s+W2MBc/G2SCuBOdxdq661h5Oz1IH3z3HosrOQAbYU=";
   };
 }
