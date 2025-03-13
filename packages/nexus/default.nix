@@ -11,7 +11,7 @@
 let
   commonArgs = rec {
     pname = "Nexus-zkVM";
-    version = "unstable-2025-03-06";
+    version = "unstable-2025-03-11";
 
     nativeBuildInputs = [
       pkg-config
@@ -25,8 +25,8 @@ let
     src = fetchFromGitHub {
       owner = "nexus-xyz";
       repo = "nexus-zkvm";
-      rev = "d9b3b3760cebe8ef7215cf0432fcb3c323a6f624";
-      hash = "sha256-rOKyAo+pN5M8Un+wqkymAydjKHaZQ+FYjbldavql8zY=";
+      rev = "56ab8e5b953de45903ae9dfde498e8413a9c611b";
+      hash = "sha256-d5M3U3FtOA/Vuq/nXujhAmo9GOH5QYgLN2/2JmegaY8=";
     };
   };
 
