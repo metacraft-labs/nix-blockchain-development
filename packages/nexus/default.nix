@@ -11,7 +11,7 @@
 let
   commonArgs = rec {
     pname = "Nexus-zkVM";
-    version = "unstable-2025-03-11";
+    version = "0.3.1-unstable-2025-03-11";
 
     nativeBuildInputs = [
       pkg-config
