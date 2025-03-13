@@ -29,6 +29,6 @@ stdenv.mkDerivation rec {
     repo = "toolchain";
     tag = "${version}";
     asset = "rust-toolchain-x86-64-unknown-linux-gnu-${version}.tar.xz";
-    hash = "sha256-smQXVZY7CqfWKyEj41V+jJGnfu/K+JL6t93LVwLOu4I=";
+    hash = "sha256-5J6V5zGt6F47NBugWx2DMuQkUMcDsWfUEvC4JyoSFtQ=";
   };
 }
