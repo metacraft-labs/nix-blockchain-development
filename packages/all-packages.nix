@@ -122,6 +122,7 @@
 
       foundry = callPackage ./foundry/default.nix { inherit unstable-pkgs; };
       cargo-stylus = callPackage ./cargo-stylus/default.nix { inherit unstable-pkgs; };
+      nitro-devnode = callPackage ./nitro-devnode/default.nix { inherit foundry; };
 
       polkadot-generic = callPackage ./polkadot/default.nix {
         craneLib = craneLib-stable;
@@ -196,6 +197,7 @@
 
           inherit foundry;
           inherit cargo-stylus;
+          inherit nitro-devnode;
 
           gaiad = callPackage ./gaiad { };
           cosmos-theta-testnet = callPackage ./cosmos-theta-testnet { inherit gaiad; };
