@@ -85,34 +85,9 @@
           patches = [ ];
         }
       );
-      cryptography36 = callPackage ./python-modules/cryptography36/default.nix { };
-
-      py-ecc = callPackage ./python-modules/py-ecc/default.nix {
-        inherit (python3Packages)
-          buildPythonPackage
-          cached-property
-          eth-typing
-          eth-utils
-          mypy-extensions
-          pytestCheckHook
-          pythonOlder
-          ;
-      };
-
-      ledgercomm = callPackage ./python-modules/ledgercomm/default.nix { };
-      requests-cache = callPackage ./python-modules/requests-cache/default.nix { inherit cattrs22-2; };
 
       corepack-shims = callPackage ./corepack-shims/default.nix { };
 
-      erdpy = callPackage ./erdpy/default.nix {
-        inherit
-          cryptography36
-          elrond-go
-          elrond-proxy-go
-          ledgercomm
-          requests-cache
-          ;
-      };
       elrond-go = callPackage ./elrond-go/default.nix { };
       elrond-proxy-go = callPackage ./elrond-proxy-go/default.nix { };
 
@@ -238,10 +213,7 @@
           # Solana
           # solana-validator = callPackage ./solana-validator {};
 
-          # inherit cryptography36;
-
-          inherit py-ecc;
-          # inherit erdpy elrond-go elrond-proxy-go;
+          # inherit elrond-go elrond-proxy-go;
 
           # EOS / Antelope
           leap = callPackage ./leap/default.nix { };
