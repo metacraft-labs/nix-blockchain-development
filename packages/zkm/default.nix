@@ -6,6 +6,7 @@
   fetchzip,
   pkg-config,
   openssl,
+  buildGoModule,
   ...
 }:
 let
@@ -29,6 +30,28 @@ let
     };
   };
 
+  zkm_libsnark = buildGoModule rec {
+    pname = "zkmgnark";
+
+    inherit (commonArgs) version src;
+
+    sourceRoot = "${src.name}/recursion/src/snark/libsnark";
+
+    vendorHash = "sha256-zZNyMW0KGBtk8k4bW8UP9LAar+ZLfJCdrCYOp5u8osc=";
+
+    # Taken from
+    # https://github.com/zkMIPS/zkm/blob/b8014509756b34bb92f90301801d67e7a3645094/recursion/build.rs#L9-L21
+    CGO_ENABLED = 1;
+    buildPhase = ''
+      go build -tags=debug -o ./lib${pname}.a -buildmode=c-archive .
+    '';
+
+    installPhase = ''
+      mkdir -p "$out"/lib
+      mv ./lib${pname}.a "$out"/lib/
+    '';
+  };
+
   rust-toolchain = zkm-rust;
   crane = craneLib.overrideToolchain rust-toolchain;
   cargoArtifacts = crane.buildDepsOnly commonArgs;
@@ -41,11 +64,15 @@ crane.buildPackage (
 
     preBuild = ''
       export HOME=$PWD
+
+      export OUT_DIR="${zkm_libsnark}/lib" RUSTFLAGS="$RUSTFLAGS -L ${zkm_libsnark}/lib"
+      sed -i '9,24d' recursion/build.rs
     '';
 
-    cargoBuildCommand = "cargo build --release -p zkm-runtime -p zkm-emulator -p zkm-prover -p zkm-build";
-
     postInstall = ''
+      mkdir -p "$out"/lib
+      ln -s "${zkm_libsnark}"/lib/* "$out"/lib
+
       rm "$out"/bin/cargo
       cat <<EOF > "$out"/bin/cargo
       #!/usr/bin/env sh
