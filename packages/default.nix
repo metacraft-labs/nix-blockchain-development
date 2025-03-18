@@ -17,29 +17,39 @@
       ...
     }:
     let
-      pkgs-with-rust-overlay =
-        let
-          rust-overlay = inputs.rust-overlay.overlays.default;
-        in
-        pkgs.extend rust-overlay;
-
-      rust-stable = pkgs-with-rust-overlay.rust-bin.stable.latest.default.override {
-        extensions = [ "rust-src" ];
-        targets = [
-          "wasm32-wasip1"
-          "wasm32-unknown-unknown"
+      rust-stable =
+        with inputs'.fenix.packages;
+        with stable;
+        combine [
+          cargo
+          clippy
+          rust-analyzer
+          rust-src
+          rustc
+          rustfmt
+          targets.wasm32-unknown-unknown.stable.rust-std
+          targets.wasm32-wasip1.stable.rust-std
+          targets.wasm32-wasip2.stable.rust-std
         ];
-      };
-      rust-nightly = pkgs-with-rust-overlay.rust-bin.nightly.latest.default.override {
-        extensions = [ "rust-src" ];
-        targets = [
-          "wasm32-wasip1"
-          "wasm32-unknown-unknown"
-        ];
-      };
 
-      craneLib-stable = (inputs.crane.mkLib pkgs).overrideToolchain rust-stable;
-      craneLib-nightly = (inputs.crane.mkLib pkgs).overrideToolchain rust-nightly;
+      rust-latest =
+        with inputs'.fenix.packages;
+        with latest;
+        combine [
+          cargo
+          clippy
+          rust-analyzer
+          rust-src
+          rustc
+          rustfmt
+          targets.wasm32-unknown-unknown.latest.rust-std
+          targets.wasm32-wasip1.latest.rust-std
+          targets.wasm32-wasip2.latest.rust-std
+        ];
+
+      craneLib = inputs.crane.mkLib pkgs;
+      craneLib-fenix-stable = craneLib.overrideToolchain rust-stable;
+      craneLib-fenix-latest = craneLib.overrideToolchain rust-latest;
 
       cardano-node = builtins.getFlake "github:input-output-hk/cardano-node/f0b4ac897dcbefba9fa0d247b204a24543cf55f6";
 
@@ -86,21 +96,19 @@
 
         inherit
           rust-stable
-          rust-nightly
-          craneLib-stable
-          craneLib-nightly
-          pkgs-with-rust-overlay
+          rust-latest
+          craneLib
+          craneLib-fenix-stable
+          craneLib-fenix-latest
           ;
-
-        rust-bin-2024-08-01 = inputs.rust-overlay-2024-08-01.lib.mkRustBin { } pkgs;
 
         rustPlatformStable = pkgs.makeRustPlatform {
           rustc = rust-stable;
           cargo = rust-stable;
         };
         rustPlatformNightly = pkgs.makeRustPlatform {
-          rustc = rust-nightly;
-          cargo = rust-nightly;
+          rustc = rust-latest;
+          cargo = rust-latest;
         };
       };
     };

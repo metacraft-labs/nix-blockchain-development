@@ -1,6 +1,6 @@
 {
-  rust-bin,
-  craneLib-nightly,
+  rustFromToolchainFile,
+  craneLib,
   fetchFromGitHub,
   installSourceAndCargo,
   pkg-config,
@@ -30,13 +30,14 @@ let
     };
   };
 
-  rust-toolchain = rust-bin.nightly."2025-01-02".default.override {
-    targets = [ "riscv32i-unknown-none-elf" ];
+  rust-toolchain = rustFromToolchainFile {
+    dir = commonArgs.src;
+    sha256 = "sha256-J0fzDFBqvXT2dqbDdQ71yt2/IKTq4YvQs6QCSkmSdKY=";
   };
-  craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
-  cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+  crane = craneLib.overrideToolchain rust-toolchain;
+  cargoArtifacts = crane.buildDepsOnly commonArgs;
 in
-craneLib.buildPackage (
+crane.buildPackage (
   commonArgs
   // (installSourceAndCargo rust-toolchain)
   // rec {

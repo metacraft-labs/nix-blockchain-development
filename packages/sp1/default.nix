@@ -1,8 +1,7 @@
 {
   sp1-rust,
-  craneLib-nightly,
+  craneLib,
   fetchFromGitHub,
-  fetchGitHubFile,
   installSourceAndCargo,
   pkg-config,
   openssl,
@@ -28,10 +27,10 @@ let
   };
 
   rust-toolchain = sp1-rust;
-  craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
-  cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+  crane = craneLib.overrideToolchain rust-toolchain;
+  cargoArtifacts = crane.buildDepsOnly commonArgs;
 in
-craneLib.buildPackage (
+crane.buildPackage (
   commonArgs
   // (installSourceAndCargo rust-toolchain)
   // rec {
