@@ -4,6 +4,7 @@
     {
       pkgs,
       self',
+      inputs',
       ...
     }:
     let
@@ -17,12 +18,11 @@
       inherit (pkgs.lib) optionalAttrs callPackageWith;
       inherit (self'.legacyPackages)
         rustPlatformStable
-        craneLib-stable
-        craneLib-nightly
+        craneLib
+        craneLib-fenix-stable
+        craneLib-fenix-latest
         cardano-node
         cardano-cli
-        pkgs-with-rust-overlay
-        rust-bin-2024-08-01
         ;
       python3Packages = pkgs.python3Packages;
 
@@ -95,7 +95,7 @@
       cardano = callPackage ./cardano/default.nix { inherit cardano-cli cardano-node graphql; };
 
       polkadot-generic = callPackage ./polkadot/default.nix {
-        craneLib = craneLib-stable;
+        craneLib = craneLib-fenix-stable;
         inherit (darwin) libiconv;
         inherit (darwinPkgs)
           CoreFoundation
@@ -105,19 +105,6 @@
       };
       polkadot = polkadot-generic { };
       polkadot-fast = polkadot-generic { enableFastRuntime = true; };
-
-      fetchGitHubFile =
-        {
-          owner,
-          repo,
-          rev,
-          file,
-          hash,
-        }:
-        pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/${owner}/${repo}/${rev}/${file}";
-          inherit hash;
-        };
 
       fetchGitHubReleaseAsset =
         {
@@ -153,11 +140,9 @@
       };
 
       args-zkVM = {
-        inherit (pkgs-with-rust-overlay) rust-bin;
-        inherit craneLib-nightly;
-        inherit fetchGitHubFile;
+        rustFromToolchainFile = inputs'.fenix.packages.fromToolchainFile;
+        inherit craneLib;
         inherit installSourceAndCargo;
-        inherit rust-bin-2024-08-01;
       };
 
       args-zkVM-rust = {
@@ -172,8 +157,8 @@
           blst = callPackage ./blst { };
           bnb-beacon-node = callPackage ./bnb-beacon-node { };
 
-          circom = callPackage ./circom/default.nix { craneLib = craneLib-stable; };
-          circ = callPackage ./circ/default.nix { craneLib = craneLib-stable; };
+          circom = callPackage ./circom/default.nix { craneLib = craneLib-fenix-stable; };
+          circ = callPackage ./circ/default.nix { craneLib = craneLib-fenix-stable; };
 
           emscripten = pkgs.emscripten.overrideAttrs (_old: {
             postInstall = ''

@@ -1,10 +1,9 @@
 {
   risc0-rust,
-  rust-bin,
-  craneLib-nightly,
+  rustFromToolchainFile,
+  craneLib,
   fetchurl,
   fetchFromGitHub,
-  fetchGitHubFile,
   installSourceAndCargo,
   autoPatchelfHook,
   pkg-config,
@@ -43,15 +42,14 @@ let
     };
   };
 
-  rust-toolchain = rust-bin.fromRustupToolchainFile (fetchGitHubFile {
-    inherit (commonArgs.src) owner repo rev;
-    file = "rust-toolchain.toml";
-    hash = "sha256-n7Jr8rkovVQ98/KNvSg9EG9JZmKWD7DTaXTbpDJKA0Q=";
-  });
-  craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
-  cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+  rust-toolchain = rustFromToolchainFile {
+    dir = commonArgs.src;
+    sha256 = "sha256-s1RPtyvDGJaX/BisLT+ifVfuhDT1nZkZ1NcK8sbwELM=";
+  };
+  crane = craneLib.overrideToolchain rust-toolchain;
+  cargoArtifacts = crane.buildDepsOnly commonArgs;
 in
-craneLib.buildPackage (
+crane.buildPackage (
   commonArgs
   // (installSourceAndCargo rust-toolchain)
   // rec {

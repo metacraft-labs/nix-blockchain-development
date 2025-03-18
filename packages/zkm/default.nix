@@ -1,6 +1,6 @@
 {
   zkm-rust,
-  craneLib-nightly,
+  craneLib,
   fetchFromGitHub,
   installSourceAndCargo,
   fetchzip,
@@ -30,10 +30,10 @@ let
   };
 
   rust-toolchain = zkm-rust;
-  craneLib = craneLib-nightly.overrideToolchain rust-toolchain;
-  cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+  crane = craneLib.overrideToolchain rust-toolchain;
+  cargoArtifacts = crane.buildDepsOnly commonArgs;
 in
-craneLib.buildPackage (
+crane.buildPackage (
   commonArgs
   // (installSourceAndCargo rust-toolchain)
   // rec {
