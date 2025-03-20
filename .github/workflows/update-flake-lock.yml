@@ -1,6 +1,11 @@
 name: Flake Lock Update
 
 on:
+  # Enable option to run on nixos-module push to main branch
+  repository_dispatch:
+    types:
+      - flake-update
+
   # Enable option to manually run the action:
   workflow_dispatch:
 
