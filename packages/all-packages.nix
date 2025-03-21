@@ -141,6 +141,7 @@
 
       args-zkVM = {
         rustFromToolchainFile = inputs'.fenix.packages.fromToolchainFile;
+        fenix = inputs'.fenix.packages;
         inherit craneLib;
         inherit installSourceAndCargo;
       };
