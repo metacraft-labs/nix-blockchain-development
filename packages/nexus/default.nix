@@ -1,4 +1,5 @@
 {
+  fenix,
   rustFromToolchainFile,
   craneLib,
   fetchFromGitHub,
@@ -30,10 +31,17 @@ let
     };
   };
 
-  rust-toolchain = rustFromToolchainFile {
-    dir = commonArgs.src;
-    sha256 = "sha256-J0fzDFBqvXT2dqbDdQ71yt2/IKTq4YvQs6QCSkmSdKY=";
-  };
+  rust-toolchain =
+    let
+      toolchain = {
+        dir = commonArgs.src;
+        sha256 = "sha256-J0fzDFBqvXT2dqbDdQ71yt2/IKTq4YvQs6QCSkmSdKY=";
+      };
+    in
+    fenix.combine [
+      (rustFromToolchainFile toolchain)
+      (fenix.targets.riscv32i-unknown-none-elf.fromToolchainFile toolchain)
+    ];
   crane = craneLib.overrideToolchain rust-toolchain;
   cargoArtifacts = crane.buildDepsOnly commonArgs;
 in
