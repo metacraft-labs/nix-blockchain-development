@@ -133,8 +133,9 @@
           # Install rust-src when available (currently only useful in RISC0)
           if [ -d "${rust-toolchain}"/lib/rustlib/src/rust/library ]
           then
-            mkdir -p "$out"/lib/rustlib/src
-            ln -s "${rust-toolchain}"/lib/rustlib/src/rust/library "$out"/lib/rustlib/src/rust
+            mkdir -p "$out"/lib/rustlib/src/rust
+            cp -r "${rust-toolchain}"/lib/rustlib/src/rust/library/* "$out"/lib/rustlib/src/rust/
+            cp -r "${rust-toolchain}"/lib/rustlib/src/rust/* "$out"/lib/rustlib/src/rust/
           fi
           # Install binaries
           for result in target/release/*
