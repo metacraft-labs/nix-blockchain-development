@@ -10,7 +10,7 @@
 let
   commonArgs = rec {
     pname = "zkWasm";
-    version = "unstable-2024-10-19";
+    version = "1.2-unstable-2024-10-19";
 
     nativeBuildInputs = [
       clang
