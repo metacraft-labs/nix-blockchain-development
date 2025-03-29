@@ -25,7 +25,7 @@ let
 
   commonArgs = rec {
     pname = "risc0";
-    version = "unstable-2025-03-12";
+    version = "1.2.6-unstable-2025-03-28";
 
     nativeBuildInputs = [
       autoPatchelfHook
@@ -37,8 +37,8 @@ let
     src = fetchFromGitHub {
       owner = "risc0";
       repo = "risc0";
-      rev = "2db67acadc4e1283f08993b5dcfcfc7afba6bbbd";
-      hash = "sha256-eMFoz821x2NjibbTPF/i6rqRbqZ4g6njVDHc/udIDnA=";
+      rev = "7191fa7eb50799f7a9a03eadf16d1c49e02ac94b";
+      hash = "sha256-Y7bhRHFZc71kq92XfI/WgiprySQK+rTm1QILrWorUAs=";
     };
   };
 
