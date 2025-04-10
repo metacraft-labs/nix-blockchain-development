@@ -219,17 +219,17 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1714055636,
-        "narHash": "sha256-8LCyIPAK4/4ge03ohCIWpoJrMGgoCaOriALzt7gPxHE=",
+        "lastModified": 1744030092,
+        "narHash": "sha256-EwKNnBBTpjgNH20nfhJocGh6rZQJji0/8i1qsaviiGQ=",
         "owner": "PetarKirov",
         "repo": "dlang.nix",
-        "rev": "dab4c199ad644dc23b0b9481e2e5a063e9492b84",
+        "rev": "ab6b8f72d7b56bfd0b12e189fc4dfaed9d46de76",
         "type": "github"
       },
       "original": {
         "owner": "PetarKirov",
+        "ref": "feat/build-dub-package",
         "repo": "dlang.nix",
-        "rev": "dab4c199ad644dc23b0b9481e2e5a063e9492b84",
         "type": "github"
       }
     },
@@ -974,11 +974,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1744126481,
-        "narHash": "sha256-6qzfhsOljSn0POCQIkowzHGAu2GcDoDdJ0aG2G6NGz0=",
+        "lastModified": 1744282287,
+        "narHash": "sha256-bLSISHpyKd12anKjGAoNPkUYNU0i+dvbHr2TAN6pEuA=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "0e577672eaf01c19bb539e6c4bf60673972020a7",
+        "rev": "a26a713258be7a0ea603e56b01ab79b4722c1391",
         "type": "github"
       },
       "original": {
