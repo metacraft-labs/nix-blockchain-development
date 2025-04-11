@@ -10,7 +10,7 @@
 let
   commonArgs = rec {
     pname = "sp1";
-    version = "unstable-2025-03-10";
+    version = "4.1.7-unstable-2025-04-10";
 
     nativeBuildInputs = [
       pkg-config
@@ -20,8 +20,8 @@ let
     src = fetchFromGitHub {
       owner = "succinctlabs";
       repo = "sp1";
-      rev = "342422d99bd9b68aee718b70a53446dfe7ee3f3a";
-      hash = "sha256-z3PbRb3Oj2+GCXnnM3EBVP9+oZU7C6o3mwRpjN2z7gU=";
+      rev = "54ccb5c6d6f081c2dc4807d7781d198fdbfff473";
+      hash = "sha256-MZsQiUDmdibhJ8tqH+TL9OjgyMKa7bm3DLtPyYU+HjU=";
       fetchSubmodules = true;
     };
   };
