@@ -5,13 +5,13 @@
 }:
 buildGoModule rec {
   pname = "kurtosis";
-  version = "1.0.0";
+  version = "1.7.1";
 
   src = fetchFromGitHub {
     owner = "kurtosis-tech";
     repo = "kurtosis";
     rev = version;
-    hash = "sha256-rU1hrfGFsdk+IHJjomxrCD2kYbizMRkii6XZdbznofc=";
+    hash = "sha256-JTsGNOXHnauC3ezSbQrJtl2AIRU6q1deXWl9QTB9pds=";
   };
 
   prePatch = ''
@@ -24,7 +24,7 @@ buildGoModule rec {
   subPackages = [ "cli/cli" ];
 
   proxyVendor = true;
-  vendorHash = "sha256-GaEIitoRiuYxtS7cDKobFyIlraDNQjcvbRvzG3nUKFU=";
+  vendorHash = "sha256-zhfkwe3X2gStujfDBh5+j92UW4JsMC+fmNMfEQwOKlA=";
 
   installPhase = ''
     install -Dm 755 $GOPATH/bin/cli $out/bin/kurtosis
