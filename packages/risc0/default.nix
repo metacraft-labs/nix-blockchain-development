@@ -68,7 +68,7 @@ crane.buildPackage (
       export RECURSION_SRC_PATH="${recursion-zkr}" RUSTFLAGS="$RUSTFLAGS -A dead_code"
     '';
 
-    cargoBuildCommand = "cargo build --release -p risc0-zkvm -p risc0-build -p cargo-risczero";
+    cargoBuildCommand = "cargo build --release -p risc0-zkvm -p risc0-build -p cargo-risczero --features unstable";
 
     doCheck = false;
   }
