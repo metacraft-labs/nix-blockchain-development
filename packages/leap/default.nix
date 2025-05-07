@@ -8,13 +8,13 @@
 }:
 clang14Stdenv.mkDerivation rec {
   pname = "leap";
-  version = "4.0.0";
+  version = "5.0.3";
 
   src = fetchFromGitHub {
     owner = "AntelopeIO";
     repo = "leap";
     rev = "v${version}";
-    hash = "sha256-d9VjRfm+L7y8weADFnj9svm7go6HDyCKIsYsVuzUyZ4=";
+    hash = "sha256-SKlHXz27H9P2Xwk9OEKak+tQ2MkT34sQZ/qpmEV8gl4=";
     fetchSubmodules = true;
   };
 
