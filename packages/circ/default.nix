@@ -15,13 +15,13 @@
 let
   commonArgs = rec {
     pname = "circ";
-    version = "unstable-2024-04-17";
+    version = "0-unstable-2025-03-25";
 
     src = fetchFromGitHub {
       owner = "circify";
       repo = "circ";
-      rev = "7f6d0a00fe1298bc02d98c34db191afc4b46c943";
-      hash = "sha256-pYG6IYGHv4DwizCdVZbOS4DUxwNtwQVcPU66fDxTxg0=";
+      rev = "9c6d7ffbe32af71521fc1cd502f31166702db380";
+      hash = "sha256-XlqS+3ERT9M9AWduADpod5Tmk3M9MdcGxDhBB2nJz+8=";
     };
 
     nativeBuildInputs = [
