@@ -16,7 +16,7 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "rapidsnark-gpu";
-  version = "2023-04-08";
+  version = "0.0.2";
 
   src = fetchFromGitHub {
     owner = "Orbiter-Finance";
