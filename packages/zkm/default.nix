@@ -12,7 +12,7 @@
 let
   commonArgs = rec {
     pname = "zkm";
-    version = "unstable-2025-03-11";
+    version = "0-unstable-2025-04-10";
 
     nativeBuildInputs = [
       pkg-config
@@ -25,8 +25,8 @@ let
     src = fetchFromGitHub {
       owner = "zkMIPS";
       repo = "zkm";
-      rev = "693c62c90161b04732fe6dbb530bf7c53b59023a";
-      hash = "sha256-x5KacIjUoO7Cx/LJCqnfy2zfP10iNKhiYwCfA8FYHBM=";
+      rev = "eb09cf6c81bed9717bc98e4a4c9a61f54787a351";
+      hash = "sha256-3aIdoe1R9wAM2OMRK2BFVD9zXChNRN8eS8NmTlTeggo=";
     };
   };
 
