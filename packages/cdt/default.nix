@@ -1,13 +1,13 @@
 {
   clangStdenv,
   nodejs,
-  fetchgit,
+  fetchFromGitHub,
   pkgs,
   lib,
 }:
 clangStdenv.mkDerivation rec {
   name = "cdt";
-  version = "4.0.1";
+  version = "4.1.0";
   buildInputs = with pkgs; [
     llvm
     curl.dev
@@ -28,9 +28,11 @@ clangStdenv.mkDerivation rec {
     python3
   ];
 
-  src = fetchgit {
-    url = "https://github.com/AntelopeIO/cdt";
+  src = fetchFromGitHub {
+    owner = "AntelopeIO";
+    repo = "cdt";
     rev = "v${version}";
-    sha256 = "sha256-fk+YLBVud6Kr5+FozjS4isKxHViHXxS3XJoTGDZd2Vg=";
+    hash = "sha256-+s+W2MBc/G2SCuBOdxdq661h5Oz1IH3z3HosrOQAbYU=";
+    fetchSubmodules = true;
   };
 }
