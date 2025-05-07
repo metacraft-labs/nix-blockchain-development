@@ -29,7 +29,7 @@ let
     };
     "v0.9.43" = {
       commitSha1 = "ba42b9ce51d25bdaf52d2c61e0763a6e3da50d25";
-      srcSha256 = "sha256-KYmMMcQMkkXfWj5ZTr549a/8ftELKo0PUvCrmRMiDaE=";
+      srcSha256 = "sha256-amTWHD5T40jfnD7z0ILGEDNu7Sz60puhkB/agI+F/lo=";
     };
     "v1.0.0" = {
       commitSha1 = "1ed6e2e50a4ce61f6cda46a730efc11a07b6ebb3";
@@ -38,7 +38,7 @@ let
   };
 
   commonArgs = rec {
-    version = "0.9.43";
+    version = "1.0.0";
 
     CC = "clang";
     CXX = "clang++";
