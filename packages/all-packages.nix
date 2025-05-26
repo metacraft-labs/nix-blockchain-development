@@ -97,17 +97,10 @@
       graphql = callPackage ./graphql/default.nix { inherit cardano-cli cardano-node; };
       cardano = callPackage ./cardano/default.nix { inherit cardano-cli cardano-node graphql; };
 
-      polkadot-generic = callPackage ./polkadot/default.nix {
-        craneLib = craneLib-fenix-stable;
-        inherit (darwin) libiconv;
-        inherit (darwinPkgs)
-          CoreFoundation
-          Security
-          SystemConfiguration
-          ;
-      };
-      polkadot = polkadot-generic { };
-      polkadot-fast = polkadot-generic { enableFastRuntime = true; };
+      inherit (inputs'.nixpkgs-unstable.legacyPackages) polkadot;
+      polkadot-fast = polkadot.overrideAttrs (_: {
+        cargoBuildFeatures = [ "fast-runtime" ];
+      });
 
       fetchGitHubReleaseAsset =
         {
