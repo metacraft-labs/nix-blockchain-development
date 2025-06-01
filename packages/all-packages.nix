@@ -152,7 +152,6 @@
           gaiad = callPackage ./gaiad { };
           cosmos-theta-testnet = callPackage ./cosmos-theta-testnet { inherit gaiad; };
           blst = callPackage ./blst { };
-          bnb-beacon-node = callPackage ./bnb-beacon-node { };
 
           circom = callPackage ./circom/default.nix { craneLib = craneLib-fenix-stable; };
           circ = callPackage ./circ/default.nix { craneLib = craneLib-fenix-stable; };

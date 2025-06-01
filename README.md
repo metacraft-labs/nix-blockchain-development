@@ -17,7 +17,6 @@ via one of the flake output categories:
 | package name                             | description                                                                                                             | supported platforms                         |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | [avalanche-cli]([avalanche-url])         | Helps developers develop and test subnets                                                                               | x86_64-linux, x86_64-darwin, aarch64-darwin |
-| [bnb-beacon-node]([bnb-beacon-node-url]) | Blockchain with a flexible set of native assets and pluggable modules                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
 | [cardano]([cardano-url])                 | HTTP server & command-line for managing UTxOs and HD wallets in Cardano                                                 | x86_64-linux, x86_64-darwin                 |
 | [cardano-graphql]([cardano-graphql-url]) | GraphQL API for Cardano                                                                                                 | x86_64-linux, x86_64-darwin                 |
 | [cosmos-theta-testnet][cosmos-url]       | Cosmos Testnets                                                                                                         | x86_64-linux, x86_64-darwin, aarch64-darwin |
@@ -88,7 +87,6 @@ via one of the flake output categories:
 [emscripten-url]: https://github.com/emscripten-core/emscripten
 [avalanche-url]: https://github.com/ava-labs/avalanche-cli
 [blst-url]: https://github.com/supranational/blst
-[bnb-beacon-node-url]: https://github.com/bnb-chain/node
 [cardano-url]: https://github.com/woofpool/cardano-private-testnet-setup
 [cdt-url]: https://github.com/AntelopeIO/cdt
 [circom-url]: https://github.com/iden3/circom
