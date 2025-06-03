@@ -5,13 +5,13 @@
 with unstable-pkgs;
 rustPlatform.buildRustPackage rec {
   pname = "foundry";
-  version = "1.0.0";
+  version = "1.2.2";
 
   src = fetchFromGitHub {
     owner = "foundry-rs";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-YTsneUj5OPw7EyKZMFLJJeAtZoD0je1DdmfMjVju4L8=";
+    hash = "sha256-XZHlBTFmdt4RL/JNGbHDI9XLwDRHoEr3KNCTq5oKexQ=";
   };
 
   solc-bin-json = fetchurl {
