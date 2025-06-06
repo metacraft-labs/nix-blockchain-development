@@ -1,0 +1,9 @@
+1. Create `packages/slither/default.nix` implementing a Nix expression using `python3Packages.buildPythonApplication`.
+
+   * Fetch the PyPI release `slither-analyzer` (e.g. version `0.11.3`).
+   * Include propagated dependencies such as `packaging`, `prettytable`, `pycryptodome`, `crytic-compile`, `web3`, `eth-abi`, `eth-typing`, and `eth-utils`.
+   * Set `mainProgram = "slither"` in `meta`.
+2. Register the package in `packages/all-packages.nix` inside `legacyPackages.metacraft-labs`.
+3. Optionally list the new package in `README.md` under a “Security and Static Analysis” section.
+
+Make sure that the package works
