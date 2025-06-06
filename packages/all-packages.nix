@@ -185,6 +185,7 @@
           };
 
           inherit corepack-shims;
+          slither = pkgs.slither;
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix { };
