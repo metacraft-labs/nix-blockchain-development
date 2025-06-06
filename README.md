@@ -83,6 +83,12 @@ via one of the flake output categories:
 | -------------------------- | ---------------------------------------------- | ------------------- |
 | [pistache]([pistache-url]) | A high-performance REST toolkit written in C++ | x86_64-linux        |
 
+### Security and Static Analysis
+
+| package name | description | supported platforms |
+| ------------ | ----------- | ------------------- |
+| [slither]([slither-url]) | Static analysis framework for Solidity | x86_64-linux, x86_64-darwin |
+
 [cosmos-url]: https://github.com/hyphacoop/testnets/blob/master/local/previous-local-testnets/v7-theta/priv_validator_key.json
 [emscripten-url]: https://github.com/emscripten-core/emscripten
 [avalanche-url]: https://github.com/ava-labs/avalanche-cli
@@ -112,6 +118,7 @@ via one of the flake output categories:
 [rapidsnark-url]: https://github.com/iden3/rapidsnark-old
 [wasmd-url]: https://github.com/CosmWasm/wasmd
 [polkadot-fast-url]: https://github.com/paritytech/polkadot/blob/52209dcfe546ff39cc031b92d64e787e7e8264d4/Cargo.toml#L228
+[slither-url]: https://github.com/crytic/slither
 
 ## Usage examples
 
