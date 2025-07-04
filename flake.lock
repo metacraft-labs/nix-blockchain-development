@@ -962,11 +962,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1751230560,
-        "narHash": "sha256-SN++KPTgVrkF8NSMNEUB3bOStxAykqbz/Muv/NWCREI=",
+        "lastModified": 1751632956,
+        "narHash": "sha256-xZYHVePYK/K5P29NS9sMGEf4t3RQ64xMkjhmdOXTogE=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "8d64ad54d0e13099c34b8de4989f3ec462843e9f",
+        "rev": "4d4a0d9af47536cd94672a96d4e1833ce90d2c30",
         "type": "github"
       },
       "original": {
