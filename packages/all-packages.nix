@@ -185,6 +185,8 @@
           };
 
           inherit corepack-shims;
+
+          eradicate2 = callPackage ./eradicate2 { };
         }
         // lib.optionalAttrs hostPlatform.isLinux rec {
           kurtosis = callPackage ./kurtosis/default.nix { };
