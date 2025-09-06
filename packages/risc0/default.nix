@@ -16,16 +16,20 @@ let
   # https://github.com/risc0/risc0/blob/main/risc0/circuit/recursion/build.rs
   recursion-zkr =
     let
-      hash' = "1b80b77894fbd489262e327478d02e83262c4bf189b0873fda3f0c85cdbfc8d1";
+      hash = "744b999f0a35b3c86753311c7efb2a0054be21727095cf105af6ee7d3f4d8849";
     in
-    fetchurl rec {
-      url = "https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkr/${hash'}.zip";
-      hash = "sha256-G4C3eJT71IkmLjJ0eNAugyYsS/GJsIc/2j8Mhc2/yNE=";
+    fetchurl {
+      url = "https://risc0-artifacts.s3.us-west-2.amazonaws.com/zkr/${hash}.zip";
+      hash = builtins.convertHash {
+        inherit hash;
+        toHashFormat = "sri";
+        hashAlgo = "sha256";
+      };
     };
 
   commonArgs = rec {
     pname = "risc0";
-    version = "unstable-2025-03-12";
+    version = "3.0.3";
 
     nativeBuildInputs = [
       autoPatchelfHook
@@ -37,14 +41,14 @@ let
     src = fetchFromGitHub {
       owner = "risc0";
       repo = "risc0";
-      rev = "2db67acadc4e1283f08993b5dcfcfc7afba6bbbd";
-      hash = "sha256-eMFoz821x2NjibbTPF/i6rqRbqZ4g6njVDHc/udIDnA=";
+      rev = "v${version}";
+      hash = "sha256-39vVvvGcWbQOBm8G08GvjpSklMCjcGNq2+UabfU1+gs=";
     };
   };
 
   rust-toolchain = rustFromToolchainFile {
     dir = commonArgs.src;
-    sha256 = "sha256-s1RPtyvDGJaX/BisLT+ifVfuhDT1nZkZ1NcK8sbwELM=";
+    sha256 = "sha256-+9FmLhAOezBZCOziO0Qct1NOrfpjNsXxc/8I0c7BdKE=";
   };
   crane = craneLib.overrideToolchain rust-toolchain;
   cargoArtifacts = crane.buildDepsOnly commonArgs;
