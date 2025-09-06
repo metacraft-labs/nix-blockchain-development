@@ -6,9 +6,8 @@ pkgs.mkShellNoCC {
     figlet
   ];
 
-  shellHook =
-    ''
-      figlet -w$COLUMNS "nix-blockchain-development"
-    ''
-    + config.pre-commit.installationScript;
+  shellHook = ''
+    figlet -w$COLUMNS "nix-blockchain-development"
+  ''
+  + config.pre-commit.installationScript;
 }
