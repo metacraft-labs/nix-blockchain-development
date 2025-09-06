@@ -28,7 +28,8 @@ stdenv.mkDerivation rec {
     nlohmann_json
     gmp
     libsodium
-  ] ++ ffiasm.passthru.openmp;
+  ]
+  ++ ffiasm.passthru.openmp;
 
   buildPhase = ''
     mkdir -p $out/bin

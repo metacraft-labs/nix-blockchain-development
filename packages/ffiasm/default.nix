@@ -38,7 +38,8 @@ stdenv.mkDerivation rec {
     gtest
     gmp
     zqfield-bn254
-  ] ++ openmp;
+  ]
+  ++ openmp;
   checkPhase = ''
     function run_test {
       echo -e "┌─── \033[1mstart \033[34m$1\033[0m ────╌╌╌"

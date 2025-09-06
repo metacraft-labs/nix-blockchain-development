@@ -147,94 +147,93 @@
       };
     in
     {
-      legacyPackages.metacraft-labs =
-        rec {
-          gaiad = callPackage ./gaiad { };
-          cosmos-theta-testnet = callPackage ./cosmos-theta-testnet { inherit gaiad; };
-          blst = callPackage ./blst { };
+      legacyPackages.metacraft-labs = rec {
+        gaiad = callPackage ./gaiad { };
+        cosmos-theta-testnet = callPackage ./cosmos-theta-testnet { inherit gaiad; };
+        blst = callPackage ./blst { };
 
-          circom = callPackage ./circom/default.nix { craneLib = craneLib-fenix-stable; };
-          circ = callPackage ./circ/default.nix { craneLib = craneLib-fenix-stable; };
+        circom = callPackage ./circom/default.nix { craneLib = craneLib-fenix-stable; };
+        circ = callPackage ./circ/default.nix { craneLib = craneLib-fenix-stable; };
 
-          emscripten = pkgs.emscripten.overrideAttrs (_old: {
-            postInstall = ''
-              pushd $TMPDIR
-              echo 'int __main_argc_argv( int a, int b ) { return 42; }' >test.c
-              for MEM in "-s ALLOW_MEMORY_GROWTH" ""; do
-                for LTO in -flto ""; do
-                  # FIXME: change to the following, once binaryen is updated to
-                  # >= v119 in Nixpkgs:
-                  # for OPT in "-O2" "-O3" "-Oz" "-Os"; do
-                  for OPT in "-O2"; do
-                    $out/bin/emcc $MEM $LTO $OPT -s WASM=1 -s STANDALONE_WASM test.c
-                  done
+        emscripten = pkgs.emscripten.overrideAttrs (_old: {
+          postInstall = ''
+            pushd $TMPDIR
+            echo 'int __main_argc_argv( int a, int b ) { return 42; }' >test.c
+            for MEM in "-s ALLOW_MEMORY_GROWTH" ""; do
+              for LTO in -flto ""; do
+                # FIXME: change to the following, once binaryen is updated to
+                # >= v119 in Nixpkgs:
+                # for OPT in "-O2" "-O3" "-Oz" "-Os"; do
+                for OPT in "-O2"; do
+                  $out/bin/emcc $MEM $LTO $OPT -s WASM=1 -s STANDALONE_WASM test.c
                 done
               done
-            '';
-          });
+            done
+          '';
+        });
 
-          go-opera = callPackage ./go-opera/default.nix { };
+        go-opera = callPackage ./go-opera/default.nix { };
 
-          circom_runtime = callPackage ./circom_runtime/default.nix { };
+        circom_runtime = callPackage ./circom_runtime/default.nix { };
 
-          # Polkadot
-          inherit polkadot polkadot-fast;
+        # Polkadot
+        inherit polkadot polkadot-fast;
 
-          avalanche-cli = callPackage ./avalanche-cli/default.nix {
-            inherit blst;
-          };
-
-          inherit corepack-shims;
-
-          eradicate2 = callPackage ./eradicate2 { };
-        }
-        // lib.optionalAttrs hostPlatform.isLinux rec {
-          kurtosis = callPackage ./kurtosis/default.nix { };
-
-          wasmd = callPackage ./wasmd/default.nix { };
-
-          # Solana
-          # solana-validator = callPackage ./solana-validator {};
-
-          # inherit elrond-go elrond-proxy-go;
-
-          # EOS / Antelope
-          leap = callPackage ./leap/default.nix { };
-          eos-vm = callPackage ./eos-vm/default.nix { };
-          cdt = callPackage ./cdt/default.nix { };
-
-          zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
-          jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
-          jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
-          zkm-rust = callPackage ./zkm-rust/default.nix args-zkVM-rust;
-          zkm = callPackage ./zkm/default.nix (args-zkVM // { inherit zkm-rust; });
-          nexus = callPackage ./nexus/default.nix args-zkVM;
-          sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
-          sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
-          risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
-          risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
-        }
-        // lib.optionalAttrs hostPlatform.isx86 rec {
-          inherit
-            zqfield-bn254
-            ffiasm
-            ffiasm-src
-            rapidsnark
-            ;
-
-          inherit cardano graphql;
-        }
-        // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
-          pistache = callPackage ./pistache/default.nix { };
-          inherit zqfield-bn254 rapidsnark-gpu;
-          rapidsnark-server = callPackage ./rapidsnark-server/default.nix {
-            inherit
-              ffiasm
-              zqfield-bn254
-              rapidsnark
-              pistache
-              ;
-          };
+        avalanche-cli = callPackage ./avalanche-cli/default.nix {
+          inherit blst;
         };
+
+        inherit corepack-shims;
+
+        eradicate2 = callPackage ./eradicate2 { };
+      }
+      // lib.optionalAttrs hostPlatform.isLinux rec {
+        kurtosis = callPackage ./kurtosis/default.nix { };
+
+        wasmd = callPackage ./wasmd/default.nix { };
+
+        # Solana
+        # solana-validator = callPackage ./solana-validator {};
+
+        # inherit elrond-go elrond-proxy-go;
+
+        # EOS / Antelope
+        leap = callPackage ./leap/default.nix { };
+        eos-vm = callPackage ./eos-vm/default.nix { };
+        cdt = callPackage ./cdt/default.nix { };
+
+        zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
+        jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;
+        jolt = callPackage ./jolt/default.nix (args-zkVM // { inherit jolt-guest-rust; });
+        zkm-rust = callPackage ./zkm-rust/default.nix args-zkVM-rust;
+        zkm = callPackage ./zkm/default.nix (args-zkVM // { inherit zkm-rust; });
+        nexus = callPackage ./nexus/default.nix args-zkVM;
+        sp1-rust = callPackage ./sp1-rust/default.nix args-zkVM-rust;
+        sp1 = callPackage ./sp1/default.nix (args-zkVM // { inherit sp1-rust; });
+        risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
+        risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
+      }
+      // lib.optionalAttrs hostPlatform.isx86 rec {
+        inherit
+          zqfield-bn254
+          ffiasm
+          ffiasm-src
+          rapidsnark
+          ;
+
+        inherit cardano graphql;
+      }
+      // lib.optionalAttrs (hostPlatform.isx86 && hostPlatform.isLinux) rec {
+        pistache = callPackage ./pistache/default.nix { };
+        inherit zqfield-bn254 rapidsnark-gpu;
+        rapidsnark-server = callPackage ./rapidsnark-server/default.nix {
+          inherit
+            ffiasm
+            zqfield-bn254
+            rapidsnark
+            pistache
+            ;
+        };
+      };
     };
 }
