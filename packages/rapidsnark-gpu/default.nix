@@ -31,7 +31,8 @@ stdenv.mkDerivation rec {
     gmp
     libsodium
     cudaPackages.cudatoolkit
-  ] ++ ffiasm.passthru.openmp;
+  ]
+  ++ ffiasm.passthru.openmp;
 
   buildPhase = ''
     mkdir -p $out/bin

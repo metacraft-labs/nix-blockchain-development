@@ -54,13 +54,12 @@
       cardano-node = builtins.getFlake "github:input-output-hk/cardano-node/f0b4ac897dcbefba9fa0d247b204a24543cf55f6";
 
       reexportedPackages = {
-        ethereum_nix =
-          {
-            # geth = inputs'.ethereum_nix.packages.geth; # TODO: re-enable when flake show/check passes
-          }
-          // lib.optionalAttrs (pkgs.hostPlatform.isx86 && pkgs.hostPlatform.isLinux) {
-            # nimbus = inputs'.ethereum_nix.packages.nimbus-eth2; # TODO: re-enable when flake show/check passes
-          };
+        ethereum_nix = {
+          # geth = inputs'.ethereum_nix.packages.geth; # TODO: re-enable when flake show/check passes
+        }
+        // lib.optionalAttrs (pkgs.hostPlatform.isx86 && pkgs.hostPlatform.isLinux) {
+          # nimbus = inputs'.ethereum_nix.packages.nimbus-eth2; # TODO: re-enable when flake show/check passes
+        };
         # noir = {
         #   nargo = inputs'.noir.packages.nargo;
         #   noirc_abi_wasm = inputs'.noir.packages.noirc_abi_wasm;
