@@ -3,7 +3,7 @@ with pkgs;
 mkShell {
   packages = [
     pkgs.rustup
-    metacraft-labs.foundry
+    pkgs.foundry
     metacraft-labs.cargo-stylus
     metacraft-labs.nitro-devnode
   ];

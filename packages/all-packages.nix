@@ -120,9 +120,8 @@
       graphql = callPackage ./graphql/default.nix { inherit cardano-cli cardano-node; };
       cardano = callPackage ./cardano/default.nix { inherit cardano-cli cardano-node graphql; };
 
-      foundry = callPackage ./foundry/default.nix { inherit unstable-pkgs; };
       cargo-stylus = callPackage ./cargo-stylus/default.nix { inherit unstable-pkgs; };
-      nitro-devnode = callPackage ./nitro-devnode/default.nix { inherit foundry; };
+      nitro-devnode = callPackage ./nitro-devnode/default.nix { inherit (pkgs) foundry; };
 
       polkadot-generic = callPackage ./polkadot/default.nix {
         craneLib = craneLib-stable;
@@ -195,7 +194,6 @@
       legacyPackages.metacraft-labs =
         rec {
 
-          inherit foundry;
           inherit cargo-stylus;
           inherit nitro-devnode;
 
