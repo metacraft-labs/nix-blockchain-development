@@ -5,13 +5,13 @@
 with unstable-pkgs;
 rustPlatform.buildRustPackage rec {
   pname = "cargo-stylus";
-  version = "0.6.0";
+  version = "0.6.3";
 
   src = fetchFromGitHub {
     owner = "OffchainLabs";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-HmjMuAfamyp78I08VR5U22c2e+VKIL24hPotIXxtgko=";
+    hash = "sha256-iaKTcc0LEwrTwLOwwCwXzFIB1LjRC9Tt2ljklE4ujPg=";
   };
 
   cargoLock = {
