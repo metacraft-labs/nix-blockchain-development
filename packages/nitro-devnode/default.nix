@@ -6,13 +6,13 @@
 with pkgs;
 stdenv.mkDerivation rec {
   pname = "nitro-devnode";
-  version = "4c7e5f2";
+  version = "15208c2";
 
   src = fetchFromGitHub {
     owner = "OffchainLabs";
     repo = "nitro-devnode";
-    rev = "4c7e5f2ed12f29bb5f09a0ac0acf0ec167904434";
-    hash = "sha256-AA9+fV7GslyhokDR69I3KDNvyfRoGyPZ4GEY9BqzBuU=";
+    rev = "15208c2d8834ddc2b2ade63fb9d658f7b2a55f87";
+    hash = "sha256-qINoaKVwVybwFOR5W5UlbFphsiRumfe/vV6sMabFHD4=";
   };
 
   buildInputs = [
