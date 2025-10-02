@@ -9,10 +9,6 @@ on:
   # Enable option to manually run the action:
   workflow_dispatch:
 
-  # Run every Sunday at 00:00:
-  schedule:
-    - cron: 0 0 * * 0
-
 jobs:
   update-flake-lock:
     uses: metacraft-labs/nixos-modules/.github/workflows/reusable-update-flake-lock.yml@main
