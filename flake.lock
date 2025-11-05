@@ -400,7 +400,7 @@
         "gitignore": "gitignore",
         "nixpkgs": [
           "nixos-modules",
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
@@ -841,11 +841,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1760862176,
-        "narHash": "sha256-VKo+Zrz5bpFLh48dKU6VrGHNgdeTsQ5kIfAjSiWL0Ag=",
+        "lastModified": 1762335799,
+        "narHash": "sha256-0QexUJA26VnAB5CFB8hArS72xOBHWknxbO7GJ23HNoY=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "2e14a60ee0e386588d167c9c5f476ceaea5ec8c7",
+        "rev": "0e495663ad24fba1fa9ecabb4997598a2b9d5c66",
         "type": "github"
       },
       "original": {
