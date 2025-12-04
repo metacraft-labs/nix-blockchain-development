@@ -2,9 +2,11 @@
   lib,
   stdenv,
   fetchFromGitHub,
-  go_1_23,
+
+  buildGoModule,
   autoPatchelfHook,
-  pkgs,
+
+  go_1_24,
   gccForLibs,
 }:
 let
@@ -19,21 +21,21 @@ let
     aarch64-darwin = "libwasmvm.dylib";
   };
   so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
-  buildGoModule = pkgs.buildGoModule.override { go = go_1_23; };
+  buildGoModule' = buildGoModule.override { go = go_1_24; };
 in
-buildGoModule rec {
+buildGoModule' rec {
   pname = "wasmd";
-  version = "0.31.0";
+  version = "0.61.6";
 
   src = fetchFromGitHub {
     owner = "CosmWasm";
     repo = "wasmd";
     rev = "v${version}";
-    hash = "sha256-lxx1rKvgzvWKeGnUG4Ij7K6tfL7u3cIaf6/CYRvkqLg=";
+    hash = "sha256-mKWZZzd/tdw76l43XUwXkTOHcNuSyPk/yctjIMBKVIs=";
   };
 
   proxyVendor = true;
-  vendorHash = "sha256-xf4yCCb+VnU+fGHTyJ4Y9DKDDZpgUeemuEQCavHhFdM=";
+  vendorHash = "sha256-f+D4pqXuEh93tivcoGulfdwxOh5BU98LDlFDil9cbwc=";
 
   subPackages = [ "cmd/wasmd" ];
 
@@ -42,7 +44,7 @@ buildGoModule rec {
 
   postBuild = ''
     mkdir -p "$out/lib"
-    cp "$GOPATH/pkg/mod/github.com/!cosm!wasm/wasmvm@v1.2.1/internal/api/${so_name}" "$out/lib"
+    cp "$GOPATH/pkg/mod/github.com/!cosm!wasm/wasmvm/v3@v3.0.2/internal/api/${so_name}" "$out/lib"
   '';
 
   postInstall = ''
