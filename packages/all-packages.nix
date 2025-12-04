@@ -178,9 +178,6 @@
 
         circom_runtime = callPackage ./circom_runtime/default.nix { };
 
-        # Polkadot
-        inherit polkadot polkadot-fast;
-
         inherit (inputs'.nixpkgs-unstable.legacyPackages) avalanchego;
 
         inherit corepack-shims;
@@ -188,6 +185,9 @@
         eradicate2 = callPackage ./eradicate2 { };
       }
       // lib.optionalAttrs hostPlatform.isLinux rec {
+        # Polkadot
+        inherit polkadot polkadot-fast;
+
         kurtosis = callPackage ./kurtosis/default.nix { };
 
         wasmd = callPackage ./wasmd/default.nix { };
