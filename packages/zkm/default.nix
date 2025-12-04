@@ -41,7 +41,6 @@ let
 
     # Taken from
     # https://github.com/zkMIPS/zkm/blob/b8014509756b34bb92f90301801d67e7a3645094/recursion/build.rs#L9-L21
-    CGO_ENABLED = 1;
     buildPhase = ''
       go build -tags=debug -o ./lib${pname}.a -buildmode=c-archive .
     '';
