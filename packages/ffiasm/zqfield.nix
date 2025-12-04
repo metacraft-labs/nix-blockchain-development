@@ -3,7 +3,7 @@
   nasm,
   ffiasm-src,
   runCommand,
-  hostPlatform,
+  stdenv,
 }:
 {
   primeNumber,
@@ -11,7 +11,7 @@
 }:
 let
   filename = lib.toLower name;
-  nasmArgs = if hostPlatform.isDarwin then "-fmacho64 --prefix _" else "-felf64";
+  nasmArgs = if stdenv.hostPlatform.isDarwin then "-fmacho64 --prefix _" else "-felf64";
 in
 runCommand "zqfield-${filename}-${primeNumber}" { } ''
   ${lib.getExe ffiasm-src} -q ${primeNumber} -n ${name}

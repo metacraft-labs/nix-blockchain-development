@@ -57,7 +57,7 @@
         ethereum_nix = {
           # geth = inputs'.ethereum_nix.packages.geth; # TODO: re-enable when flake show/check passes
         }
-        // lib.optionalAttrs (pkgs.hostPlatform.isx86 && pkgs.hostPlatform.isLinux) {
+        // lib.optionalAttrs (pkgs.stdenv.hostPlatform.isx86 && pkgs.stdenv.hostPlatform.isLinux) {
           # nimbus = inputs'.ethereum_nix.packages.nimbus-eth2; # TODO: re-enable when flake show/check passes
         };
         # noir = {
