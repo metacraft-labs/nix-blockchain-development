@@ -9,20 +9,22 @@
   openssl,
   rapidjson,
   howard-hinnant-date,
-  gcc12,
+  gcc15,
+
+  opensslSupport ? true,
 }:
 stdenv.mkDerivation rec {
   pname = "pistache";
-  version = "2023-02-25";
+  version = "0.4.26";
   src = fetchFromGitHub {
     owner = "pistacheio";
     repo = "pistache";
-    rev = "ae073a0709ed1d6f0c28db90766c64b06f0366e6";
-    hash = "sha256-4mqiQRL3ucXudNRvjCExPUAlz8Q5BzEqJUMVK6f30ug=";
+    rev = "v${version}";
+    hash = "sha256-x/VFig+vvDpuWvomNwO1+LSDUfk1aV7zP7KCtrCHbTg=";
   };
 
   nativeBuildInputs = [
-    gcc12
+    gcc15
     meson
     cmake
     ninja
@@ -30,12 +32,18 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    openssl
     rapidjson
     howard-hinnant-date
+  ]
+  ++ lib.optionals opensslSupport [
+    openssl
   ];
 
-  mesonFlags = lib.optional (openssl != null) (lib.mesonOption "PISTACHE_USE_SSL" "true");
+  mesonFlags = [
+  ]
+  ++ lib.optionals opensslSupport [
+    (lib.mesonOption "PISTACHE_USE_SSL" "true")
+  ];
 
   meta = {
     homepage = "https://github.com/pistacheio/pistache";
