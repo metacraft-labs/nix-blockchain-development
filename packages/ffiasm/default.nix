@@ -49,7 +49,7 @@ stdenv.mkDerivation rec {
           ''${sources[*]} \
           -L${gtest}/lib -lgtest \
           ''${extra_cppflags[*]} \
-          -pthread -std=c++14 ${noexecstack} \
+          -pthread -std=c++17 ${noexecstack} \
           -o ./$1
 
         ./$1 ''${test_args[@]}
