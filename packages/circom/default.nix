@@ -11,7 +11,7 @@ let
     pname = "circom";
     version = "2.1.5";
 
-    buildInputs = [ ] ++ (lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Security ]);
+    buildInputs = [ ];
     nativeBuildInputs = [
       rustPlatform.bindgenHook
     ];

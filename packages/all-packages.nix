@@ -11,9 +11,11 @@
       inherit (pkgs)
         lib
         darwin
-        hostPlatform
         symlinkJoin
         fetchFromGitHub
+        ;
+      inherit (pkgs.stdenv)
+        hostPlatform
         ;
       inherit (pkgs.lib) optionalAttrs callPackageWith;
       inherit (self'.legacyPackages)

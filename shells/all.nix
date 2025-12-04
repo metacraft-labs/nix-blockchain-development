@@ -54,7 +54,7 @@ mkShell {
     # Cardano
     metacraft-labs.cardano
   ]
-  ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.isLinux) [
+  ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.hostPlatform.isLinux) [
     # Rapidsnark depends on Pistache, which supports only Linux, see
     # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
     # for more information
