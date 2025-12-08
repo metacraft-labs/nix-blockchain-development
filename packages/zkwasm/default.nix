@@ -25,6 +25,10 @@ let
       hash = "sha256-3+ptucjczxmA0oeeokxdVRRSdJLuoRjX31hMk5+FlZM=";
       fetchSubmodules = true;
     };
+
+    meta = {
+      broken = true;
+    };
   };
 
   rust-toolchain = rustFromToolchainFile {

@@ -17,9 +17,7 @@ stdenv.mkDerivation rec {
     nativeBuildInputs
     doCheck
     ;
-  meta = rapidsnark.meta // {
-    platforms = with lib.platforms; linux;
-  };
+
   buildInputs = rapidsnark.buildInputs ++ [ pistache ];
 
   buildPhase = ''
@@ -34,4 +32,8 @@ stdenv.mkDerivation rec {
       -pthread -std=c++17 -fopenmp -lgmp -lsodium -g -DSANITY_CHECK \
       -o $out/bin/proverServer
   '';
+
+  meta = rapidsnark.meta // {
+    platforms = with lib.platforms; linux;
+  };
 }
