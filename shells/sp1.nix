@@ -1,7 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, self', ... }:
 with pkgs;
 mkShell {
   packages = [
-    metacraft-labs.sp1
+    self'.packages.sp1
   ];
 }

@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, self', ... }:
 with pkgs;
 mkShell {
   packages = [
     cmake
     pkg-config
     openssl
-    metacraft-labs.nexus
+    self'.packages.nexus
   ];
 }

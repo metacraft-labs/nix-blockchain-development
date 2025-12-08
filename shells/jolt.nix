@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, self', ... }:
 with pkgs;
 mkShell {
   packages = [
     pkg-config
     openssl
-    metacraft-labs.jolt
+    self'.packages.jolt
   ];
 }

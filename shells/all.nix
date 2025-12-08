@@ -24,15 +24,15 @@ mkShell {
     alejandra
 
     # Packages defined in this repo
-    metacraft-labs.cosmos-theta-testnet
-    metacraft-labs.circom
+    self'.packages.cosmos-theta-testnet
+    self'.packages.circom
 
-    metacraft-labs.circ
+    self'.packages.circ
 
-    metacraft-labs.go-opera
+    self'.packages.go-opera
 
-    metacraft-labs.polkadot
-    metacraft-labs.polkadot-fast
+    self'.packages.polkadot
+    self'.packages.polkadot-fast
 
     # noir
     # self'.legacyPackages.noir.nargo
@@ -43,22 +43,22 @@ mkShell {
     self'.legacyPackages.ethereum_nix.geth
 
     # avalanche cli
-    metacraft-labs.avalanche-cli
+    self'.packages.avalanche-cli
 
     # Node.js related
-    metacraft-labs.corepack-shims
+    self'.packages.corepack-shims
   ]
   ++ lib.optionals (stdenv.hostPlatform.isx86) [
-    metacraft-labs.rapidsnark
+    self'.packages.rapidsnark
 
     # Cardano
-    metacraft-labs.cardano
+    self'.packages.cardano
   ]
   ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.hostPlatform.isLinux) [
     # Rapidsnark depends on Pistache, which supports only Linux, see
     # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
     # for more information
-    metacraft-labs.rapidsnark-server
+    self'.packages.rapidsnark-server
 
     # Ethereum
     self'.legacyPackages.ethereum_nix.nimbus
@@ -68,21 +68,21 @@ mkShell {
   ]
   ++ lib.optionals (!stdenv.isDarwin) [
     # Solana is still not compatible with macOS on M1
-    # metacraft-labs.solana
-    metacraft-labs.wasmd
+    # self'.packages.solana
+    self'.packages.wasmd
 
     # Disabled until elrond-go can build with Go >= 1.19
     # Elrond
-    # metacraft-labs.elrond-go
-    # metacraft-labs.elrond-proxy-go
+    # self'.packages.elrond-go
+    # self'.packages.elrond-proxy-go
 
     # EOS
-    metacraft-labs.leap
-    metacraft-labs.eos-vm
-    metacraft-labs.cdt
+    self'.packages.leap
+    self'.packages.eos-vm
+    self'.packages.cdt
 
     # emscripten
-    metacraft-labs.emscripten
+    self'.packages.emscripten
   ];
 
   shellHook = ''
