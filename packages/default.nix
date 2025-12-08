@@ -76,10 +76,12 @@
     rec {
       packages = self'.legacyPackages.metacraft-labs;
 
-      checks =
-        (builtins.removeAttrs self'.legacyPackages.metacraft-labs disabledPackages)
-        // reexportedPackages.ethereum_nix;
-      # // reexportedPackages.noir;
+      checks = lib.pipe self'.legacyPackages.metacraft-labs [
+        (ps: builtins.removeAttrs ps disabledPackages)
+        (lib.filterAttrs (_: p: !p.meta.broken))
+        (ps: ps // reexportedPackages.ethereum_nix)
+        # (ps: ps // reexportedPackages.noir)
+      ];
 
       overlayAttrs = {
         inherit (self'.legacyPackages) metacraft-labs nix2container noir;
