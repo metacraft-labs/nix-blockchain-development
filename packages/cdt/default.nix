@@ -31,5 +31,6 @@ stdenv.mkDerivation rec {
     license = lib.licenses.mit;
     mainProgram = "cdt";
     platforms = lib.platforms.all;
+    broken = true;
   };
 }

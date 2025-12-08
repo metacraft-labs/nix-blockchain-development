@@ -53,5 +53,6 @@ stdenv.mkDerivation rec {
   meta = {
     homepage = "https://github.com/iden3/rapidsnark";
     platforms = with lib.platforms; linux ++ darwin;
+    broken = true;
   };
 }
