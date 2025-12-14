@@ -28,6 +28,8 @@ via one of the flake output categories:
 | [go-opera]([go-opera-url])               | Opera blockchain protocol secured by the Lachesis consensus algorithm                                                   | x86_64-linux, x86_64-darwin, aarch64-darwin |
 | [polkadot]([polkadot-url])               | Polkadot Node Implementation                                                                                            | x86_64-linux, x86_64-darwin, aarch64-darwin |
 | polkadot-fast                            | Polkadot Node Implementation with [fast-runtime][polkadot-fast-url] enabled                                             | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [nimbus]([nimbus-url])                   | Lightweight Ethereum consensus layer client | x86_64-linux, aarch64-linux, armv7a-linux, x86_64-darwin, aarch64-darwin, x86_64-windows |
+| [solana-validator]([solana-validator-url]) | Solana validator node              | x86_64-linux |
 
 ### ZK Circuit-related Software
 
@@ -38,6 +40,7 @@ via one of the flake output categories:
 | [ffiasm]([ffiasm-url])                 | A script that generates a Finite field Library in Intel64 and ARM Assembly | x86_64-linux, x86_64-darwin                 |
 | [ffiasm-src]([ffiasm-src-url])         | Intel assembly finite field library generator                              | x86_64-linux, x86_64-darwin                 |
 | [rapidsnark]([rapidsnark-url])         | zkSnark proof generation written in C++ and intel assembly                 | x86_64-linux, x86_64-darwin                 |
+| rapidsnark-gpu                        | GPU-accelerated prover for Rapidsnark                                   | x86_64-linux, x86_64-darwin |
 | rapidsnark-server                      |                                                                            | x86_64-linux                                |
 | zqfield-bn254                          |                                                                            | x86_64-linux, x86_64-darwin                 |
 
@@ -67,6 +70,7 @@ via one of the flake output categories:
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | [emscripten][emscripten-url] | An LLVM-to-WebAssembly Compiler                                                                                           | x86_64-linux, x86_64-darwin, aarch64-darwin |
 | [kurtosis]([kurtosis-url])   | A platform for packaging and launching ephemeral backend stacks with a focus on approachability for the average developer | x86_64-linux                                |
+| cargo-build-bpf               | Solana SDK helper for building BPF programs | x86_64-linux |
 
 ### Libraries
 
@@ -112,6 +116,10 @@ via one of the flake output categories:
 [rapidsnark-url]: https://github.com/iden3/rapidsnark-old
 [wasmd-url]: https://github.com/CosmWasm/wasmd
 [polkadot-fast-url]: https://github.com/paritytech/polkadot/blob/52209dcfe546ff39cc031b92d64e787e7e8264d4/Cargo.toml#L228
+[nimbus-url]: https://github.com/status-im/nimbus-eth2
+[solana-validator-url]: https://github.com/solana-labs/solana
+[rapidsnark-gpu-url]: https://github.com/Orbiter-Finance/rapidsnark
+[cargo-build-bpf-url]: https://github.com/solana-labs/solana/tree/master/sdk/cargo-build-bpf
 
 ## Usage examples
 
