@@ -575,6 +575,84 @@
         "type": "github"
       }
     },
+    "nix-appimage": {
+      "inputs": {
+        "flake-compat": [
+          "nixos-modules",
+          "flake-compat"
+        ],
+        "flake-utils": [
+          "nixos-modules",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos-modules",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1757920913,
+        "narHash": "sha256-jd0QwCVz4O1sHHkeaZILD/7D6oyalceEJ4EFnWCgm0k=",
+        "owner": "ralismark",
+        "repo": "nix-appimage",
+        "rev": "7946addbc0d97e358a6d7aefe5e82310f0fe6b18",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ralismark",
+        "repo": "nix-appimage",
+        "type": "github"
+      }
+    },
+    "nix-bundle": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos-modules",
+          "nix-bundlers",
+          "nixpkgs"
+        ],
+        "utils": [
+          "nixos-modules",
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1756736056,
+        "narHash": "sha256-8YFhvulVX3iS4TYnKisA9zSImJeFN21G75HOUUFjzuE=",
+        "owner": "nix-community",
+        "repo": "nix-bundle",
+        "rev": "eff01593f62794d458ec714090091419194ab64d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-bundle",
+        "type": "github"
+      }
+    },
+    "nix-bundlers": {
+      "inputs": {
+        "nix-bundle": "nix-bundle",
+        "nix-utils": "nix-utils",
+        "nixpkgs": [
+          "nixos-modules",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1756736145,
+        "narHash": "sha256-gKlLhzQ6PUTeC0Mi7aaX0tZ0wl6QB/slHLlk7jy0IN4=",
+        "owner": "NixOS",
+        "repo": "bundlers",
+        "rev": "dce9249b74500ef75110153e6da455ffec2532ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "bundlers",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -648,6 +726,31 @@
       "original": {
         "owner": "oddlama",
         "repo": "nix-topology",
+        "type": "github"
+      }
+    },
+    "nix-utils": {
+      "inputs": {
+        "flake-utils": [
+          "nixos-modules",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixos-modules",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1744222205,
+        "narHash": "sha256-di1eNHQdpvvyXv6i7Z+S79KF7cQyhTs7AdFHp7q1e3Q=",
+        "owner": "juliosueiras-nix",
+        "repo": "nix-utils",
+        "rev": "53282197ad090c8cf47c96e99bf6c6c3b2cdc7c0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "juliosueiras-nix",
+        "repo": "nix-utils",
         "type": "github"
       }
     },
@@ -840,6 +943,8 @@
         "home-manager": "home-manager",
         "home-manager-unstable": "home-manager-unstable",
         "microvm": "microvm",
+        "nix-appimage": "nix-appimage",
+        "nix-bundlers": "nix-bundlers",
         "nix-darwin": "nix-darwin",
         "nix-darwin-unstable": "nix-darwin-unstable",
         "nix-topology": "nix-topology",
@@ -860,11 +965,11 @@
         "vscode-server": "vscode-server"
       },
       "locked": {
-        "lastModified": 1765438594,
-        "narHash": "sha256-B4PYP1QmTT5a4xlvVZT1J95GQ+MGZeC22cZMiO+Kh0M=",
+        "lastModified": 1765976930,
+        "narHash": "sha256-1RcgIjT2MYoenkNpWwDScyynOwSONVt8OKzAhUc9SKM=",
         "owner": "metacraft-labs",
         "repo": "nixos-modules",
-        "rev": "f5f538ea91792c1153b95643c659c9aebf90c208",
+        "rev": "6b5a6454be4f4153ebeb07fd57dfde3d88c1b237",
         "type": "github"
       },
       "original": {
