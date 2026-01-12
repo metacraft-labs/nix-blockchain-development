@@ -22,4 +22,17 @@ jobs:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
       CACHIX_ACTIVATE_TOKEN: ${{ secrets.CACHIX_ACTIVATE_TOKEN }}
     with:
-      runner: '["self-hosted", "Linux", "x86-64-v2"]'
+      runners: | # json
+        {
+          "x86_64-linux": [
+            "self-hosted",
+            "nixos",
+            "x86-64-v3",
+            "bare-metal"
+          ],
+          "aarch64-darwin": [
+            "self-hosted",
+            "macOS",
+            "aarch64-darwin"
+          ]
+        }
