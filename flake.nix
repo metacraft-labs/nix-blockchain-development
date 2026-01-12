@@ -48,6 +48,10 @@
         nixos-modules.modules.flake.git-hooks
         ./packages
       ];
+      flake.mcl.shard-matrix.systemsToBuild = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
       perSystem =
         {
           self',
