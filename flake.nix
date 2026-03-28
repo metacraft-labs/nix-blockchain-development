@@ -78,6 +78,10 @@
           devShells.sp1 = import ./shells/sp1.nix { inherit pkgs config; };
           devShells.risc0 = import ./shells/risc0.nix { inherit pkgs config; };
           devShells.evm = import ./shells/evm.nix { inherit pkgs; };
+          devShells.solana = import ./shells/solana.nix { inherit pkgs; };
+          devShells.miden = import ./shells/miden.nix { inherit pkgs; };
+          devShells.move = import ./shells/move.nix { inherit pkgs; };
+          devShells.fuel = import ./shells/fuel.nix { inherit pkgs; };
         };
     };
 }
