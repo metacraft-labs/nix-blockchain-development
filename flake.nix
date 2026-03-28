@@ -77,6 +77,7 @@
           devShells.zkwasm = import ./shells/zkwasm.nix { inherit pkgs config; };
           devShells.sp1 = import ./shells/sp1.nix { inherit pkgs config; };
           devShells.risc0 = import ./shells/risc0.nix { inherit pkgs config; };
+          devShells.evm = import ./shells/evm.nix { inherit pkgs; };
         };
     };
 }
