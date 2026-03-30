@@ -3,6 +3,8 @@ with pkgs;
 mkShell {
   packages = [
     self'.packages.forc
+    rustc
+    cargo
     pkg-config
     openssl
     capnproto
