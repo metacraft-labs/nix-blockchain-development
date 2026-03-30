@@ -137,6 +137,11 @@
         '';
       };
 
+      args-crane = {
+        rustFromToolchainFile = inputs'.fenix.packages.fromToolchainFile;
+        inherit craneLib;
+      };
+
       args-zkVM = {
         rustFromToolchainFile = inputs'.fenix.packages.fromToolchainFile;
         fenix = inputs'.fenix.packages;
@@ -201,6 +206,11 @@
         leap = callPackage ./leap/default.nix { };
         eos-vm = callPackage ./eos-vm/default.nix { };
         cdt = callPackage ./cdt/default.nix { };
+
+        forc = callPackage ./forc/default.nix { inherit craneLib; };
+        sui = callPackage ./sui/default.nix args-crane;
+        cargo-build-sbf = callPackage ./cargo-build-sbf/default.nix args-crane;
+        miden = callPackage ./miden/default.nix args-crane;
 
         zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
         jolt-guest-rust = callPackage ./jolt-guest-rust/default.nix args-zkVM-rust;

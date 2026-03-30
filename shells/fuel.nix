@@ -1,11 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, self', ... }:
 with pkgs;
 mkShell {
   packages = [
-    # forc compiler and fuel-core need to be built from source
-    # TODO: Add forc, fuel-core packages
-    rustc
-    cargo
+    self'.packages.forc
     pkg-config
     openssl
     capnproto
@@ -13,6 +10,5 @@ mkShell {
 
   shellHook = ''
     echo "CodeTracer Fuel Recorder dev shell"
-    echo "Note: forc and fuel-core not yet packaged"
   '';
 }
