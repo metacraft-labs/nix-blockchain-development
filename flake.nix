@@ -82,6 +82,13 @@
           devShells.miden = import ./shells/miden.nix { inherit pkgs self'; };
           devShells.move = import ./shells/move.nix { inherit pkgs self'; };
           devShells.fuel = import ./shells/fuel.nix { inherit pkgs self'; };
+          devShells.polkavm = import ./shells/polkavm.nix { inherit pkgs self'; };
+          devShells.cairo = import ./shells/cairo.nix { inherit pkgs self'; };
+          devShells.circom-recorder = import ./shells/circom-recorder.nix { inherit pkgs self'; };
+          devShells.leo = import ./shells/leo.nix { inherit pkgs self'; };
+          devShells.tolk = import ./shells/tolk.nix { inherit pkgs self'; };
+          devShells.aiken = import ./shells/aiken.nix { inherit pkgs self'; };
+          devShells.cadence = import ./shells/cadence.nix { inherit pkgs self'; };
         };
     };
 }
