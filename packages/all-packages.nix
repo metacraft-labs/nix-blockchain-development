@@ -161,6 +161,7 @@
 
         circom = callPackage ./circom/default.nix { craneLib = craneLib-fenix-stable; };
         circ = callPackage ./circ/default.nix { craneLib = craneLib-fenix-stable; };
+        cargo-stylus = callPackage ./cargo-stylus/default.nix { inherit pkgs; };
 
         emscripten = pkgs.emscripten.overrideAttrs (_old: {
           postInstall = ''
