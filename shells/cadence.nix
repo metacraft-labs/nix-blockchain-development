@@ -7,6 +7,7 @@ mkShell {
     pkg-config
     openssl
     capnproto
+    zstd # required by libcodetracer_trace_writer
     go
   ];
 

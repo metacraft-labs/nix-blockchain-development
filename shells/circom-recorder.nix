@@ -8,6 +8,7 @@ mkShell {
     pkg-config
     openssl
     capnproto
+    zstd # required by libcodetracer_trace_writer
     # C++ witness generator toolchain (Circom M6)
     gcc
     gnumake
