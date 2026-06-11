@@ -171,7 +171,20 @@ crane.buildPackage (
         fi
       done
       if [ \$has_no_rustup -eq 0 ]; then
-        set -- --no-rustup-override "\$@"
+        # ``cargo build-sbf`` dispatches to ``cargo-build-sbf`` with
+        # the literal ``build-sbf`` token as argv[1] (cargo's
+        # external-subcommand convention).  agave's clap parser
+        # rejects ``--no-rustup-override build-sbf …`` because
+        # ``build-sbf`` lands in positional position and clap
+        # doesn't recognise it -- so prepend the flag *after* the
+        # subcommand token when present.
+        if [ \$# -gt 0 ] && [ "\$1" = "build-sbf" ]; then
+          subcmd="\$1"
+          shift
+          set -- "\$subcmd" --no-rustup-override "\$@"
+        else
+          set -- --no-rustup-override "\$@"
+        fi
       fi
 
       exec "$out/bin/.cargo-build-sbf-unwrapped" "\$@"
