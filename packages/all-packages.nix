@@ -210,7 +210,10 @@
 
         forc = callPackage ./forc/default.nix { inherit craneLib; };
         sui = callPackage ./sui/default.nix args-crane;
-        cargo-build-sbf = callPackage ./cargo-build-sbf/default.nix args-crane;
+        solana-platform-tools = callPackage ./solana-platform-tools/default.nix { };
+        cargo-build-sbf = callPackage ./cargo-build-sbf/default.nix (args-crane // {
+          solana-platform-tools = self'.packages.solana-platform-tools;
+        });
         miden = callPackage ./miden/default.nix args-crane;
 
         zkwasm = callPackage ./zkwasm/default.nix args-zkVM;
