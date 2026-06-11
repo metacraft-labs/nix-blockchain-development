@@ -5,6 +5,9 @@
   pkg-config,
   openssl,
   perl,
+  makeWrapper,
+  writeShellScript,
+  stdenv,
   ...
 }:
 let
@@ -16,6 +19,7 @@ let
       pkg-config
       openssl
       perl # needed by openssl-sys build script
+      makeWrapper
     ];
 
     src = fetchFromGitHub {
@@ -56,22 +60,67 @@ crane.buildPackage (
 
     doCheck = false;
 
-    # cargo-build-sbf defaults ``--sbf-sdk`` to
-    # ``<bindir>/platform-tools-sdk/sbf`` and exits with
-    # ``Solana SDK path does not exist: …/platform-tools-sdk/sbf``
-    # before any download attempt if the directory is missing.  The
-    # platform-tools toolchain itself (``llvm/`` + ``rust/``) is still
-    # downloaded into ``~/.cache/solana/v<version>/platform-tools/`` at
-    # first invocation, but the helper scripts under
-    # ``platform-tools-sdk/sbf`` (env.sh, scripts/, c/) ship with the
-    # agave source tree and are what the binary checks for.  Vendor
-    # them straight from the agave checkout so the structural
-    # pre-flight passes.  Mirrors the layout
-    # ``$AGAVE/platform-tools-sdk/sbf -> $out/bin/platform-tools-sdk/sbf``
-    # that an upstream ``cargo install`` from agave would lay down.
+    # cargo-build-sbf has two read-only-filesystem hazards when run from
+    # a nix store path:
+    #
+    # 1. The default ``--sbf-sdk`` is ``<bindir>/platform-tools-sdk/sbf``
+    #    and the binary exits with ``Solana SDK path does not exist`` if
+    #    that directory is missing.  Vendor the helper scripts (env.sh,
+    #    scripts/, c/) straight from the agave checkout so the
+    #    structural pre-flight passes.
+    #
+    # 2. ``toolchain::install_if_missing`` (see agave platform-tools-sdk/
+    #    cargo-build-sbf/src/toolchain.rs) writes a symlink at
+    #    ``<sbf_sdk>/dependencies/platform-tools`` → the writable cache
+    #    at ``$HOME/.cache/solana/v<tools-version>/platform-tools/``.
+    #    With sbf_sdk in the nix store that ``create_dir_all`` call
+    #    fails with ``Read-only file system (os error 30)`` and the
+    #    binary aborts with ``Failed to install platform-tools``.
+    #
+    # Move the vendored helpers to ``$out/share/cargo-build-sbf/sbf``
+    # (immutable reference) and wrap the binary so it materialises a
+    # writable mirror at ``$HOME/.cache/solana/cargo-build-sbf-sdk``
+    # (symlinks for the read-only helpers, real directory for
+    # ``dependencies/``) on first invocation and points ``SBF_SDK_PATH``
+    # there.  Subsequent invocations just reuse the cached writable
+    # mirror.
     postInstall = ''
-      mkdir -p "$out/bin/platform-tools-sdk"
-      cp -r platform-tools-sdk/sbf "$out/bin/platform-tools-sdk/sbf"
+      mkdir -p "$out/share/cargo-build-sbf"
+      cp -r platform-tools-sdk/sbf "$out/share/cargo-build-sbf/sbf"
+
+      mv "$out/bin/cargo-build-sbf" "$out/bin/.cargo-build-sbf-unwrapped"
+      cat > "$out/bin/cargo-build-sbf" <<EOF
+      #!${stdenv.shell}
+      set -euo pipefail
+
+      # cargo-build-sbf wants to write into <sbf_sdk>/dependencies/
+      # (see toolchain::install_if_missing).  With sbf_sdk in the nix
+      # store that fails with Read-only filesystem.  Materialise a
+      # writable mirror in \$HOME/.cache/solana/cargo-build-sbf-sdk that
+      # symlinks the read-only helpers from the nix store and reserves
+      # a real (writable) ``dependencies/`` subdirectory for the
+      # symlink-to-cache the binary creates on first use.
+      cache_root="\''${HOME:-/tmp}/.cache/solana"
+      sdk_dir="\$cache_root/cargo-build-sbf-sdk"
+      mkdir -p "\$sdk_dir"
+      for helper in c env.sh scripts; do
+        target="\$sdk_dir/\$helper"
+        if [ ! -e "\$target" ]; then
+          ln -s "$out/share/cargo-build-sbf/sbf/\$helper" "\$target"
+        fi
+      done
+      mkdir -p "\$sdk_dir/dependencies"
+
+      # Only override SBF_SDK_PATH when the caller hasn't set one
+      # explicitly.  Users who point at their own writable SDK
+      # (e.g. a manually-managed agave checkout) keep that behaviour.
+      if [ -z "\''${SBF_SDK_PATH:-}" ]; then
+        export SBF_SDK_PATH="\$sdk_dir"
+      fi
+
+      exec "$out/bin/.cargo-build-sbf-unwrapped" "\$@"
+      EOF
+      chmod +x "$out/bin/cargo-build-sbf"
     '';
   }
 )
