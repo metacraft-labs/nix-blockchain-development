@@ -8,6 +8,7 @@
   makeWrapper,
   writeShellScript,
   stdenv,
+  rustup,
   ...
 }:
 let
@@ -60,8 +61,8 @@ crane.buildPackage (
 
     doCheck = false;
 
-    # cargo-build-sbf has two read-only-filesystem hazards when run from
-    # a nix store path:
+    # cargo-build-sbf has three read-only-filesystem / missing-tool
+    # hazards when run from a nix store path inside a nix dev shell:
     #
     # 1. The default ``--sbf-sdk`` is ``<bindir>/platform-tools-sdk/sbf``
     #    and the binary exits with ``Solana SDK path does not exist`` if
@@ -77,13 +78,23 @@ crane.buildPackage (
     #    fails with ``Read-only file system (os error 30)`` and the
     #    binary aborts with ``Failed to install platform-tools``.
     #
+    # 3. After install_if_missing, the binary calls
+    #    ``link_solana_toolchain`` which spawns ``rustup toolchain list
+    #    -v`` to discover the existing solana toolchain and
+    #    ``rustup toolchain link <name> <path>`` to register the
+    #    downloaded platform-tools rust as a +solana override.  The nix
+    #    dev shell has no rustup on PATH, so the binary aborts with
+    #    ``Failed to execute rustup: No such file or directory
+    #    (os error 2)``.
+    #
     # Move the vendored helpers to ``$out/share/cargo-build-sbf/sbf``
     # (immutable reference) and wrap the binary so it materialises a
     # writable mirror at ``$HOME/.cache/solana/cargo-build-sbf-sdk``
     # (symlinks for the read-only helpers, real directory for
-    # ``dependencies/``) on first invocation and points ``SBF_SDK_PATH``
-    # there.  Subsequent invocations just reuse the cached writable
-    # mirror.
+    # ``dependencies/``) on first invocation, points ``SBF_SDK_PATH``
+    # there, and prepends ``rustup`` from the nix store onto ``PATH``
+    # so install_if_missing's rustup spawns succeed.  Subsequent
+    # invocations just reuse the cached writable mirror.
     postInstall = ''
       mkdir -p "$out/share/cargo-build-sbf"
       cp -r platform-tools-sdk/sbf "$out/share/cargo-build-sbf/sbf"
@@ -117,6 +128,12 @@ crane.buildPackage (
       if [ -z "\''${SBF_SDK_PATH:-}" ]; then
         export SBF_SDK_PATH="\$sdk_dir"
       fi
+
+      # link_solana_toolchain spawns ``rustup toolchain list -v`` to
+      # register the downloaded platform-tools rust as a +solana
+      # override.  Make sure rustup is on PATH so that the spawn
+      # succeeds.
+      export PATH="${rustup}/bin:\$PATH"
 
       exec "$out/bin/.cargo-build-sbf-unwrapped" "\$@"
       EOF
