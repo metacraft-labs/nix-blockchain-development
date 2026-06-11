@@ -8,7 +8,6 @@
   makeWrapper,
   writeShellScript,
   stdenv,
-  rustup,
   ...
 }:
 let
@@ -61,8 +60,13 @@ crane.buildPackage (
 
     doCheck = false;
 
-    # cargo-build-sbf has three read-only-filesystem / missing-tool
-    # hazards when run from a nix store path inside a nix dev shell:
+    # cargo-build-sbf has two read-only-filesystem / missing-tool
+    # hazards when run from a nix store path inside a nix dev shell.
+    # Both pivot on the binary assuming the upstream Solana toolchain
+    # provisioning workflow (rustup-managed ``+solana`` override
+    # registered out of band, ``~/.cache/solana`` writable).  We
+    # provision everything from nix instead -- so the wrapper
+    # rearranges things to suit that model.
     #
     # 1. The default ``--sbf-sdk`` is ``<bindir>/platform-tools-sdk/sbf``
     #    and the binary exits with ``Solana SDK path does not exist`` if
@@ -78,23 +82,34 @@ crane.buildPackage (
     #    fails with ``Read-only file system (os error 30)`` and the
     #    binary aborts with ``Failed to install platform-tools``.
     #
-    # 3. After install_if_missing, the binary calls
-    #    ``link_solana_toolchain`` which spawns ``rustup toolchain list
-    #    -v`` to discover the existing solana toolchain and
-    #    ``rustup toolchain link <name> <path>`` to register the
-    #    downloaded platform-tools rust as a +solana override.  The nix
-    #    dev shell has no rustup on PATH, so the binary aborts with
-    #    ``Failed to execute rustup: No such file or directory
-    #    (os error 2)``.
+    # The default control flow then calls ``link_solana_toolchain``
+    # which spawns ``rustup toolchain list -v`` to register the
+    # downloaded platform-tools rust as a ``+solana`` cargo override.
+    # We don't use rustup -- nix manages the rust toolchain end of
+    # things -- so pass ``--no-rustup-override`` to skip that branch
+    # entirely.  The alternate branch
+    # (``check_solana_target_installed``) just runs ``rustc --print
+    # target-list`` and confirms the SBF target is supported; we point
+    # ``RUSTC`` at the downloaded platform-tools rust binary which
+    # carries the SBF target built-in, so the check passes against
+    # the same toolchain cargo will use for the actual build.
     #
-    # Move the vendored helpers to ``$out/share/cargo-build-sbf/sbf``
-    # (immutable reference) and wrap the binary so it materialises a
-    # writable mirror at ``$HOME/.cache/solana/cargo-build-sbf-sdk``
-    # (symlinks for the read-only helpers, real directory for
-    # ``dependencies/``) on first invocation, points ``SBF_SDK_PATH``
-    # there, and prepends ``rustup`` from the nix store onto ``PATH``
-    # so install_if_missing's rustup spawns succeed.  Subsequent
-    # invocations just reuse the cached writable mirror.
+    # Putting it together:
+    #   * Move the vendored ``sbf`` helpers to
+    #     ``$out/share/cargo-build-sbf/sbf`` (immutable reference).
+    #   * Wrap the binary so it materialises a writable mirror at
+    #     ``$HOME/.cache/solana/cargo-build-sbf-sdk`` on first
+    #     invocation (symlinks for the read-only helpers, real
+    #     directory for ``dependencies/``).
+    #   * Point ``SBF_SDK_PATH`` at that writable mirror.
+    #   * Prepend ``--no-rustup-override`` so the rustup-spawn branch
+    #     is never taken.
+    #   * Point ``RUSTC`` at the cached platform-tools rust
+    #     (downloaded by ``install_if_missing`` on the first run);
+    #     until the cache is warm, fall back to the system rustc so
+    #     the very first invocation -- which only needs to *download*
+    #     platform-tools, not run target-list against it -- still
+    #     proceeds.
     postInstall = ''
       mkdir -p "$out/share/cargo-build-sbf"
       cp -r platform-tools-sdk/sbf "$out/share/cargo-build-sbf/sbf"
@@ -129,11 +144,35 @@ crane.buildPackage (
         export SBF_SDK_PATH="\$sdk_dir"
       fi
 
-      # link_solana_toolchain spawns ``rustup toolchain list -v`` to
-      # register the downloaded platform-tools rust as a +solana
-      # override.  Make sure rustup is on PATH so that the spawn
-      # succeeds.
-      export PATH="${rustup}/bin:\$PATH"
+      # The downloaded platform-tools rust binary lives at this
+      # well-known location after ``install_if_missing`` completes.
+      # Point RUSTC at it so that ``check_solana_target_installed``
+      # (which we reach via ``--no-rustup-override`` below) confirms
+      # the SBF target is supported by the same rustc cargo will use
+      # for the actual build.  On the very first run the cache is
+      # empty -- ``install_if_missing`` populates it before
+      # ``check_solana_target_installed`` runs, so by the time the
+      # check spawns ``rustc --print target-list`` the file exists.
+      tools_rustc="\$cache_root/v1.52/platform-tools/rust/bin/rustc"
+      if [ -z "\''${RUSTC:-}" ] && [ -x "\$tools_rustc" ]; then
+        export RUSTC="\$tools_rustc"
+      fi
+
+      # We manage the rust toolchain with nix -- there is no rustup
+      # in the dev shell to spawn for the ``+solana`` cargo override.
+      # ``--no-rustup-override`` routes through the alternate
+      # ``check_solana_target_installed`` branch which honours RUSTC.
+      # Inject it only when the caller hasn't already passed it.
+      has_no_rustup=0
+      for arg in "\$@"; do
+        if [ "\$arg" = "--no-rustup-override" ]; then
+          has_no_rustup=1
+          break
+        fi
+      done
+      if [ \$has_no_rustup -eq 0 ]; then
+        set -- --no-rustup-override "\$@"
+      fi
 
       exec "$out/bin/.cargo-build-sbf-unwrapped" "\$@"
       EOF
