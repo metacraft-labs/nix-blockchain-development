@@ -8,6 +8,7 @@
   makeWrapper,
   writeShellScript,
   stdenv,
+  solana-platform-tools,
   ...
 }:
 let
@@ -144,15 +145,47 @@ crane.buildPackage (
         export SBF_SDK_PATH="\$sdk_dir"
       fi
 
+      # ``install_if_missing`` would otherwise download the generic-
+      # Linux platform-tools tarball from GitHub and try to run
+      # ``rust/bin/rustc`` from inside ``~/.cache/solana/v1.52/
+      # platform-tools/``.  Those binaries can't be executed on NixOS
+      # (missing /lib64/ld-linux-x86-64.so.2 interpreter -- the
+      # ``Could not start dynamically linked executable / NixOS cannot
+      # run dynamically linked executables intended for generic linux
+      # environments`` error).
+      #
+      # We ship a nix-built, autoPatchelfHook'd derivation
+      # (solana-platform-tools) that mirrors the same layout with a
+      # NixOS-compatible ELF interpreter and rpath baked in.  Point
+      # the cache at it as a symlink so:
+      #   * ``install_if_missing``'s pre-check (target_path is a
+      #     non-empty directory) is satisfied and the download is
+      #     skipped entirely.
+      #   * Every subsequent ``cargo / rustc / llvm-ar / clang``
+      #     invocation the binary spawns from
+      #     ``platform-tools/<rust|llvm>/bin/`` resolves to a patched
+      #     ELF that actually runs on NixOS.
+      platform_tools_root="\$cache_root/v1.52"
+      mkdir -p "\$platform_tools_root"
+      link="\$platform_tools_root/platform-tools"
+      nix_pt="${solana-platform-tools}"
+      if [ ! -e "\$link" ]; then
+        ln -s "\$nix_pt" "\$link"
+      elif [ -L "\$link" ] && [ "\$(readlink "\$link")" != "\$nix_pt" ]; then
+        # The user previously installed via a different store path
+        # (older nix-blockchain-development pin).  Re-point to the
+        # current nix derivation.
+        rm "\$link"
+        ln -s "\$nix_pt" "\$link"
+      fi
+
       # The downloaded platform-tools rust binary lives at this
-      # well-known location after ``install_if_missing`` completes.
-      # Point RUSTC at it so that ``check_solana_target_installed``
-      # (which we reach via ``--no-rustup-override`` below) confirms
-      # the SBF target is supported by the same rustc cargo will use
-      # for the actual build.  On the very first run the cache is
-      # empty -- ``install_if_missing`` populates it before
-      # ``check_solana_target_installed`` runs, so by the time the
-      # check spawns ``rustc --print target-list`` the file exists.
+      # well-known location -- after the symlink above, it points at
+      # the patched nix-store rustc.  Point RUSTC at it so that
+      # ``check_solana_target_installed`` (which we reach via
+      # ``--no-rustup-override`` below) confirms the SBF target is
+      # supported by the same rustc cargo will use for the actual
+      # build.
       tools_rustc="\$cache_root/v1.52/platform-tools/rust/bin/rustc"
       if [ -z "\''${RUSTC:-}" ] && [ -x "\$tools_rustc" ]; then
         export RUSTC="\$tools_rustc"
