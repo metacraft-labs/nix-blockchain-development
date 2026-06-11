@@ -73,8 +73,8 @@ let
     # parsing. Create minimal stubs to keep Cargo.lock valid.
     postPatch = ''
       for d in crates/sui-cost crates/sui-move-lsp crates/sui-e2e-tests \
-               crates/sui-json-rpc-tests \
-               external-crates/move/crates/move-ir-compiler-transactional-tests; do
+                crates/sui-json-rpc-tests \
+                external-crates/move/crates/move-ir-compiler-transactional-tests; do
         if [ -d "$d" ] && [ ! -f "$d/src/lib.rs" ] && [ ! -f "$d/src/main.rs" ]; then
           mkdir -p "$d/src"
           touch "$d/src/lib.rs"

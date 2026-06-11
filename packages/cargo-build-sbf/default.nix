@@ -35,8 +35,8 @@ let
     # from Cargo.toml (which would invalidate the vendored Cargo.lock).
     postPatch = ''
       for d in client-test keygen programs/bpf-loader-tests \
-               programs/compute-budget-bench programs/ed25519-tests \
-               programs/zk-elgamal-proof-tests rpc-test dev-bins programs/sbf; do
+                programs/compute-budget-bench programs/ed25519-tests \
+                programs/zk-elgamal-proof-tests rpc-test dev-bins programs/sbf; do
         mkdir -p "$d/src"
         touch "$d/src/lib.rs"
       done
