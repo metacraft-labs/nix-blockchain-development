@@ -169,31 +169,28 @@ crane.buildPackage (
       mkdir -p "\$platform_tools_root"
       link="\$platform_tools_root/platform-tools"
       nix_pt="${solana-platform-tools}"
-      if [ -L "\$link" ]; then
-        # Already a symlink.  Re-point only if it doesn't already
-        # match the current nix derivation (older nix-blockchain-
-        # development pin would have used a different store path).
-        if [ "\$(readlink "\$link")" != "\$nix_pt" ]; then
-          rm "\$link"
-          ln -s "\$nix_pt" "\$link"
-        fi
-      elif [ -e "\$link" ]; then
-        # Path exists but isn't a symlink -- that means a previous
-        # ``cargo-build-sbf`` invocation (most likely from before
-        # this wrapper landed) ran ``install_if_missing``'s
-        # download path and unpacked the upstream-Linux tarball as
-        # a real directory at this location.  On NixOS the
-        # binaries inside that real directory fail to execute with
-        # ``Could not start dynamically linked executable / NixOS
-        # cannot run dynamically linked executables intended for
-        # generic linux environments``.  Replace it with the
-        # symlink so subsequent invocations hit the autoPatchelf'd
-        # nix-store toolchain.
-        rm -rf "\$link"
-        ln -s "\$nix_pt" "\$link"
-      else
-        ln -s "\$nix_pt" "\$link"
-      fi
+      # Always recreate the symlink unconditionally.  Two earlier
+      # attempts at conditional replacement -- "only if not a symlink",
+      # then "only if not pointing at \$nix_pt" -- both ran into edge
+      # cases where the runner's pre-existing state (real directory
+      # from an upstream install_if_missing tarball download; or a
+      # broken/stale symlink whose ``readlink`` matched a previous
+      # derivation hash that no longer existed) caused the path to
+      # be left alone, so subsequent execution hit an unpatched
+      # ``rust/bin/rustc`` and failed with::
+      #
+      #   Could not start dynamically linked executable: .../v1.52/
+      #   platform-tools/rust/bin/rustc
+      #   NixOS cannot run dynamically linked executables intended for
+      #   generic linux environments out of the box.
+      #
+      # The cost of unconditional rm + ln on every cargo-build-sbf
+      # invocation is two cheap fs syscalls on a path the wrapper
+      # owns; the win is a hard guarantee that downstream sees a
+      # symlink to the autoPatchelf'd nix-store toolchain rather
+      # than whatever leftover state the runner had.
+      rm -rf "\$link"
+      ln -s "\$nix_pt" "\$link"
 
       # The downloaded platform-tools rust binary lives at this
       # well-known location -- after the symlink above, it points at
