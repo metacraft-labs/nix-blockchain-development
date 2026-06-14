@@ -140,9 +140,19 @@ crane.buildPackage (
       grep -q '^  if \[\[ "''${BASH_VERSINFO\[0\]}" -lt 4 \]\]; then$' "$install_sh"
       grep -q '^  rustup toolchain link "$rust_version-sbpf-solana-$tools_version" platform-tools/rust$' "$install_sh"
       # Delete inclusive range from the BASH_VERSINFO opener through
-      # the trailing ``rustup toolchain link …`` line.
-      sed -i '/^  if \[\[ "''${BASH_VERSINFO\[0\]}" -lt 4 \]\]; then$/,/^  rustup toolchain link "\$rust_version-sbpf-solana-\$tools_version" platform-tools\/rust$/c\
-  # rustup-link block removed by nix-blockchain-development cargo-build-sbf wrapper' "$install_sh"
+      # the trailing ``rustup toolchain link ...`` line.  Use sed's ``d``
+      # rather than ``c\`` because the latter takes a multi-line
+      # replacement, and putting the replacement text on a less-indented
+      # line in this nix multiline string would shrink the common-prefix
+      # whitespace stripping (nix strips the *minimum* indentation from
+      # every line of the string).  When that happened the cat-heredoc
+      # below ended up with 4 leading spaces on every line -- in
+      # particular the shebang ``    #!/nix/store/.../bash`` -- which
+      # the kernel does not recognise as a shebang.  The wrapper file
+      # was then written without the ``+x`` mode-bit, so the dev shell
+      # fell through to a non-executable wrapper and ``cargo build-sbf``
+      # observed ``error: no such command: build-sbf`` on CI.
+      sed -i '/^  if \[\[ "''${BASH_VERSINFO\[0\]}" -lt 4 \]\]; then$/,/^  rustup toolchain link "\$rust_version-sbpf-solana-\$tools_version" platform-tools\/rust$/d' "$install_sh"
 
       mv "$out/bin/cargo-build-sbf" "$out/bin/.cargo-build-sbf-unwrapped"
       cat > "$out/bin/cargo-build-sbf" <<EOF
