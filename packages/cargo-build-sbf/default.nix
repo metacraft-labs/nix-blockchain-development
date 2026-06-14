@@ -8,6 +8,7 @@
   makeWrapper,
   writeShellScript,
   stdenv,
+  solana-platform-tools,
   ...
 }:
 let
@@ -34,8 +35,8 @@ let
     # from Cargo.toml (which would invalidate the vendored Cargo.lock).
     postPatch = ''
       for d in client-test keygen programs/bpf-loader-tests \
-               programs/compute-budget-bench programs/ed25519-tests \
-               programs/zk-elgamal-proof-tests rpc-test dev-bins programs/sbf; do
+                programs/compute-budget-bench programs/ed25519-tests \
+                programs/zk-elgamal-proof-tests rpc-test dev-bins programs/sbf; do
         mkdir -p "$d/src"
         touch "$d/src/lib.rs"
       done
@@ -144,19 +145,94 @@ crane.buildPackage (
         export SBF_SDK_PATH="\$sdk_dir"
       fi
 
+      # ``install_if_missing`` would otherwise download the generic-
+      # Linux platform-tools tarball from GitHub and try to run
+      # ``rust/bin/rustc`` from inside ``~/.cache/solana/v1.52/
+      # platform-tools/``.  Those binaries can't be executed on NixOS
+      # (missing /lib64/ld-linux-x86-64.so.2 interpreter -- the
+      # ``Could not start dynamically linked executable / NixOS cannot
+      # run dynamically linked executables intended for generic linux
+      # environments`` error).
+      #
+      # We ship a nix-built, autoPatchelfHook'd derivation
+      # (solana-platform-tools) that mirrors the same layout with a
+      # NixOS-compatible ELF interpreter and rpath baked in.  Point
+      # the cache at it as a symlink so:
+      #   * ``install_if_missing``'s pre-check (target_path is a
+      #     non-empty directory) is satisfied and the download is
+      #     skipped entirely.
+      #   * Every subsequent ``cargo / rustc / llvm-ar / clang``
+      #     invocation the binary spawns from
+      #     ``platform-tools/<rust|llvm>/bin/`` resolves to a patched
+      #     ELF that actually runs on NixOS.
+      platform_tools_root="\$cache_root/v1.52"
+      mkdir -p "\$platform_tools_root"
+      link="\$platform_tools_root/platform-tools"
+      nix_pt="${solana-platform-tools}"
+      # Always recreate the symlink unconditionally.  Two earlier
+      # attempts at conditional replacement -- "only if not a symlink",
+      # then "only if not pointing at \$nix_pt" -- both ran into edge
+      # cases where the runner's pre-existing state (real directory
+      # from an upstream install_if_missing tarball download; or a
+      # broken/stale symlink whose ``readlink`` matched a previous
+      # derivation hash that no longer existed) caused the path to
+      # be left alone, so subsequent execution hit an unpatched
+      # ``rust/bin/rustc`` and failed with::
+      #
+      #   Could not start dynamically linked executable: .../v1.52/
+      #   platform-tools/rust/bin/rustc
+      #   NixOS cannot run dynamically linked executables intended for
+      #   generic linux environments out of the box.
+      #
+      # The cost of unconditional rm + ln on every cargo-build-sbf
+      # invocation is two cheap fs syscalls on a path the wrapper
+      # owns; the win is a hard guarantee that downstream sees a
+      # symlink to the autoPatchelf'd nix-store toolchain rather
+      # than whatever leftover state the runner had.
+      rm -rf "\$link"
+      ln -s "\$nix_pt" "\$link"
+
       # The downloaded platform-tools rust binary lives at this
-      # well-known location after ``install_if_missing`` completes.
-      # Point RUSTC at it so that ``check_solana_target_installed``
-      # (which we reach via ``--no-rustup-override`` below) confirms
-      # the SBF target is supported by the same rustc cargo will use
-      # for the actual build.  On the very first run the cache is
-      # empty -- ``install_if_missing`` populates it before
-      # ``check_solana_target_installed`` runs, so by the time the
-      # check spawns ``rustc --print target-list`` the file exists.
-      tools_rustc="\$cache_root/v1.52/platform-tools/rust/bin/rustc"
-      if [ -z "\''${RUSTC:-}" ] && [ -x "\$tools_rustc" ]; then
-        export RUSTC="\$tools_rustc"
-      fi
+      # well-known location -- after the symlink above, it points at
+      # the patched nix-store rustc.  Point RUSTC at it so that
+      # ``check_solana_target_installed`` (which we reach via
+      # ``--no-rustup-override`` below) confirms the SBF target is
+      # supported by the same rustc cargo will use for the actual
+      # build.
+      # Always override RUSTC to the patched platform-tools rust --
+      # the dev shell that loads ``cargo-build-sbf`` typically also
+      # provides a stock ``pkgs.rustc`` (1.91 from nixpkgs) and may
+      # export ``RUSTC`` pointing at it (so other rust tooling
+      # behaves consistently).  That stock rustc does **not** ship
+      # the ``sbpf-solana-solana`` target, so ``cargo-build-sbf``'s
+      # ``check_solana_target_installed`` aborts with::
+      #
+      #   ERROR cargo_build_sbf::toolchain] Provided "rustc" does
+      #   not have sbpf-solana-solana target.
+      #
+      # observed against the recorder's CI dev shell.  Overriding
+      # unconditionally guarantees the SBF build path uses the
+      # patched rustc regardless of whatever the enclosing shell
+      # set on entry; the rest of the recorder cargo workflow
+      # doesn't reach this wrapper, so the override is scoped to
+      # the ``cargo build-sbf`` invocation alone.
+      # Hardcode RUSTC to the nix store path directly rather than
+      # going through the ``~/.cache/solana/v1.52/platform-tools``
+      # symlink we just created.  Two CI runs in a row (aa292f7d and
+      # the one before it) produced the same error
+      # ``Provided "rustc" does not have sbpf-solana-solana target.``
+      # The literal ``"rustc"`` (no path) in that message comes from
+      # ``check_solana_target_installed``'s ``env::var("RUSTC")
+      # .unwrap_or("rustc".to_owned())`` -- so RUSTC was empty when
+      # cargo-build-sbf ran.  That can only mean the wrapper's
+      # previous ``[ -x \$tools_rustc ]`` guard returned false, even
+      # though locally on NixOS the symlinked rustc is executable and
+      # the check passes.  Whatever runner-side state broke the test
+      # (race vs. the ln -s above, leftover broken symlink, etc.)
+      # disappears when we skip the cache lookup entirely and reach
+      # for the nix-store path that's an actual build input to this
+      # derivation.
+      export RUSTC="${solana-platform-tools}/rust/bin/rustc"
 
       # We manage the rust toolchain with nix -- there is no rustup
       # in the dev shell to spawn for the ``+solana`` cargo override.
