@@ -115,6 +115,35 @@ crane.buildPackage (
       mkdir -p "$out/share/cargo-build-sbf"
       cp -r platform-tools-sdk/sbf "$out/share/cargo-build-sbf/sbf"
 
+      # env.sh sources scripts/install.sh on every cargo build-sbf
+      # invocation; that script's final action (after the
+      # tarball extraction we've already short-circuited via the
+      # ``~/.cache/solana/v1.52/platform-tools`` symlink) is to call
+      # ``rustup toolchain link 1.89.0-sbpf-solana-v1.52
+      # platform-tools/rust`` so downstream ``cargo +1.89.0-sbpf-...
+      # build`` invocations resolve the platform-tools rust toolchain.
+      # We don't use rustup -- nix manages the toolchain and the
+      # wrapper passes ``--no-rustup-override`` so cargo-build-sbf's
+      # build path uses ``$RUSTC`` instead of ``+solana``.  Without
+      # rustup on PATH the script fails with::
+      #
+      #   .../install.sh: line 151: rustup: command not found
+      #
+      # Strip the rustup block (lines 134..151 in the upstream
+      # script, identified by the ``mapfile -t toolchains`` opener
+      # through the trailing ``rustup toolchain link`` line) so the
+      # script exits cleanly after verifying ``./platform-tools/rust/
+      # bin/rustc --version`` succeeds.
+      install_sh="$out/share/cargo-build-sbf/sbf/scripts/install.sh"
+      # Sanity-check the markers exist so we fail at build time if
+      # the upstream script layout changes.
+      grep -q '^  if \[\[ "''${BASH_VERSINFO\[0\]}" -lt 4 \]\]; then$' "$install_sh"
+      grep -q '^  rustup toolchain link "$rust_version-sbpf-solana-$tools_version" platform-tools/rust$' "$install_sh"
+      # Delete inclusive range from the BASH_VERSINFO opener through
+      # the trailing ``rustup toolchain link …`` line.
+      sed -i '/^  if \[\[ "''${BASH_VERSINFO\[0\]}" -lt 4 \]\]; then$/,/^  rustup toolchain link "\$rust_version-sbpf-solana-\$tools_version" platform-tools\/rust$/c\
+  # rustup-link block removed by nix-blockchain-development cargo-build-sbf wrapper' "$install_sh"
+
       mv "$out/bin/cargo-build-sbf" "$out/bin/.cargo-build-sbf-unwrapped"
       cat > "$out/bin/cargo-build-sbf" <<EOF
       #!${stdenv.shell}
