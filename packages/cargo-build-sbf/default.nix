@@ -169,13 +169,29 @@ crane.buildPackage (
       mkdir -p "\$platform_tools_root"
       link="\$platform_tools_root/platform-tools"
       nix_pt="${solana-platform-tools}"
-      if [ ! -e "\$link" ]; then
+      if [ -L "\$link" ]; then
+        # Already a symlink.  Re-point only if it doesn't already
+        # match the current nix derivation (older nix-blockchain-
+        # development pin would have used a different store path).
+        if [ "\$(readlink "\$link")" != "\$nix_pt" ]; then
+          rm "\$link"
+          ln -s "\$nix_pt" "\$link"
+        fi
+      elif [ -e "\$link" ]; then
+        # Path exists but isn't a symlink -- that means a previous
+        # ``cargo-build-sbf`` invocation (most likely from before
+        # this wrapper landed) ran ``install_if_missing``'s
+        # download path and unpacked the upstream-Linux tarball as
+        # a real directory at this location.  On NixOS the
+        # binaries inside that real directory fail to execute with
+        # ``Could not start dynamically linked executable / NixOS
+        # cannot run dynamically linked executables intended for
+        # generic linux environments``.  Replace it with the
+        # symlink so subsequent invocations hit the autoPatchelf'd
+        # nix-store toolchain.
+        rm -rf "\$link"
         ln -s "\$nix_pt" "\$link"
-      elif [ -L "\$link" ] && [ "\$(readlink "\$link")" != "\$nix_pt" ]; then
-        # The user previously installed via a different store path
-        # (older nix-blockchain-development pin).  Re-point to the
-        # current nix derivation.
-        rm "\$link"
+      else
         ln -s "\$nix_pt" "\$link"
       fi
 
