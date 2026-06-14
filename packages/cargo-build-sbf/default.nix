@@ -216,10 +216,23 @@ crane.buildPackage (
       # set on entry; the rest of the recorder cargo workflow
       # doesn't reach this wrapper, so the override is scoped to
       # the ``cargo build-sbf`` invocation alone.
-      tools_rustc="\$cache_root/v1.52/platform-tools/rust/bin/rustc"
-      if [ -x "\$tools_rustc" ]; then
-        export RUSTC="\$tools_rustc"
-      fi
+      # Hardcode RUSTC to the nix store path directly rather than
+      # going through the ``~/.cache/solana/v1.52/platform-tools``
+      # symlink we just created.  Two CI runs in a row (aa292f7d and
+      # the one before it) produced the same error
+      # ``Provided "rustc" does not have sbpf-solana-solana target.``
+      # The literal ``"rustc"`` (no path) in that message comes from
+      # ``check_solana_target_installed``'s ``env::var("RUSTC")
+      # .unwrap_or("rustc".to_owned())`` -- so RUSTC was empty when
+      # cargo-build-sbf ran.  That can only mean the wrapper's
+      # previous ``[ -x \$tools_rustc ]`` guard returned false, even
+      # though locally on NixOS the symlinked rustc is executable and
+      # the check passes.  Whatever runner-side state broke the test
+      # (race vs. the ln -s above, leftover broken symlink, etc.)
+      # disappears when we skip the cache lookup entirely and reach
+      # for the nix-store path that's an actual build input to this
+      # derivation.
+      export RUSTC="${solana-platform-tools}/rust/bin/rustc"
 
       # We manage the rust toolchain with nix -- there is no rustup
       # in the dev shell to spawn for the ``+solana`` cargo override.
