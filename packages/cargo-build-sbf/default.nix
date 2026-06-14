@@ -186,8 +186,25 @@ crane.buildPackage (
       # ``--no-rustup-override`` below) confirms the SBF target is
       # supported by the same rustc cargo will use for the actual
       # build.
+      # Always override RUSTC to the patched platform-tools rust --
+      # the dev shell that loads ``cargo-build-sbf`` typically also
+      # provides a stock ``pkgs.rustc`` (1.91 from nixpkgs) and may
+      # export ``RUSTC`` pointing at it (so other rust tooling
+      # behaves consistently).  That stock rustc does **not** ship
+      # the ``sbpf-solana-solana`` target, so ``cargo-build-sbf``'s
+      # ``check_solana_target_installed`` aborts with::
+      #
+      #   ERROR cargo_build_sbf::toolchain] Provided "rustc" does
+      #   not have sbpf-solana-solana target.
+      #
+      # observed against the recorder's CI dev shell.  Overriding
+      # unconditionally guarantees the SBF build path uses the
+      # patched rustc regardless of whatever the enclosing shell
+      # set on entry; the rest of the recorder cargo workflow
+      # doesn't reach this wrapper, so the override is scoped to
+      # the ``cargo build-sbf`` invocation alone.
       tools_rustc="\$cache_root/v1.52/platform-tools/rust/bin/rustc"
-      if [ -z "\''${RUSTC:-}" ] && [ -x "\$tools_rustc" ]; then
+      if [ -x "\$tools_rustc" ]; then
         export RUSTC="\$tools_rustc"
       fi
 
