@@ -169,10 +169,31 @@ crane.buildPackage (
       cache_root="\''${HOME:-/tmp}/.cache/solana"
       sdk_dir="\$cache_root/cargo-build-sbf-sdk"
       mkdir -p "\$sdk_dir"
-      for helper in c env.sh scripts; do
+      # ``c`` and ``env.sh`` are stable helpers -- safe to symlink.
+      for helper in c env.sh; do
         target="\$sdk_dir/\$helper"
         if [ ! -e "\$target" ]; then
           ln -s "$out/share/cargo-build-sbf/sbf/\$helper" "\$target"
+        fi
+      done
+      # ``scripts/`` must be a real directory rather than a symlink to
+      # the nix store.  install.sh's first lines are::
+      #
+      #   mkdir -p "\$(dirname "\$0")"/../dependencies
+      #   cd "\$(dirname "\$0")"/../dependencies
+      #
+      # When \$0 is invoked as ``\$sdk_dir/scripts/install.sh`` and
+      # ``scripts`` is a symlink to ``<nix-store>/.../sbf/scripts``, the
+      # kernel resolves ``scripts/..`` to ``<nix-store>/.../sbf`` and
+      # tries to ``mkdir ../dependencies`` inside the read-only nix
+      # store -- aborting with ``Read-only file system``.  Materialise
+      # ``scripts/`` as a real directory of per-file symlinks instead,
+      # so ``scripts/..`` resolves logically to \$sdk_dir.
+      mkdir -p "\$sdk_dir/scripts"
+      for s in "$out/share/cargo-build-sbf/sbf/scripts"/*; do
+        target="\$sdk_dir/scripts/\$(basename "\$s")"
+        if [ ! -e "\$target" ]; then
+          ln -s "\$s" "\$target"
         fi
       done
       mkdir -p "\$sdk_dir/dependencies"
