@@ -170,11 +170,13 @@ crane.buildPackage (
       sdk_dir="\$cache_root/cargo-build-sbf-sdk"
       mkdir -p "\$sdk_dir"
       # ``c`` and ``env.sh`` are stable helpers -- safe to symlink.
+      # Unconditional rm + ln so an older wrapper that put a
+      # different nix-store path here can't leave a stale symlink
+      # pointing at a GC'd nix-store derivation.
       for helper in c env.sh; do
         target="\$sdk_dir/\$helper"
-        if [ ! -e "\$target" ]; then
-          ln -s "$out/share/cargo-build-sbf/sbf/\$helper" "\$target"
-        fi
+        rm -rf "\$target"
+        ln -s "$out/share/cargo-build-sbf/sbf/\$helper" "\$target"
       done
       # ``scripts/`` must be a real directory rather than a symlink to
       # the nix store.  install.sh's first lines are::
@@ -189,12 +191,18 @@ crane.buildPackage (
       # store -- aborting with ``Read-only file system``.  Materialise
       # ``scripts/`` as a real directory of per-file symlinks instead,
       # so ``scripts/..`` resolves logically to \$sdk_dir.
+      #
+      # Unconditional rm + recreate: a CI runner that accumulated
+      # state from a prior wrapper version which left ``scripts`` as
+      # a *symlink* to the nix store would have a plain ``mkdir -p
+      # \$sdk_dir/scripts`` no-op (the symlink resolves to a non-empty
+      # dir) and per-file ``[ ! -e ]`` guards would skip every entry,
+      # so the runner would keep executing the OLD install.sh from
+      # the stale nix-store path.  Observed verbatim on mcl-001.
+      rm -rf "\$sdk_dir/scripts"
       mkdir -p "\$sdk_dir/scripts"
       for s in "$out/share/cargo-build-sbf/sbf/scripts"/*; do
-        target="\$sdk_dir/scripts/\$(basename "\$s")"
-        if [ ! -e "\$target" ]; then
-          ln -s "\$s" "\$target"
-        fi
+        ln -s "\$s" "\$sdk_dir/scripts/\$(basename "\$s")"
       done
       mkdir -p "\$sdk_dir/dependencies"
 
