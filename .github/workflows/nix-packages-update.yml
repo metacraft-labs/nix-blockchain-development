@@ -12,13 +12,11 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Set up Nix
-        uses: metacraft-labs/nixos-modules/.github/install-nix@main
+        uses: metacraft-labs/nixos-modules/.github/setup-nix@main
         with:
           nix-github-token: ${{ secrets.NIX_GITHUB_TOKEN }}
-          cachix-auth-token: ${{ secrets.CACHIX_AUTH_TOKEN }}
-          cachix-cache: ${{ vars.CACHIX_CACHE }}
-          trusted-public-keys: ${{ vars.TRUSTED_PUBLIC_KEYS }}
-          substituters: ${{ vars.SUBSTITUTERS }}
+          trusted-public-keys: ${{ vars.ATTIC_TRUSTED_PUBLIC_KEY }}
+          substituters: ${{ vars.ATTIC_SUBSTITUTER }}
 
       - uses: tibdex/github-app-token@v2.1.0
         id: generate-token
