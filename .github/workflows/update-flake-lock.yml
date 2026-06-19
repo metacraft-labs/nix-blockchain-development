@@ -13,7 +13,6 @@ jobs:
   update-flake-lock:
     uses: metacraft-labs/nixos-modules/.github/workflows/reusable-update-flake-lock.yml@main
     secrets:
-      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
       CREATE_PR_APP_ID: ${{ secrets.NIX_FLAKE_UPDATE_PR_BOT_APP_ID }}
       CREATE_PR_APP_PRIVATE_KEY: ${{ secrets.NIX_FLAKE_UPDATE_PR_BOT_APP_PRIVATE_KEY }}
       NIX_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
