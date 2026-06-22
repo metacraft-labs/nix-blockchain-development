@@ -4,7 +4,7 @@ root-dir := justfile_directory()
 result-dir := root-dir / ".result"
 gc-roots-dir := result-dir / "gc-roots"
 nix := `if tty -s; then echo nom; else echo nix; fi`
-cachix-cache-name := `echo ${CACHIX_CACHE:-}`
+attic-cache-name := `echo ${ATTIC_CACHE:-}`
 
 os := if os() == "macos" { "darwin" } else { "linux" }
 arch := arch()
