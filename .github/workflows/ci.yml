@@ -21,14 +21,9 @@ jobs:
       runners: | # json
         {
           "x86_64-linux": [
-            "self-hosted",
-            "nixos",
-            "x86-64-v3",
-            "bare-metal"
+            "incus"
           ],
           "aarch64-darwin": [
-            "self-hosted",
-            "macOS",
-            "aarch64-darwin"
+            "macos-tart"
           ]
         }
