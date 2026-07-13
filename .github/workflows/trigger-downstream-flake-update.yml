@@ -7,7 +7,7 @@ on:
 
 jobs:
   trigger-downstream-repo:
-    runs-on: incus
+    runs-on: eph-linux-x64
 
     strategy:
       matrix:

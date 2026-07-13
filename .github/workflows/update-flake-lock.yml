@@ -18,5 +18,5 @@ jobs:
       NIX_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GIT_GPG_SIGNING_SECRET_KEY: ${{ secrets.GIT_GPG_SIGNING_SECRET_KEY }}
     with:
-      runner: '["incus"]'
+      runner: '["eph-linux-x64"]'
       sign-commits: true
