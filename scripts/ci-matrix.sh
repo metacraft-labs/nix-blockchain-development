@@ -11,7 +11,7 @@ eval_packages_to_json() {
   flake_attr_pre="${1:-checks}"
   flake_attr_post="${2:-}"
 
-  cache_url="${ATTIC_SUBSTITUTER:-https://cache.metacraft-labs.com/metacraft-public}"
+  cache_url="${ATTIC_SUBSTITUTER:-https://cache.iog.io}"
 
   nix_eval_for_all_systems "$flake_attr_pre" "$flake_attr_post" \
     | jq -sr '{

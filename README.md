@@ -128,16 +128,6 @@ nix shell github:metacraft-labs/nix-blockchain-development#solana
 
   ```nix
   {
-    # <after>:
-    # Opt into `nix-blockchain-development`'s substituter (binary cache).
-    # `nixConfig` settings are not transitive so every user of a flake with a
-    # custom binary cache must manually include its `nixConfig` settings for
-    # substituters and trusted public keys:
-    nixConfig = {
-      extra-substituters = "https://cache.metacraft-labs.com/metacraft-public";
-      extra-trusted-public-keys = "metacraft-public:UtS6PK+p0uZaJK3i/jD2DQOjTpddhQUQmNQDQih5N4Q=";
-    };
-
     inputs = {
       # <before>:
       # nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";

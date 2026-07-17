@@ -3,11 +3,9 @@
 
   nixConfig = {
     extra-substituters = [
-      "https://cache.metacraft-labs.com/metacraft-public"
       "https://cache.iog.io"
     ];
     extra-trusted-public-keys = [
-      "metacraft-public:UtS6PK+p0uZaJK3i/jD2DQOjTpddhQUQmNQDQih5N4Q="
       "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     ];
   };
