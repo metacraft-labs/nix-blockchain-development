@@ -2,8 +2,11 @@ name: Trigger Downstream Flake Update on Push to Main
 
 on:
   push:
+    # The branches a flake change can land on: `dev`, this repo's
+    # manifest-declared mainline, and the legacy `main`.
     branches:
-      - main # Or the branch you want to track
+      - main
+      - dev
 
 jobs:
   trigger-downstream-repo:
