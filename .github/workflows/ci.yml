@@ -25,9 +25,9 @@ jobs:
       runners: | # json
         {
           "x86_64-linux": [
-            "eph-linux-x64"
+            "self-hosted", "linux", "x64"
           ],
           "aarch64-darwin": [
-            "eph-macos-arm64"
+            "self-hosted", "macos", "arm64"
           ]
         }

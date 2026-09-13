@@ -10,7 +10,7 @@ on:
 
 jobs:
   trigger-downstream-repo:
-    runs-on: eph-linux-x64
+    runs-on: [self-hosted, linux, x64]
 
     strategy:
       matrix:
