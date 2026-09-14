@@ -11,7 +11,7 @@
   };
 
   inputs = {
-    nixos-modules.url = "github:metacraft-labs/nixos-modules";
+    nixos-modules.url = "github:metacraft-labs/devops-modules";
 
     nixpkgs.follows = "nixos-modules/nixpkgs";
     nixpkgs-unstable.follows = "nixos-modules/nixpkgs-unstable";
