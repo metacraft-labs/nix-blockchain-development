@@ -16,11 +16,11 @@ on:
 
 jobs:
   lint:
-    uses: metacraft-labs/nixos-modules/.github/workflows/reusable-lint.yml@main
+    uses: metacraft-labs/devops-modules/.github/workflows/reusable-lint.yml@dev
     secrets:
       NIX_GITHUB_TOKEN: ${{ secrets.NIX_GITHUB_TOKEN }}
   ci:
-    uses: metacraft-labs/nixos-modules/.github/workflows/reusable-flake-checks-ci-matrix.yml@main
+    uses: metacraft-labs/devops-modules/.github/workflows/reusable-flake-checks-ci-matrix.yml@dev
     with:
       runners: | # json
         {

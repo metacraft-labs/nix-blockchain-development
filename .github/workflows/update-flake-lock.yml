@@ -11,7 +11,7 @@ on:
 
 jobs:
   update-flake-lock:
-    uses: metacraft-labs/nixos-modules/.github/workflows/reusable-update-flake-lock.yml@main
+    uses: metacraft-labs/devops-modules/.github/workflows/reusable-update-flake-lock.yml@dev
     secrets:
       CREATE_PR_APP_ID: ${{ secrets.NIX_FLAKE_UPDATE_PR_BOT_APP_ID }}
       CREATE_PR_APP_PRIVATE_KEY: ${{ secrets.NIX_FLAKE_UPDATE_PR_BOT_APP_PRIVATE_KEY }}
