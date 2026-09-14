@@ -9,7 +9,7 @@ jobs:
     runs-on: [self-hosted, linux, x64]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Nix
         uses: metacraft-labs/devops-modules/.github/install-nix@dev
