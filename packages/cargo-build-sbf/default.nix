@@ -52,12 +52,16 @@ let
   };
 
   crane = craneLib.overrideToolchain rust-toolchain;
-  cargoArtifacts = crane.buildDepsOnly commonArgs;
+  # Crane's vendoring code needs a newer Cargo than Agave's pinned compiler
+  # provides (notably `cargo package --exclude-lockfile`). Keep compilation
+  # on Agave's toolchain, but vendor with the toolchain Crane was packaged for.
+  cargoVendorDir = craneLib.vendorCargoDeps commonArgs;
+  cargoArtifacts = crane.buildDepsOnly (commonArgs // { inherit cargoVendorDir; });
 in
 crane.buildPackage (
   commonArgs
   // rec {
-    inherit cargoArtifacts;
+    inherit cargoArtifacts cargoVendorDir;
 
     doCheck = false;
 

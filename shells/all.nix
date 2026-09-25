@@ -86,6 +86,6 @@ mkShell {
   ];
 
   shellHook = ''
-    figlet -w$COLUMNS "nix-blockchain-development"
+    figlet -w"''${COLUMNS:-80}" "nix-blockchain-development"
   '';
 }
