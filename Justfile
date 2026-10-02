@@ -24,3 +24,8 @@ eval-packages eval-system=system:
 
 generate-matrix:
   "{{root-dir}}/scripts/ci-matrix.sh"
+
+# Entering the `ci` dev shell from another git repository must write nothing
+# there. Runs `nix develop`, so it is not part of the in-shell recipes.
+test-dev-shell:
+    bash tests/test_dev_shell_writes_nothing_elsewhere.sh
