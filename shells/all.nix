@@ -4,7 +4,7 @@
 }:
 with pkgs;
 let
-  example-container = nix2container.buildImage {
+  example-container = self'.legacyPackages.nix2container.buildImage {
     name = "example";
     tag = "latest";
     config = {
@@ -14,76 +14,82 @@ let
       ];
     };
   };
+  # A package this repository marks `meta.broken` does not build, and putting it
+  # in the shell makes the whole shell refuse to evaluate. Such packages stay
+  # listed below, so they come back once they are fixed.
+  buildable = lib.filter (p: !(p.meta.broken or false));
 in
 mkShell {
-  packages = [
-    # For priting the direnv banner
-    figlet
+  packages = buildable (
+    [
+      # For priting the direnv banner
+      figlet
 
-    # For formatting Nix files
-    alejandra
+      # For formatting Nix files
+      alejandra
 
-    # Packages defined in this repo
-    self'.packages.cosmos-theta-testnet
-    self'.packages.circom
+      # Packages defined in this repo
+      self'.packages.cosmos-theta-testnet
+      self'.packages.circom
 
-    self'.packages.circ
+      self'.packages.circ
 
-    self'.packages.go-opera
+      self'.packages.go-opera
 
-    self'.packages.polkadot
-    self'.packages.polkadot-fast
+      self'.packages.polkadot
+      self'.packages.polkadot-fast
 
-    # noir
-    # self'.legacyPackages.noir.nargo
-    # self'.legacyPackages.noir.noirc_abi_wasm
-    # self'.legacyPackages.noir.acvm_js
+      # noir
+      # self'.legacyPackages.noir.nargo
+      # self'.legacyPackages.noir.noirc_abi_wasm
+      # self'.legacyPackages.noir.acvm_js
 
-    # ethereum.nix
-    self'.legacyPackages.ethereum_nix.geth
+      # ethereum.nix
+      self'.legacyPackages.ethereum_nix.geth
 
-    # avalanche cli
-    self'.packages.avalanche-cli
+      # Avalanche node (nixpkgs' avalanchego)
+      self'.packages.avalanchego
 
-    # Node.js related
-    self'.packages.corepack-shims
-  ]
-  ++ lib.optionals (stdenv.hostPlatform.isx86) [
-    self'.packages.rapidsnark
+      # Node.js related
+      self'.packages.corepack-shims
+    ]
+    ++ lib.optionals (stdenv.hostPlatform.isx86) [
+      self'.packages.rapidsnark
 
-    # Cardano
-    self'.packages.cardano
-  ]
-  ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.hostPlatform.isLinux) [
-    # Rapidsnark depends on Pistache, which supports only Linux, see
-    # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
-    # for more information
-    self'.packages.rapidsnark-server
+      # Cardano
+      self'.packages.cardano
+    ]
+    ++ lib.optionals (stdenv.hostPlatform.isx86 && stdenv.hostPlatform.isLinux) [
+      # Rapidsnark depends on Pistache, which supports only Linux, see
+      # https://github.com/pistacheio/pistache/issues/6#issuecomment-242398225
+      # for more information
+      self'.packages.rapidsnark-server
 
-    # Ethereum
-    self'.legacyPackages.ethereum_nix.nimbus
+      # Ethereum
+      self'.legacyPackages.ethereum_nix.nimbus
 
-    # Test nix2container
-    example-container.copyToDockerDaemon
-  ]
-  ++ lib.optionals (!stdenv.isDarwin) [
-    # Solana is still not compatible with macOS on M1
-    # self'.packages.solana
-    self'.packages.wasmd
+      # Test nix2container
+      example-container.copyToDockerDaemon
+    ]
+    ++ lib.optionals (!stdenv.isDarwin) [
+      # Solana is still not compatible with macOS on M1
+      # self'.packages.solana
+      self'.packages.wasmd
 
-    # Disabled until elrond-go can build with Go >= 1.19
-    # Elrond
-    # self'.packages.elrond-go
-    # self'.packages.elrond-proxy-go
+      # Disabled until elrond-go can build with Go >= 1.19
+      # Elrond
+      # self'.packages.elrond-go
+      # self'.packages.elrond-proxy-go
 
-    # EOS
-    self'.packages.leap
-    self'.packages.eos-vm
-    self'.packages.cdt
+      # EOS
+      self'.packages.leap
+      self'.packages.eos-vm
+      self'.packages.cdt
 
-    # emscripten
-    self'.packages.emscripten
-  ];
+      # emscripten
+      self'.packages.emscripten
+    ]
+  );
 
   shellHook = ''
     figlet -w"''${COLUMNS:-80}" "nix-blockchain-development"

@@ -24,6 +24,11 @@ let
       hash = "sha256-pYG6IYGHv4DwizCdVZbOS4DUxwNtwQVcPU66fDxTxg0=";
     };
 
+    # circ's crates set `#![deny(warnings)]`, so every lint a newer rustc adds
+    # (e.g. mismatched_lifetime_syntaxes) fails the build. Lints are not
+    # correctness checks for a packaged release: report them, do not fail.
+    RUSTFLAGS = "--cap-lints warn";
+
     nativeBuildInputs = [
       rustPlatform.bindgenHook
       zlib

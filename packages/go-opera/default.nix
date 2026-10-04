@@ -23,6 +23,10 @@ buildGoModule rec {
   # GIT_DATE = "1669028682";
   # ldflags = "-s -w -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitCommit=$${GIT_COMMIT} -X github.com/Fantom-foundation/go-opera/cmd/opera/launcher.gitDate=$${GIT_DATE}";
 
+  # github.com/fjl/memsize reaches runtime.stopTheWorld through go:linkname,
+  # which Go 1.23+ rejects at link time unless the check is turned off.
+  ldflags = [ "-checklinkname=0" ];
+
   vendorHash = "sha256-FYOY7RwpLGm/0FldrXTKg2d68HzOmUQBt6EolQ2f3hA=";
 
   meta = with lib; {
