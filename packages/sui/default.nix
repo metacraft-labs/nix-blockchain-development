@@ -19,7 +19,7 @@ let
     hash = "sha256-AQzMZbkzeSy101ty94p4hUpsgBQwWfPfAadh8GyXgH4=";
   };
 
-  version = "1.68.1";
+  version = import ./version.nix;
 
   rust-toolchain = rustFromToolchainFile {
     dir = src;

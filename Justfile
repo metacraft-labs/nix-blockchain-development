@@ -29,3 +29,8 @@ generate-matrix:
 # there. Runs `nix develop`, so it is not part of the in-shell recipes.
 test-dev-shell:
     bash tests/test_dev_shell_writes_nothing_elsewhere.sh
+
+# The `move` dev shell evaluates on both Darwin systems and, on a Mac, carries
+# a `sui` of the pinned version built with tracing. Runs `nix develop`.
+test-move-dev-shell:
+    bash tests/test_move_dev_shell_evaluates.sh
