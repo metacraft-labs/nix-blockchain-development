@@ -34,3 +34,7 @@ test-dev-shell:
 # a `sui` of the pinned version built with tracing. Runs `nix develop`.
 test-move-dev-shell:
     bash tests/test_move_dev_shell_evaluates.sh
+
+# Evaluate every exported zkVM shell and enforce the supported-system matrix.
+test-zkvm-dev-shells:
+    bash tests/test_zkvm_dev_shells_evaluate.sh

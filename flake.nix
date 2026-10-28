@@ -61,30 +61,41 @@
             inherit system;
             config.allowUnfree = true;
           };
-          devShells.default = import ./shells/all.nix {
-            inherit pkgs self';
-          };
-          devShells.ci = import ./shells/ci.nix {
-            inherit pkgs config;
-          };
-          devShells.nexus = import ./shells/nexus.nix { inherit pkgs config; };
-          devShells.jolt = import ./shells/jolt.nix { inherit pkgs config; };
-          devShells.zkm = import ./shells/zkm.nix { inherit pkgs config; };
-          devShells.zkwasm = import ./shells/zkwasm.nix { inherit pkgs config; };
-          devShells.sp1 = import ./shells/sp1.nix { inherit pkgs config; };
-          devShells.risc0 = import ./shells/risc0.nix { inherit pkgs config; };
-          devShells.evm = import ./shells/evm.nix { inherit pkgs; };
-          devShells.solana = import ./shells/solana.nix { inherit pkgs self'; };
-          devShells.miden = import ./shells/miden.nix { inherit pkgs self'; };
-          devShells.move = import ./shells/move.nix { inherit pkgs self'; };
-          devShells.fuel = import ./shells/fuel.nix { inherit pkgs self'; };
-          devShells.polkavm = import ./shells/polkavm.nix { inherit pkgs self'; };
-          devShells.cairo = import ./shells/cairo.nix { inherit pkgs self'; };
-          devShells.circom-recorder = import ./shells/circom-recorder.nix { inherit pkgs self'; };
-          devShells.leo = import ./shells/leo.nix { inherit pkgs self'; };
-          devShells.tolk = import ./shells/tolk.nix { inherit pkgs self'; };
-          devShells.aiken = import ./shells/aiken.nix { inherit pkgs self'; };
-          devShells.cadence = import ./shells/cadence.nix { inherit pkgs self'; };
+          # These SDKs currently exist only on Linux. Four additionally use
+          # upstream x86_64-only guest toolchains. zkWasm is deliberately absent:
+          # its package is marked broken and cannot form an evaluable dev shell.
+          devShells =
+            pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux (
+              {
+                nexus = import ./shells/nexus.nix { inherit pkgs self'; };
+              }
+              // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isx86_64 {
+                jolt = import ./shells/jolt.nix { inherit pkgs self'; };
+                zkm = import ./shells/zkm.nix { inherit pkgs self'; };
+                sp1 = import ./shells/sp1.nix { inherit pkgs self'; };
+                risc0 = import ./shells/risc0.nix { inherit pkgs self'; };
+              }
+            )
+            // {
+              default = import ./shells/all.nix {
+                inherit pkgs self';
+              };
+              ci = import ./shells/ci.nix {
+                inherit pkgs config;
+              };
+              evm = import ./shells/evm.nix { inherit pkgs; };
+              solana = import ./shells/solana.nix { inherit pkgs self'; };
+              miden = import ./shells/miden.nix { inherit pkgs self'; };
+              move = import ./shells/move.nix { inherit pkgs self'; };
+              fuel = import ./shells/fuel.nix { inherit pkgs self'; };
+              polkavm = import ./shells/polkavm.nix { inherit pkgs self'; };
+              cairo = import ./shells/cairo.nix { inherit pkgs self'; };
+              circom-recorder = import ./shells/circom-recorder.nix { inherit pkgs self'; };
+              leo = import ./shells/leo.nix { inherit pkgs self'; };
+              tolk = import ./shells/tolk.nix { inherit pkgs self'; };
+              aiken = import ./shells/aiken.nix { inherit pkgs self'; };
+              cadence = import ./shells/cadence.nix { inherit pkgs self'; };
+            };
         };
     };
 }
