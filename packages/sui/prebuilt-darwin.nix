@@ -9,7 +9,7 @@
 # it runs unmodified from the store.
 #
 # Release assets:
-# https://github.com/MystenLabs/sui/releases/tag/mainnet-v1.68.1
+# https://github.com/MystenLabs/sui/releases/tag/mainnet-v1.82.3
 {
   lib,
   stdenvNoCC,
@@ -23,11 +23,11 @@ let
   assets = {
     aarch64-darwin = {
       arch = "macos-arm64";
-      hash = "sha256-p5scOnJtYoWwLkdKv/5fKV2uL2tDvK3uAtEJ79O9o2I=";
+      hash = "sha256-hh+IM8XHAIyGrKUOklBDuqjgQzLcvYRsxsMeoO7ha+k=";
     };
     x86_64-darwin = {
       arch = "macos-x86_64";
-      hash = "sha256-mug1/fG2Pg5KUWQlhQSU9Tqgb1gLF8HmgC1HNEKIjM4=";
+      hash = "sha256-6hdFYNOmqZ04jwYhkEXRHbfquoKH+bhA3AFq92Y1+sU=";
     };
   };
 

@@ -16,31 +16,51 @@ let
     owner = "MystenLabs";
     repo = "sui";
     rev = "mainnet-v${version}";
-    hash = "sha256-AQzMZbkzeSy101ty94p4hUpsgBQwWfPfAadh8GyXgH4=";
+    hash = "sha256-bBldssmoc+SAtdB62VJ9bh/yAz4PdJnpkiLPJ7uzEPg=";
   };
 
   version = import ./version.nix;
 
   rust-toolchain = rustFromToolchainFile {
     dir = src;
-    sha256 = "sha256-sqSWJDUxc+zaz1nBWMAJKTAGBuGWP25GCftIOlCEAtA=";
+    sha256 = "sha256-p8h3Sl/YRByZfZTAKXdsvF6xEenXKrXSVvpphmZENH4=";
   };
 
   crane = craneLib.overrideToolchain rust-toolchain;
 
-  # The tabled fork (zhiburt/tabled@e449317) has a broken symlink at
-  # tabled/examples/show/LICENSE -> ../../LICENSE, but tabled/LICENSE
-  # doesn't exist (only tabled/LICENSE-MIT). crane's rg --follow --files
-  # fails when it encounters the dangling symlink.
+  # Two git dependencies cannot be packaged by crane's vendoring as published,
+  # so their checkouts are patched before vendoring:
+  #  - The tabled fork (zhiburt/tabled@e449317) has a broken symlink at
+  #    tabled/examples/show/LICENSE -> ../../LICENSE, but tabled/LICENSE
+  #    doesn't exist (only tabled/LICENSE-MIT). crane's rg --follow --files
+  #    fails when it encounters the dangling symlink.
+  #  - mysten-sim (6b8e1e8, locked by sui 1.82.3; 213e543, locked by 1.68.1,
+  #    is the same) declares `readme = "README.md"` in
+  #    mocked-crates/futures-timer/Cargo.toml without shipping that file, and
+  #    the cargo crane vendors with refuses the crate ("readme `README.md`
+  #    does not appear to exist"). Older toolchains accepted it, which is why
+  #    1.68.1 was once built and cached; rebuilt with the current inputs it
+  #    fails the same way on Linux. An empty README satisfies the manifest.
   cargoVendorDir = crane.vendorCargoDeps {
     inherit src;
     overrideVendorGitCheckout =
+      let
+        fromRepo = name: ps: builtins.any (p: lib.hasInfix name (p.source or "")) ps;
+      in
       ps: drv:
-      if builtins.any (p: lib.hasInfix "tabled" (p.source or "")) ps then
+      if fromRepo "tabled" ps then
         drv.overrideAttrs (old: {
           postPatch = (old.postPatch or "") + ''
             # Fix broken symlink: tabled/examples/show/LICENSE -> ../../LICENSE
             cp tabled/LICENSE-MIT tabled/LICENSE
+          '';
+        })
+      else if fromRepo "mysten-sim" ps then
+        drv.overrideAttrs (old: {
+          postPatch = (old.postPatch or "") + ''
+            # Provide the readme futures-timer's manifest names.
+            [ -e mocked-crates/futures-timer/README.md ] \
+              || touch mocked-crates/futures-timer/README.md
           '';
         })
       else

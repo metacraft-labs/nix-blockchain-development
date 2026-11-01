@@ -38,3 +38,9 @@ test-move-dev-shell:
 # Evaluate every exported zkVM shell and enforce the supported-system matrix.
 test-zkvm-dev-shells:
     bash tests/test_zkvm_dev_shells_evaluate.sh
+
+# The `move` shell's `sui` replays (with --trace) a current mainnet
+# transaction; fails once packages/sui/version.nix falls behind mainnet's
+# protocol version. Needs network access. Runs `nix develop`.
+test-sui-mainnet-replay:
+    bash tests/test_sui_replays_current_mainnet.sh
