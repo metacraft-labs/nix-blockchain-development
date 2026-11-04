@@ -24,7 +24,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SCRATCH="$(mktemp -d)"
 trap 'rm -rf "$SCRATCH"' EXIT
 prepared_manifests=" "
-nix_args=(--option min-free 0 --option builders '' --no-write-lock-file --impure)
+nix_args=(--option builders '' --no-write-lock-file --impure)
 
 for name in jolt nexus zkm sp1 risc0; do
   echo "Realizing pinned $name source on this host"

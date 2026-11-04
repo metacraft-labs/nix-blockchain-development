@@ -35,6 +35,11 @@ test-dev-shell:
 test-move-dev-shell:
     bash tests/test_move_dev_shell_evaluates.sh
 
+# No tracked file sets a zero `min-free` / `max-free`, which turns off Nix's
+# automatic garbage collection on a shared host.
+test-nix-gc-floor:
+    bash tests/test_no_nix_gc_override.sh
+
 # Evaluate every exported zkVM shell and enforce the supported-system matrix.
 test-zkvm-dev-shells:
     bash tests/test_zkvm_dev_shells_evaluate.sh
