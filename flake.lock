@@ -484,6 +484,22 @@
     },
     "crane": {
       "locked": {
+        "lastModified": 1767744144,
+        "narHash": "sha256-9/9ntI0D+HbN4G0TrK3KmHbTvwgswz7p8IEJsWyef8Q=",
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "2fb033290bf6b23f226d4c8b32f7f7a16b043d7e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipetkov",
+        "repo": "crane",
+        "rev": "2fb033290bf6b23f226d4c8b32f7f7a16b043d7e",
+        "type": "github"
+      }
+    },
+    "crane_2": {
+      "locked": {
         "lastModified": 1778106249,
         "narHash": "sha256-cM/AuKy5tMhwOOQIbha8ZRRMHVfNf7cv2aljIw+qoCg=",
         "owner": "ipetkov",
@@ -497,7 +513,7 @@
         "type": "github"
       }
     },
-    "crane_2": {
+    "crane_3": {
       "locked": {
         "lastModified": 1776635034,
         "narHash": "sha256-OEOJrT3ZfwbChzODfIH4GzlNTtOFuZFWPtW7jIeR8xU=",
@@ -3894,7 +3910,7 @@
       "inputs": {
         "agenix": "agenix",
         "cachix": "cachix",
-        "crane": "crane",
+        "crane": "crane_2",
         "devenv": "devenv",
         "devshell": "devshell_3",
         "disko": "disko",
@@ -3952,7 +3968,7 @@
       "inputs": {
         "agenix": "agenix_2",
         "cachix": "cachix_4",
-        "crane": "crane_2",
+        "crane": "crane_3",
         "devenv": "devenv_2",
         "devshell": "devshell_6",
         "disko": "disko_2",
@@ -4663,10 +4679,7 @@
     },
     "root": {
       "inputs": {
-        "crane": [
-          "nixos-modules",
-          "crane"
-        ],
+        "crane": "crane",
         "devenv": [
           "nixos-modules",
           "devenv"
