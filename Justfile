@@ -49,3 +49,8 @@ test-zkvm-dev-shells:
 # protocol version. Needs network access. Runs `nix develop`.
 test-sui-mainnet-replay:
     bash tests/test_sui_replays_current_mainnet.sh
+
+# The `miden` and `fuel` shells are exported exactly where their SDK package
+# exists (Linux), and the recorder shells exported on Darwin evaluate.
+test-recorder-dev-shells:
+    bash tests/test_recorder_dev_shells_evaluate.sh

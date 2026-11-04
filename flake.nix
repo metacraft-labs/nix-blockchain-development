@@ -61,13 +61,18 @@
             inherit system;
             config.allowUnfree = true;
           };
-          # These SDKs currently exist only on Linux. Four additionally use
+          # These SDKs currently exist only on Linux (see
+          # packages/all-packages.nix), and a shell is exported only where its
+          # SDK is, so a consumer can test `devShells.<system> ? <shell>`
+          # instead of failing at evaluation. Four zkVM shells additionally use
           # upstream x86_64-only guest toolchains. zkWasm is deliberately absent:
           # its package is marked broken and cannot form an evaluable dev shell.
           devShells =
             pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux (
               {
                 nexus = import ./shells/nexus.nix { inherit pkgs self'; };
+                miden = import ./shells/miden.nix { inherit pkgs self'; };
+                fuel = import ./shells/fuel.nix { inherit pkgs self'; };
               }
               // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isx86_64 {
                 jolt = import ./shells/jolt.nix { inherit pkgs self'; };
@@ -85,9 +90,7 @@
               };
               evm = import ./shells/evm.nix { inherit pkgs; };
               solana = import ./shells/solana.nix { inherit pkgs self'; };
-              miden = import ./shells/miden.nix { inherit pkgs self'; };
               move = import ./shells/move.nix { inherit pkgs self'; };
-              fuel = import ./shells/fuel.nix { inherit pkgs self'; };
               polkavm = import ./shells/polkavm.nix { inherit pkgs self'; };
               cairo = import ./shells/cairo.nix { inherit pkgs self'; };
               circom-recorder = import ./shells/circom-recorder.nix { inherit pkgs self'; };
