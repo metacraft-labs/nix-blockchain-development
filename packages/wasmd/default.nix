@@ -6,7 +6,7 @@
   buildGoModule,
   autoPatchelfHook,
 
-  go_1_24,
+  go_1_25,
   gccForLibs,
 }:
 let
@@ -21,7 +21,7 @@ let
     aarch64-darwin = "libwasmvm.dylib";
   };
   so_name = libwasmvm_files.${system} or (throw "Unsupported system: ${system}");
-  buildGoModule' = buildGoModule.override { go = go_1_24; };
+  buildGoModule' = buildGoModule.override { go = go_1_25; };
 in
 buildGoModule' rec {
   pname = "wasmd";
