@@ -86,6 +86,11 @@ let
     # Ensure the linker embeds the path to libstdc++ in the binary RPATH
     RUSTFLAGS = "-C link-arg=-Wl,-rpath,${stdenv.cc.cc.lib}/lib";
 
+    # The bundled RocksDB 8.10 (librocksdb-sys) uses uint64_t without including
+    # <cstdint>, which GCC 15 no longer pulls in transitively. cc-rs passes
+    # CXXFLAGS to the C++ compiler; drop this once librocksdb-sys is updated.
+    CXXFLAGS = "-include cstdint";
+
     LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
     GIT_REVISION = "mainnet-v${version}";
 
