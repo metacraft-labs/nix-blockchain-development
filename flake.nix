@@ -19,7 +19,14 @@
     flake-utils.follows = "nixos-modules/flake-utils";
     flake-compat.follows = "nixos-modules/flake-compat";
     nix2container.follows = "nixos-modules/nix2container";
-    crane.follows = "nixos-modules/crane";
+    # Pinned here, not followed from nixos-modules: newer crane runs
+    # `cargo package --exclude-lockfile` to vendor git dependencies, and the
+    # old rust-toolchain.toml toolchains of jolt, nexus and zkm (their
+    # `overrideToolchain` cargo) reject that flag, so those packages stop
+    # building. This is the revision they were last built with. Drop the pin
+    # (back to `follows = "nixos-modules/crane"`) once those toolchains are
+    # bumped to a cargo that accepts `--exclude-lockfile`.
+    crane.url = "github:ipetkov/crane/2fb033290bf6b23f226d4c8b32f7f7a16b043d7e";
     fenix.follows = "nixos-modules/fenix";
     ethereum_nix.follows = "nixos-modules/ethereum-nix";
     treefmt-nix.follows = "nixos-modules/treefmt-nix";
