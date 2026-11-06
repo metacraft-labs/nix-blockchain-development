@@ -16,7 +16,7 @@ via one of the flake output categories:
 
 | package name                             | description                                                                                                             | supported platforms                         |
 | ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| [avalanche-cli]([avalanche-url])         | Helps developers develop and test subnets                                                                               | x86_64-linux, x86_64-darwin, aarch64-darwin |
+| [avalanchego]([avalanche-url])           | Avalanche node implementation (from nixpkgs)                                                                            | x86_64-linux, x86_64-darwin, aarch64-darwin |
 | [cardano]([cardano-url])                 | HTTP server & command-line for managing UTxOs and HD wallets in Cardano                                                 | x86_64-linux, x86_64-darwin                 |
 | [cardano-graphql]([cardano-graphql-url]) | GraphQL API for Cardano                                                                                                 | x86_64-linux, x86_64-darwin                 |
 | [cosmos-theta-testnet][cosmos-url]       | Cosmos Testnets                                                                                                         | x86_64-linux, x86_64-darwin, aarch64-darwin |
@@ -85,7 +85,7 @@ via one of the flake output categories:
 
 [cosmos-url]: https://github.com/hyphacoop/testnets/blob/master/local/previous-local-testnets/v7-theta/priv_validator_key.json
 [emscripten-url]: https://github.com/emscripten-core/emscripten
-[avalanche-url]: https://github.com/ava-labs/avalanche-cli
+[avalanche-url]: https://github.com/ava-labs/avalanchego
 [blst-url]: https://github.com/supranational/blst
 [cardano-url]: https://github.com/woofpool/cardano-private-testnet-setup
 [cdt-url]: https://github.com/AntelopeIO/cdt

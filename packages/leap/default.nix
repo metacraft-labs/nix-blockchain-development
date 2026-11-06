@@ -1,12 +1,16 @@
 {
-  clang14Stdenv,
+  stdenv,
   nodejs,
   fetchFromGitHub,
   pkgs,
   lib,
   xz,
 }:
-clang14Stdenv.mkDerivation rec {
+# leap 4.0 needs LLVM 14 (clang_14, llvm_14), which nixpkgs 25.11 removed
+# together with clang14Stdenv. Until it is ported to a current LLVM it cannot
+# build, so it is marked broken rather than failing every evaluation that
+# reaches it.
+stdenv.mkDerivation rec {
   pname = "leap";
   version = "4.0.0";
 
@@ -43,4 +47,6 @@ clang14Stdenv.mkDerivation rec {
       enabledStatic = true;
     })
   ];
+
+  meta.broken = true;
 }

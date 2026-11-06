@@ -5,7 +5,6 @@
   zlib,
   ncurses,
   openssl,
-  python310,
   libxml2,
   libedit,
   xz,
@@ -56,16 +55,14 @@ stdenv.mkDerivation {
   # The downloaded binaries link against a generic-Linux runtime;
   # autoPatchelfHook rewrites their ELF interpreter + RPATH so they
   # resolve through nix's glibc/libstdc++/zlib/openssl/ncurses/libxml2
-  # instead.  ``python310`` is specifically needed because llvm/lib's
-  # ``liblldb`` was built against Python 3.10 (later python versions
-  # have ABI-incompatible libpython.so.1 names); ``libedit``,
-  # ``libxml2`` and ``xz`` cover the rest of lldb's runtime deps.
+  # instead.  ``libedit``, ``libxml2`` and ``xz`` cover lldb's runtime deps.  Python
+  # is not provided: liblldb's libpython3.10 is ignored below, because
+  # nixpkgs no longer ships python310 and lldb is unused.
   buildInputs = [
     stdenv.cc.cc.lib
     zlib
     ncurses
     openssl
-    python310
     libxml2
     libedit
     xz
@@ -84,6 +81,7 @@ stdenv.mkDerivation {
   autoPatchelfIgnoreMissingDeps = [
     "libedit.so.2"
     "libxml2.so.2"
+    "libpython3.10.so.1.0"
   ];
 
   # The tarball extracts as ``./llvm/``, ``./rust/``, ``./version.md``

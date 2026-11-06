@@ -230,6 +230,11 @@
         risc0-rust = callPackage ./risc0-rust/default.nix args-zkVM-rust;
         risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
       }
+      // lib.optionalAttrs hostPlatform.isDarwin {
+        # Sui: built from source on Linux (above), the official release binary
+        # of the same version here. See ./sui/prebuilt-darwin.nix.
+        sui = callPackage ./sui/prebuilt-darwin.nix { };
+      }
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit
           zqfield-bn254
