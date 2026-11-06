@@ -13,7 +13,7 @@ mkShell {
     gnumake
     nlohmann_json
     gmp
-    nodejs_20
+    nodejs_22
   ];
 
   shellHook = ''
