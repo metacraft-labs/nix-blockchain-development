@@ -29,6 +29,12 @@ let
     # correctness checks for a packaged release: report them, do not fail.
     RUSTFLAGS = "--cap-lints warn";
 
+    # gmp-mpfr-sys builds the bundled GMP 6.2 whose configure probes use K&R-style
+    # C that GCC 15 (C23 by default) rejects, so no ABI is found ("could not find
+    # a working compiler"). Build the C sources as C17. Drop once gmp-mpfr-sys
+    # bundles a GMP that configures under C23.
+    CFLAGS = "-std=gnu17";
+
     nativeBuildInputs = [
       rustPlatform.bindgenHook
       zlib
