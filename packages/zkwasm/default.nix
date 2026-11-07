@@ -10,7 +10,7 @@
 let
   commonArgs = rec {
     pname = "zkWasm";
-    version = "unstable-2024-10-19";
+    version = "explorer-integration-5.0-unstable-2025-07-22";
 
     nativeBuildInputs = [
       clang
@@ -21,8 +21,8 @@ let
     src = fetchFromGitHub {
       owner = "DelphinusLab";
       repo = "zkWasm";
-      rev = "f5acf8c58c32ac8c6426298be69958a6bea2b89a";
-      hash = "sha256-3+ptucjczxmA0oeeokxdVRRSdJLuoRjX31hMk5+FlZM=";
+      rev = "1fb46ec774388ed012b33f17e11b8c226d7f7f6a";
+      hash = "sha256-VLRbAZv1J/B1PkcSjG92WWb97q1K+bsLmsaqZNC7jck=";
       fetchSubmodules = true;
     };
 
