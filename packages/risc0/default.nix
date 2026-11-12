@@ -30,7 +30,7 @@ let
 
   commonArgs = rec {
     pname = "risc0";
-    version = "3.0.3";
+    version = "5.0.0-rc.1-unstable-2026-11-11";
 
     nativeBuildInputs = [
       autoPatchelfHook
