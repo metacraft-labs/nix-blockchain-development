@@ -14,13 +14,13 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "rapidsnark";
-  version = "2023-03-08";
+  version = "0-unstable-2023-03-08";
 
   src = fetchFromGitHub {
     owner = "PetarKirov";
     repo = "rapidsnark";
-    rev = "fix/prover/macos-build";
-    hash = "sha256-nLKy1zTeiIIZFFnEGhO3yFysQrJqe1VZOAMaBNxPMqY=";
+    rev = "8b254247fd34b523c79ec1b582a4402343bc8094";
+    hash = "sha256-IqQ/Rc1l5MzFeoIjxRz9Oj6uzElAe6hEbhE97+3Ct4c=";
   };
 
   nativeBuildInputs = [ pkg-config ];

@@ -5,13 +5,13 @@
 }:
 buildGoModule rec {
   pname = "kurtosis";
-  version = "1.8.1";
+  version = "api/golang/v1.22.2";
 
   src = fetchFromGitHub {
     owner = "kurtosis-tech";
     repo = "kurtosis";
     rev = version;
-    hash = "sha256-RPscQHe57z4hACyhGs1zFtRVTUP1C/trB7EDGKgbIA4=";
+    hash = "sha256-mOH+c5nUHnSirgIqRWIMiZmny1I/c7LOUsxo7yh7I0Q=";
   };
 
   prePatch = ''

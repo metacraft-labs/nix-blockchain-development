@@ -9,7 +9,7 @@
 let
   commonArgs = rec {
     pname = "miden";
-    version = "0.22.0";
+    version = "0.36.4";
 
     nativeBuildInputs = [
       pkg-config
@@ -20,7 +20,7 @@ let
       owner = "0xPolygonMiden";
       repo = "miden-vm";
       rev = "v${version}";
-      hash = "sha256-hF/sRTCFwefnzg0mclgWlMPKwAIPRftHnsEc7qoOqOI=";
+      hash = "sha256-t7zJIv0jZN2zjTFy9FlKHWBN/SW4tcn9eV4EGeFl5+s=";
     };
   };
 
