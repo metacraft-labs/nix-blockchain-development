@@ -209,7 +209,14 @@
         cdt = callPackage ./cdt/default.nix { };
 
         forc = callPackage ./forc/default.nix { inherit craneLib; };
-        sui = callPackage ./sui/default.nix args-crane;
+        # Sui: built from source on x86_64-linux. On aarch64-linux the source
+        # build does not fit a CI guest's disk, so the official release binary
+        # of the same version is used, as on macOS. See ./sui/prebuilt.nix.
+        sui =
+          if hostPlatform.isAarch64 then
+            callPackage ./sui/prebuilt.nix { }
+          else
+            callPackage ./sui/default.nix args-crane;
         solana-platform-tools = callPackage ./solana-platform-tools/default.nix { };
         cargo-build-sbf = callPackage ./cargo-build-sbf/default.nix (
           args-crane
@@ -231,9 +238,9 @@
         risc0 = callPackage ./risc0/default.nix (args-zkVM // { inherit risc0-rust; });
       }
       // lib.optionalAttrs hostPlatform.isDarwin {
-        # Sui: built from source on Linux (above), the official release binary
-        # of the same version here. See ./sui/prebuilt-darwin.nix.
-        sui = callPackage ./sui/prebuilt-darwin.nix { };
+        # Sui: the official release binary of the version x86_64-linux builds
+        # from source (above). See ./sui/prebuilt.nix.
+        sui = callPackage ./sui/prebuilt.nix { };
       }
       // lib.optionalAttrs hostPlatform.isx86 rec {
         inherit

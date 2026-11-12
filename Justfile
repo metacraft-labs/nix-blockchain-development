@@ -30,8 +30,9 @@ generate-matrix:
 test-dev-shell:
     bash tests/test_dev_shell_writes_nothing_elsewhere.sh
 
-# The `move` dev shell evaluates on both Darwin systems and, on a Mac, carries
-# a `sui` of the pinned version built with tracing. Runs `nix develop`.
+# The `move` dev shell evaluates on both Darwin systems and aarch64-linux and,
+# on those hosts, carries a `sui` of the pinned version built with tracing.
+# Runs `nix develop`.
 test-move-dev-shell:
     bash tests/test_move_dev_shell_evaluates.sh
 

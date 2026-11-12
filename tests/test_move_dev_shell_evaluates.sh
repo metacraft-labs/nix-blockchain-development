@@ -1,25 +1,29 @@
 #!/usr/bin/env bash
-# The `move` dev shell evaluates on macOS and carries a working `sui`.
+# The `move` dev shell evaluates on macOS and aarch64-linux and carries a
+# working `sui`.
 #
 # `shells/move.nix` lists `self'.packages.sui`. That package was defined only
 # on Linux, so on a Mac the shell failed at evaluation with
 # "attribute 'sui' missing", and codetracer-move-recorder, whose dev shell
 # takes `inputsFrom` this one, lost its whole environment (Rust, Nim and all),
 # not only `sui`. On macOS `sui` is now the official release binary of the
-# same version Linux builds from source (packages/sui/prebuilt-darwin.nix).
+# same version x86_64-linux builds from source (packages/sui/prebuilt.nix).
+# aarch64-linux uses the release binary too: its source build ran an aarch64
+# CI guest out of disk.
 #
 # Asserted:
-#   1. `devShells.<system>.move` evaluates for both aarch64-darwin and
-#      x86_64-darwin, whichever system this host is.
-#   2. On a Darwin host, inside `nix develop .#move`, `sui --version` reports
+#   1. `devShells.<system>.move` evaluates for aarch64-darwin, x86_64-darwin
+#      and aarch64-linux, whichever system this host is.
+#   2. On a host with a prebuilt `sui` (Darwin, aarch64-linux), inside
+#      `nix develop .#move`, `sui --version` reports
 #      the version packages/sui/version.nix pins, and `sui move test` offers
 #      `--trace`: the recorder needs a build with the `tracing` feature.
 #
-# The Linux systems are not evaluated here: the Linux `sui` is built from
-# source with crane, whose evaluation imports from a derivation, so evaluating
-# a Linux shell from a Mac stops on "Cannot build '…-source.drv' … Required
-# system: 'x86_64-linux'" unless a Linux builder is configured. Linux CI
-# evaluates and builds those shells.
+# x86_64-linux is not evaluated here: its `sui` is built from source with
+# crane, whose evaluation imports from a derivation, so evaluating that shell
+# from another system stops on "Cannot build '…-source.drv' … Required
+# system: 'x86_64-linux'" unless such a builder is configured. Linux CI
+# evaluates and builds that shell.
 #
 #   bash tests/test_move_dev_shell_evaluates.sh
 set -euo pipefail
@@ -28,14 +32,14 @@ fail() { echo "FAIL: $*" >&2; exit 1; }
 LOG="$(mktemp)"
 trap 'rm -f "$LOG"' EXIT
 
-for system in aarch64-darwin x86_64-darwin; do
+for system in aarch64-darwin x86_64-darwin aarch64-linux; do
   nix eval --no-write-lock-file --raw "$REPO#devShells.$system.move.drvPath" >/dev/null 2>"$LOG" \
     || fail "devShells.$system.move does not evaluate: $(grep 'error: ' "$LOG" | tail -1 | sed 's/^ *//')"
 done
 
 host="$(nix eval --impure --raw --expr builtins.currentSystem)"
 case "$host" in
-  *-darwin)
+  *-darwin | aarch64-linux)
     want="$(nix eval --raw --file "$REPO/packages/sui/version.nix")"
     # The shell hook prints a banner on stdout, so keep only sui's own line.
     out="$(nix develop --no-write-lock-file "$REPO#move" -c sui --version 2>"$LOG")" \
@@ -52,7 +56,7 @@ case "$host" in
     grep -q -- '--trace' <<<"$help" \
       || fail "the move shell's sui does not offer 'sui move test --trace' (built without tracing?)"
     ;;
-  *) echo "note: host is $host; the in-shell sui checks run on a Darwin host only" ;;
+  *) echo "note: host is $host; the in-shell sui checks run where sui is prebuilt (Darwin, aarch64-linux)" ;;
 esac
 
-echo "PASS: devShells.{aarch64,x86_64}-darwin.move evaluate; sui ${want:-?} with --trace on $host"
+echo "PASS: devShells.{aarch64-darwin,x86_64-darwin,aarch64-linux}.move evaluate; sui ${want:-?} with --trace on $host"
