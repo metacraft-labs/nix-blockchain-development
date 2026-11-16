@@ -35,10 +35,16 @@ mkShell {
       self'.packages.circ
 
       self'.packages.go-opera
-
+    ]
+    # Polkadot is packaged only on Linux (packages/all-packages.nix); listed
+    # unconditionally, it made this shell fail to evaluate on macOS with
+    # "attribute 'polkadot' missing". It stays in this position so the Linux
+    # shell's package order, and with it its derivation, is unchanged.
+    ++ lib.optionals stdenv.hostPlatform.isLinux [
       self'.packages.polkadot
       self'.packages.polkadot-fast
-
+    ]
+    ++ [
       # noir
       # self'.legacyPackages.noir.nargo
       # self'.legacyPackages.noir.noirc_abi_wasm

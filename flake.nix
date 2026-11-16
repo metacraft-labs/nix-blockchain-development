@@ -80,6 +80,7 @@
                 nexus = import ./shells/nexus.nix { inherit pkgs self'; };
                 miden = import ./shells/miden.nix { inherit pkgs self'; };
                 fuel = import ./shells/fuel.nix { inherit pkgs self'; };
+                solana = import ./shells/solana.nix { inherit pkgs self'; };
               }
               // pkgs.lib.optionalAttrs pkgs.stdenv.hostPlatform.isx86_64 {
                 jolt = import ./shells/jolt.nix { inherit pkgs self'; };
@@ -96,7 +97,6 @@
                 inherit pkgs config;
               };
               evm = import ./shells/evm.nix { inherit pkgs; };
-              solana = import ./shells/solana.nix { inherit pkgs self'; };
               move = import ./shells/move.nix { inherit pkgs self'; };
               polkavm = import ./shells/polkavm.nix { inherit pkgs self'; };
               cairo = import ./shells/cairo.nix { inherit pkgs self'; };

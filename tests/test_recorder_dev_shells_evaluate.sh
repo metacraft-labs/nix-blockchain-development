@@ -1,24 +1,32 @@
 #!/usr/bin/env bash
-# The `miden` and `fuel` dev shells are exported only where their SDK exists.
+# The `miden`, `fuel` and `solana` dev shells are exported only where their SDK
+# exists, and the `default` shell evaluates on Darwin.
 #
-# `shells/miden.nix` and `shells/fuel.nix` list `self'.packages.miden` and
-# `self'.packages.forc`. Both packages are defined only on Linux
+# `shells/miden.nix`, `shells/fuel.nix` and `shells/solana.nix` list
+# `self'.packages.miden`, `self'.packages.forc` and
+# `self'.packages.cargo-build-sbf`. These packages are defined only on Linux
 # (packages/all-packages.nix), yet the shells were exported on every system, so
 # on a Mac they failed at evaluation with "attribute 'miden' missing" /
-# "attribute 'forc' missing". codetracer-miden-recorder and
-# codetracer-fuel-recorder take these shells through `inputsFrom`, so their own
-# dev shells inherited the failure and their macOS CI legs could not start.
+# "attribute 'forc' missing" / "attribute 'cargo-build-sbf' missing".
+# codetracer-miden-recorder, codetracer-fuel-recorder and
+# codetracer-solana-recorder take these shells through `inputsFrom`, so their
+# own dev shells inherited the failure and their macOS CI legs could not start.
+# `shells/all.nix` (the `default` shell) likewise listed the Linux-only
+# `polkadot` packages unconditionally.
 #
 # The contract, the same one test_zkvm_dev_shells_evaluate.sh enforces for the
 # zkVM shells: a shell is exported exactly where its SDK package is, so a
 # consumer can ask `devShells.<system> ? miden` instead of discovering the gap
 # at evaluation. Asserted for all four systems, whatever host this runs on:
-#   1. `miden` and `fuel` are exported on Linux and absent on Darwin.
+#   1. `miden`, `fuel` and `solana` are exported on Linux and absent on Darwin.
 #   2. The SDK package is present exactly where the shell is, so the two cannot
 #      drift apart again.
 #   3. On the Darwin systems, the recorder shells that are exported at all
 #      (`move`, `polkavm`, `cairo`, `leo`, `circom-recorder`) evaluate to a
-#      derivation. Linux shells are not evaluated: their crane/fenix packages
+#      derivation, and so does `default` on aarch64-darwin. `default` is not
+#      evaluated for x86_64-darwin: its Cardano packages (x86-only) import
+#      haskell.nix derivations at evaluation time, which needs an Intel Darwin
+#      builder. Linux shells are not evaluated: their crane/fenix packages
 #      import from derivations, which needs a Linux builder (see
 #      test_zkvm_dev_shells_evaluate.sh); builders are disabled here so the test
 #      never dispatches work to another machine, and the export checks above
@@ -43,7 +51,7 @@ for system in x86_64-linux aarch64-linux aarch64-darwin x86_64-darwin; do
       flake = builtins.getFlake \"$REPO\";
       shells = flake.devShells.\"$system\";
       packages = flake.packages.\"$system\";
-      sdk = { miden = \"miden\"; fuel = \"forc\"; };
+      sdk = { miden = \"miden\"; fuel = \"forc\"; solana = \"cargo-build-sbf\"; };
       want = $want;
       yn = b: if b then \"exported\" else \"absent\";
     in builtins.mapAttrs (shell: package:
@@ -63,4 +71,7 @@ for system in aarch64-darwin x86_64-darwin; do
       || fail "devShells.$system.$shell does not evaluate: $(grep 'error: ' "$LOG" | tail -1 | sed 's/^ *//')"
   done
 done
+echo "Evaluating devShells.aarch64-darwin.default"
+nix eval "${nix_args[@]}" --raw "$REPO#devShells.aarch64-darwin.default.drvPath" >/dev/null 2>"$LOG" \
+  || fail "devShells.aarch64-darwin.default does not evaluate: $(grep 'error: ' "$LOG" | tail -1 | sed 's/^ *//')"
 echo "PASS: recorder shells are exported where their SDK exists, and the Darwin ones evaluate"
