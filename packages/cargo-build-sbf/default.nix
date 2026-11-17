@@ -14,7 +14,7 @@
 let
   commonArgs = rec {
     pname = "cargo-build-sbf";
-    version = "3.1.11";
+    version = "4.4.1";
 
     nativeBuildInputs = [
       pkg-config
@@ -27,7 +27,7 @@ let
       owner = "anza-xyz";
       repo = "agave";
       rev = "v${version}";
-      hash = "sha256-gTN+SzfOz3uPq/nDGsiBz3Y4GnV0hm+1qV7Q1Gwcb2g=";
+      hash = "sha256-u3wsJW3eU6IynjIPEayc0AEg5U6+Zx5XIUSyIRjXCz8=";
     };
 
     # These workspace members lack src/ directories, which breaks crane's

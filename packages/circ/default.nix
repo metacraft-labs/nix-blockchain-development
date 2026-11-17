@@ -15,13 +15,13 @@
 let
   commonArgs = rec {
     pname = "circ";
-    version = "unstable-2024-04-17";
+    version = "0-unstable-2026-11-16";
 
     src = fetchFromGitHub {
       owner = "circify";
       repo = "circ";
-      rev = "7f6d0a00fe1298bc02d98c34db191afc4b46c943";
-      hash = "sha256-pYG6IYGHv4DwizCdVZbOS4DUxwNtwQVcPU66fDxTxg0=";
+      rev = "8ffb51dc2d937c533068cec210cca118384ad017";
+      hash = "sha256-m7RMHPzbWHizvbZNIhH64hPnMDbBJh1VsbVL7kkFmWg=";
     };
 
     # circ's crates set `#![deny(warnings)]`, so every lint a newer rustc adds

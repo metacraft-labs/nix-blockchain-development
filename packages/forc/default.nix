@@ -10,7 +10,7 @@
 let
   commonArgs = rec {
     pname = "forc";
-    version = "0.70.3";
+    version = "0.72.1";
 
     nativeBuildInputs = [
       pkg-config
@@ -25,7 +25,7 @@ let
       owner = "FuelLabs";
       repo = "sway";
       rev = "v${version}";
-      hash = "sha256-phfm+wDMiVsx1m7Wh1/6YzTbGQ3pXSO5D8WTVAYe1TU=";
+      hash = "sha256-FrUFwo3cPMs/BOWmBSHpCDvTx0xK5KrRJUFDfLVgMGA=";
     };
 
     # The sway workspace has fuel-core-relayer which fails to compile due to

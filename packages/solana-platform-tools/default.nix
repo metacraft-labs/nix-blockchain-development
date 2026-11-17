@@ -11,7 +11,7 @@
   ...
 }:
 let
-  version = "v1.52";
+  version = "1.58";
 
   # Anza-xyz's platform-tools tarball.  Same upstream payload the
   # cargo-build-sbf installer downloads on first use into

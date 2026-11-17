@@ -7,7 +7,7 @@
 }:
 clangStdenv.mkDerivation rec {
   name = "eos-vm";
-  version = "1.0.0-rc1";
+  version = "0-unstable-2025-07-30";
   buildInputs = with pkgs; [
     llvm
     curl.dev
@@ -30,7 +30,7 @@ clangStdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "https://github.com/AntelopeIO/eos-vm";
-    rev = "329db27d888dce32c96b4f209cdea45f1d07e5e7";
-    sha256 = "sha256-uRNj/iOt6cuGZcdQrYjYO3qyu6RBNQh+uT2AAmPoH14=";
+    rev = "377c046ec834750614aec33e31ec739c2443f54d";
+    sha256 = "sha256-fBGY6zS1JnLRKf8T0HAnMy0Zbh25Dte/ebGwwMhj3Ro=";
   };
 }
