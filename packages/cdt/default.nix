@@ -9,13 +9,13 @@
 
 stdenv.mkDerivation rec {
   pname = "cdt";
-  version = "4.1.0";
+  version = "5.0.0-dev1.1";
 
   src = fetchFromGitHub {
     owner = "AntelopeIO";
     repo = "cdt";
     rev = "v${version}";
-    hash = "sha256-+s+W2MBc/G2SCuBOdxdq661h5Oz1IH3z3HosrOQAbYU=";
+    hash = "sha256-i/DxKqcJhVPm2c4mjTuOeTrH62uRscSQfe7iM1Hwu8Y=";
     fetchSubmodules = true;
   };
 
