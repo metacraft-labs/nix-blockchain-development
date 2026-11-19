@@ -29,6 +29,18 @@ jobs:
       NIX_GITHUB_TOKEN: ${{ secrets.NIX_GITHUB_TOKEN }}
   ci:
     uses: metacraft-labs/devops-modules/.github/workflows/reusable-flake-checks-ci-matrix.yml@dev
+    secrets:
+      NIX_GITHUB_TOKEN: ${{ secrets.NIX_GITHUB_TOKEN }}
+      # The private Attic cache (vars.SUBSTITUTERS). The reusable workflow
+      # declares both of these, but this job passed NO secrets at all, so the
+      # substituter probe got HTTP 401 and probe-substituters.sh dropped the
+      # cache -- every run rebuilt from source. `main`'s 5a865a961 ("ci: use
+      # Attic cache") wired this against the OLD nixos-modules workflow; this
+      # is that same intent against the devops-modules one `dev` moved to.
+      # Reads with ATTIC_PULL_TOKEN, falls back to ATTIC_TOKEN, uploads only
+      # with ATTIC_TOKEN.
+      ATTIC_PULL_TOKEN: ${{ secrets.ATTIC_PULL_TOKEN }}
+      ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
     with:
       runners: | # json
         {
