@@ -25,6 +25,13 @@ eval-packages eval-system=system:
 generate-matrix:
   "{{root-dir}}/scripts/ci-matrix.sh"
 
+# RunQuota bridge check: runs the real scripts/ci.sh and scripts/ci-all.sh
+# against a private runquotad with a stub `nix` and asserts the lease bounds
+# their concurrency. `just test-runquota-bridge --mutate` deletes the bridge
+# from a copy and shows the same measurement then exceeds the budget.
+test-runquota-bridge *args:
+    bash tests/test_runquota_bridge.sh {{args}}
+
 # Entering the `ci` dev shell from another git repository must write nothing
 # there. Runs `nix develop`, so it is not part of the in-shell recipes.
 test-dev-shell:

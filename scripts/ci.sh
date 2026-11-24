@@ -40,6 +40,8 @@ get_platform() {
 
 system="$(get_platform)"
 
+bridge="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/runquota-bridge.sh"
+
 set -x
 nix flake check
-$nix build --json --print-build-logs ".#devShells.$system.default"
+"$bridge" run -- $nix build --json --print-build-logs ".#devShells.$system.default"

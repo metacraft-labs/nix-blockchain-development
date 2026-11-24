@@ -171,3 +171,24 @@ nix shell github:metacraft-labs/nix-blockchain-development#solana
       ];
     }
   ```
+
+## Sharing the host's CPU and memory
+
+Several checkouts and agent sessions share one machine. The devShell builds of
+`scripts/ci.sh` and `scripts/ci-all.sh` therefore take a lease from the host's
+RunQuota budget and run at the width they are granted: the `nix` adapter of
+`runquota run` adds `--max-jobs 1 --cores N` after `build`, and every other
+argument passes through unchanged. Where `runquota` is not installed they run as
+before. The helper is `scripts/runquota-bridge.sh`.
+
+- `RQ= scripts/ci.sh` runs without the lease;
+  `RQ="runquota run --width 4 --" scripts/ci.sh` pins the width.
+- On a terminal with `nom`, a leased `nom build` runs as `nix build`, because the
+  adapter cannot bound `nom`; `RQ=` keeps `nom`.
+- Not bounded: `nix flake check` (it also builds the checks, but the adapter does
+  not recognise it), and `scripts/nix-eval-jobs.sh` (eval only; it sizes its own
+  workers). The `test-*` Justfile recipes run `nix develop` and are not leased.
+- `--max-jobs 1` and `--cores N` limit LOCAL builds only; remote builder jobs
+  are not counted against `max-jobs`.
+- `just test-runquota-bridge` checks the bound against a private `runquotad` and
+  a stub `nix`; `--mutate` shows the check fails when the bridge is removed.
